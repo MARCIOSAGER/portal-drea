@@ -113,33 +113,56 @@ def substitute_placeholders(html: str, context: dict) -> str:
     """
     Substitui placeholders {{KEY}} no HTML pelo valor correspondente em context.
 
-    Placeholders suportados nesta fase:
-        {{VERSION}}           → versão do Portal DREA (plataforma)
+    Placeholders suportados:
+        {{VERSION}}           → versão da plataforma DREA
         {{BUILD_DATE}}        → data/hora do build (ISO)
         {{BUILD_DATE_SHORT}}  → data do build (YYYY-MM-DD)
         {{AIRPORT.NAME}}      → nome do aeroporto
         {{AIRPORT.OACI}}      → código OACI (ex: "FNMO")
         {{AIRPORT.IATA}}      → código IATA
         {{AIRPORT.LOCATION}}  → localização
-
-    Nesta Etapa 2 (passthrough), os placeholders ainda não existem no source
-    HTML, então esta função é um no-op efectivo — só substitui os que encontrar.
+        {{AIRPORT.*}}         → qualquer campo aninhado do airport (flatten)
+        {{CONTACTS_JSON}}     → JSON literal dos contactos (reservado para
+                                futura migração do SSCI ao schema unificado)
     """
+    # --- Placeholder especial: CONTACTS_JSON ---
+    # O SSCI ainda não consome este placeholder mas o suporte está aqui para
+    # quando a migração para o schema unificado for feita.
+    contacts_json = "[]"
+    contacts_node = context.get("contacts") if isinstance(context.get("contacts"), dict) else None
+    if contacts_node and isinstance(contacts_node.get("items"), list):
+        contacts_json = json.dumps(
+            contacts_node["items"],
+            ensure_ascii=False,
+            indent=None,
+            separators=(",", ":"),
+        )
+    html = html.replace("{{CONTACTS_JSON}}", contacts_json)
+
+    # --- Placeholders planos ---
     flat = _flatten_dict(context)
     for key, value in flat.items():
         placeholder = "{{" + key + "}}"
         html = html.replace(placeholder, str(value))
+
     return html
 
 
 def _flatten_dict(d: dict, parent_key: str = "", sep: str = ".") -> dict:
-    """Achata um dict aninhado em chaves tipo "airport.name"."""
+    """
+    Achata um dict aninhado em chaves tipo "airport.name". Ignora chaves com
+    prefixo underscore (metadados) e valores do tipo lista.
+    """
     items = []
     for k, v in d.items():
+        if k.startswith("_"):
+            continue
         new_key = f"{parent_key}{sep}{k}" if parent_key else k
         new_key_upper = new_key.upper()
         if isinstance(v, dict):
             items.extend(_flatten_dict(v, new_key_upper, sep).items())
+        elif isinstance(v, list):
+            continue
         else:
             items.append((new_key_upper, v))
     return dict(items)

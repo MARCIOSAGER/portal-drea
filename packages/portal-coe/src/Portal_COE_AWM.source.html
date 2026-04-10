@@ -14265,43 +14265,7 @@ html { scroll-behavior: smooth; }
         { key: 'operadores',  label: 'EMPRESAS AÉREAS, HANDLING E COMBUSTÍVEL' }
     ];
 
-    var AWM_CONTACTS_DEFAULT = [
-        // === SGA — Internas (7) ===
-        { id:'01',  legacyId:'01',  cat:'sga-interna', label:'Director do Aeroporto',    nome:'Paulo José Chiloya',   funcao:'Director do Aeroporto',    cisco:'1519', cel:'923 107 055', cel2:'', quente:'', email:'Pchiloya@sga.co.ao',      tags:['chefia','principal'] },
-        { id:'02',  legacyId:'02',  cat:'sga-interna', label:'DREA — Chefe SREA',        nome:'Rui Fernandes',        funcao:'Chefe SREA',               cisco:'1946', cel:'935 645 456', cel2:'', quente:'', email:'Rfernandes@sga.co.ao',    tags:['chefia','emergencia','coe'] },
-        { id:'03',  legacyId:'03',  cat:'sga-interna', label:'SOA — Chefe OPS',          nome:'Adão Miguel',          funcao:'Chefe OPS',                cisco:'1861', cel:'921 487 459', cel2:'', quente:'', email:'Amiguel@sga.co.ao',       tags:['chefia','operacoes'] },
-        { id:'04',  legacyId:'04',  cat:'sga-interna', label:'Manutenção',               nome:'José Filipe',          funcao:'Chefe Manutenção',         cisco:'1944', cel:'923 085 661', cel2:'', quente:'', email:'Jfilipe@sga.co.ao',       tags:['chefia','manutencao'] },
-        { id:'05',  legacyId:'05',  cat:'sga-interna', label:'SGSO — Safety',            nome:'Sandra Adão',          funcao:'Chefe SGSO',               cisco:'',     cel:'923 928 209', cel2:'', quente:'', email:'Ssilva@sga.co.ao',        tags:['chefia','safety','sgso'] },
-        { id:'06',  legacyId:'06',  cat:'sga-interna', label:'AVSEC — Security',         nome:'José Lote',            funcao:'Chefe Security',           cisco:'1943', cel:'922 828 675', cel2:'', quente:'', email:'jchiloia@sga.co.ao',      tags:['chefia','avsec','security'] },
-        { id:'07',  legacyId:'07',  cat:'sga-interna', label:'SSCI — Bombeiros',         nome:'Esperança Vasco',      funcao:'Comandante Bombeiros',     cisco:'48',   cel:'933 849 175', cel2:'', quente:'38', email:'',                     tags:['chefia','ssci','sci','bombeiros'] },
-
-        // === ENNA (3) ===
-        { id:'08',  legacyId:'08',  cat:'enna',        label:'TWR — Torre de Controlo',  nome:'Torre de Controlo',    funcao:'',                         cisco:'24',   cel:'921 067 593', cel2:'', quente:'37', email:'',                     tags:['twr','navegacao'] },
-        { id:'09',  legacyId:'09',  cat:'enna',        label:'AIS — Inf. Aeronáutica',   nome:'AIS',                  funcao:'',                         cisco:'',     cel:'932 085 993', cel2:'', quente:'', email:'',                        tags:['ais','navegacao'] },
-        { id:'20',  legacyId:'20',  cat:'enna',        label:'Meteorologia',             nome:'Terças Adriano',       funcao:'Operador',                 cisco:'',     cel:'924 903 248', cel2:'', quente:'', email:'',                        tags:['meteo','navegacao'] },
-
-        // === Segurança e Ordem Pública (5) ===
-        { id:'10',  legacyId:'10',  cat:'seg-ordem',   label:'SME — Migração',           nome:'Calitoco Macunde',     funcao:'Chefe da Unidade',         cisco:'',     cel:'931 070 803', cel2:'', quente:'', email:'',                        tags:['sme','migracao'] },
-        { id:'11',  legacyId:'11',  cat:'seg-ordem',   label:'Polícia CUA',              nome:'Brás Augusto',         funcao:'Comandante',               cisco:'',     cel:'929 111 342', cel2:'', quente:'', email:'',                        tags:['policia','cua'] },
-        { id:'12',  legacyId:'12',  cat:'seg-ordem',   label:'Polícia Fiscal',           nome:'Suzana Gerardo',       funcao:'Responsável',              cisco:'',     cel:'923 758 240', cel2:'', quente:'', email:'',                        tags:['policia','fiscal'] },
-        { id:'13',  legacyId:'13',  cat:'seg-ordem',   label:'UPSOE',                    nome:'Herodina Sandambongo', funcao:'Comandante',               cisco:'',     cel:'925 472 204', cel2:'', quente:'', email:'',                        tags:['upsoe','policia'] },
-        { id:'16',  legacyId:'16',  cat:'seg-ordem',   label:'SIC — Inv. Criminal',      nome:'Piedoso Vionga',       funcao:'Representante',            cisco:'',     cel:'925 310 390', cel2:'', quente:'', email:'',                        tags:['sic','policia'] },
-
-        // === Externas de Emergência (8) ===
-        { id:'01E', legacyId:'01E', cat:'externa-emg', label:'SPCB — Protecção Civil',   nome:'Kana Artur',           funcao:'Chefe Posto Comando',      cisco:'',     cel:'924 534 802', cel2:'', quente:'', email:'',                        tags:['spcb','bombeiros','externa'] },
-        { id:'02E', legacyId:'02E', cat:'externa-emg', label:'INEMA',                    nome:'Vando Maximino',       funcao:'Chefe de Secção',          cisco:'',     cel:'933 439 480', cel2:'923 622 001', quente:'', email:'vandomaximino@gmail123.com', tags:['inema','medica','externa'] },
-        { id:'03E', legacyId:'03E', cat:'externa-emg', label:'PNA — Polícia Nacional',   nome:'Jaime de Brito',       funcao:'Delegado e Comandante Prov.', cisco:'',  cel:'923 418 824', cel2:'', quente:'', email:'',                        tags:['pna','policia','externa','eod'] },
-        { id:'04E', legacyId:'04E', cat:'externa-emg', label:'Região Naval Sul',         nome:'Base Naval do Namibe', funcao:'Posto Comando',            cisco:'',     cel:'938 301 630', cel2:'', quente:'', email:'',                        tags:['naval','externa'] },
-        { id:'05E', legacyId:'05E', cat:'externa-emg', label:'Hospital Ngola Kimbanda',  nome:'Recepção do Hospital', funcao:'',                         cisco:'',     cel:'927 401 789', cel2:'', quente:'', email:'',                        tags:['hospital','medica','externa'] },
-        { id:'06E', legacyId:'06E', cat:'externa-emg', label:'Porto do Namibe',          nome:'Virgílio Ambrósio',    funcao:'Dir. Segurança',           cisco:'',     cel:'923 600 683', cel2:'', quente:'', email:'',                        tags:['porto','externa'] },
-        { id:'17',  legacyId:'17-18', cat:'externa-emg', label:'RAC — Força Aérea',      nome:'Catraio Luís / Micael Sukila', funcao:'Comandante / Cmd Adjunto', cisco:'', cel:'923 645 504', cel2:'921 103 374', quente:'', email:'',            tags:['rac','anac','externa'] },
-        { id:'21',  legacyId:'21',  cat:'externa-emg', label:'AGT — Tributária',         nome:'Leonardo Neketela',    funcao:'Chefe Adjunto Delegação',  cisco:'',     cel:'923 489 549', cel2:'', quente:'', email:'',                        tags:['agt','tributaria','externa'] },
-
-        // === Operadores (3) ===
-        { id:'14',  legacyId:'14',  cat:'operadores',  label:'TAAG',                     nome:'Almeida Sebastião',    funcao:'Supervisor',               cisco:'',     cel:'923 560 792', cel2:'', quente:'', email:'',                        tags:['taag','handling','operadora'] },
-        { id:'15',  legacyId:'15',  cat:'operadores',  label:'BESTFLY',                  nome:'João Cambuta',         funcao:'Operador',                 cisco:'',     cel:'930 722 034', cel2:'', quente:'', email:'',                        tags:['bestfly','operadora'] },
-        { id:'19',  legacyId:'19',  cat:'operadores',  label:'SONANGOL — Combustível',   nome:'João Luís',            funcao:'Supervisor',               cisco:'',     cel:'923 377 000', cel2:'', quente:'', email:'',                        tags:['sonangol','combustivel','operadora'] }
-    ];
+    var AWM_CONTACTS_DEFAULT = {{CONTACTS_JSON}};
 
     // ========================================================================
     // Overlay: edições do utilizador feitas via editor antigo (Configurações)

@@ -118,34 +118,63 @@ def substitute_placeholders(html: str, context: dict) -> str:
     """
     Substitui placeholders {{KEY}} no HTML pelo valor correspondente em context.
 
-    Placeholders suportados nesta fase:
-        {{VERSION}}           → versão do Portal COE
+    Placeholders suportados:
+        {{VERSION}}           → versão da plataforma DREA
         {{BUILD_DATE}}        → data/hora do build (ISO)
         {{BUILD_DATE_SHORT}}  → data do build (YYYY-MM-DD)
         {{AIRPORT.NAME}}      → nome do aeroporto (ex: "Aeroporto Welwitschia Mirabilis")
         {{AIRPORT.OACI}}      → código OACI (ex: "FNMO")
         {{AIRPORT.IATA}}      → código IATA (ex: "MSZ")
         {{AIRPORT.LOCATION}}  → localização (ex: "Namibe, Angola")
-
-    Nesta Etapa 2 (passthrough), os placeholders ainda não existem no source
-    HTML, então esta função é um no-op efectivo — só substitui os que encontrar.
+        {{AIRPORT.*}}         → qualquer campo aninhado do airport (flatten)
+        {{CONTACTS_JSON}}     → JSON literal dos contactos (array), pronto para
+                                substituir `var AWM_CONTACTS_DEFAULT = ...;`
     """
+    # --- Placeholder especial: CONTACTS_JSON ---
+    # Extrai config.contacts.items (se existir) e serializa como JSON bem formado.
+    # O resultado é injectado directamente como literal JavaScript:
+    #     var AWM_CONTACTS_DEFAULT = {{CONTACTS_JSON}};
+    # →   var AWM_CONTACTS_DEFAULT = [ {...}, {...}, ... ];
+    contacts_json = "[]"
+    contacts_node = context.get("contacts") if isinstance(context.get("contacts"), dict) else None
+    if contacts_node and isinstance(contacts_node.get("items"), list):
+        contacts_json = json.dumps(
+            contacts_node["items"],
+            ensure_ascii=False,
+            indent=None,
+            separators=(",", ":"),
+        )
+    html = html.replace("{{CONTACTS_JSON}}", contacts_json)
+
+    # --- Placeholders planos ---
+    # Campos aninhados são achatados em chaves tipo AIRPORT.NAME.
+    # Listas e dicts aninhados complexos são ignorados (não substituem nada).
     flat = _flatten_dict(context)
     for key, value in flat.items():
         placeholder = "{{" + key + "}}"
         html = html.replace(placeholder, str(value))
+
     return html
 
 
 def _flatten_dict(d: dict, parent_key: str = "", sep: str = ".") -> dict:
-    """Achata um dict aninhado em chaves tipo "airport.name"."""
+    """
+    Achata um dict aninhado em chaves tipo "airport.name".
+
+    Ignora valores que são listas, dicts aninhados complexos (com chaves _comment
+    ou _placeholder), e chaves que começam com underscore (metadados).
+    Apenas strings, números e bools chegam ao output final.
+    """
     items = []
     for k, v in d.items():
+        if k.startswith("_"):
+            continue  # ignorar _meta, _comment, etc.
         new_key = f"{parent_key}{sep}{k}" if parent_key else k
-        # Uppercase para matches tipo {{AIRPORT.NAME}}
         new_key_upper = new_key.upper()
         if isinstance(v, dict):
             items.extend(_flatten_dict(v, new_key_upper, sep).items())
+        elif isinstance(v, list):
+            continue  # listas não são substituíveis via placeholder simples
         else:
             items.append((new_key_upper, v))
     return dict(items)
