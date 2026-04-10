@@ -1,20 +1,31 @@
 #!/usr/bin/env python3
 """
-Portal COE — Build Script
-==========================
+Portal COE — Build Script (Portal DREA monorepo)
+=================================================
 
-Gera o HTML final distribuível a partir dos ficheiros fonte em src/ e da
-configuração do aeroporto em config/airport-XXXX.json.
+Gera o HTML final distribuível do Portal COE (módulo do Portal DREA) a partir
+dos ficheiros fonte em packages/portal-coe/src/ e da configuração do aeroporto
+em config/airport-XXXX.json (raiz do monorepo, partilhado com portal-ssci).
 
-Uso:
-    python scripts/build.py
-    python scripts/build.py --config config/airport-fnmo.json
-    python scripts/build.py --config config/airport-fnmo.json --output dist/portal.html
-    python scripts/build.py --validate          # apenas valida sintaxe JS
-    python scripts/build.py --no-validate       # salta validação (build mais rápido)
+Uso (a partir da raiz do monorepo):
+    python packages/portal-coe/scripts/build.py
+    python packages/portal-coe/scripts/build.py --config config/airport-fnmo.json
+    python packages/portal-coe/scripts/build.py --no-validate
 
-Saída:
-    dist/Portal_COE_AWM.html (por defeito)
+Uso (a partir de dentro do package):
+    cd packages/portal-coe && python scripts/build.py
+
+Estrutura esperada:
+    <monorepo-root>/
+    ├── VERSION                        (plataforma DREA)
+    ├── config/
+    │   └── airport-fnmo.json          (partilhado com portal-ssci)
+    ├── shared/                        (código partilhado futuro)
+    └── packages/
+        └── portal-coe/
+            ├── src/Portal_COE_AWM.source.html
+            ├── scripts/build.py       (este ficheiro)
+            └── dist/Portal_COE_AWM.html  (output)
 
 Fase actual:
     Etapa 2 — passthrough. O script copia src/Portal_COE_AWM.source.html
@@ -35,12 +46,30 @@ from pathlib import Path
 # ========================================================================
 # Configuração de caminhos
 # ========================================================================
+# Estrutura monorepo:
+#   REPO_ROOT/
+#   ├── VERSION                              ← versão da plataforma DREA
+#   ├── config/airport-fnmo.json             ← config partilhada
+#   ├── shared/                              ← código partilhado
+#   └── packages/portal-coe/
+#       ├── src/                             ← PACKAGE_ROOT/src
+#       ├── dist/                            ← PACKAGE_ROOT/dist (output)
+#       └── scripts/build.py                 ← este ficheiro
 
-ROOT = Path(__file__).resolve().parent.parent
-SRC_DIR = ROOT / "src"
-CONFIG_DIR = ROOT / "config"
-DIST_DIR = ROOT / "dist"
-VERSION_FILE = ROOT / "VERSION"
+# __file__ = packages/portal-coe/scripts/build.py
+# parent = packages/portal-coe/scripts
+# parent.parent = packages/portal-coe (PACKAGE_ROOT)
+# parent.parent.parent = packages
+# parent.parent.parent.parent = REPO_ROOT
+PACKAGE_ROOT = Path(__file__).resolve().parent.parent
+REPO_ROOT = PACKAGE_ROOT.parent.parent
+
+SRC_DIR = PACKAGE_ROOT / "src"
+DIST_DIR = PACKAGE_ROOT / "dist"
+
+CONFIG_DIR = REPO_ROOT / "config"
+VERSION_FILE = REPO_ROOT / "VERSION"
+SHARED_DIR = REPO_ROOT / "shared"
 
 DEFAULT_SOURCE = SRC_DIR / "Portal_COE_AWM.source.html"
 DEFAULT_CONFIG = CONFIG_DIR / "airport-fnmo.json"
@@ -50,6 +79,17 @@ DEFAULT_OUTPUT = DIST_DIR / "Portal_COE_AWM.html"
 # ========================================================================
 # Helpers
 # ========================================================================
+
+def _rel(path: Path) -> Path:
+    """
+    Devolve o path relativo ao REPO_ROOT quando possível, para prints legíveis.
+    Se o path estiver fora do REPO_ROOT, devolve o path absoluto.
+    """
+    try:
+        return path.relative_to(REPO_ROOT)
+    except ValueError:
+        return path
+
 
 def read_version() -> str:
     """Lê a versão do ficheiro VERSION na raiz."""
@@ -180,9 +220,9 @@ def build(
 
     print(f"  Version:     {version}")
     print(f"  Build date:  {build_date.isoformat(timespec='seconds')}")
-    print(f"  Source:      {source_path.relative_to(ROOT)}")
-    print(f"  Config:      {config_path.relative_to(ROOT) if config_path.exists() else '(default)'}")
-    print(f"  Output:      {output_path.relative_to(ROOT)}")
+    print(f"  Source:      {_rel(source_path)}")
+    print(f"  Config:      {_rel(config_path) if config_path.exists() else '(default)'}")
+    print(f"  Output:      {_rel(output_path)}")
     print()
 
     # --- 1. Verificar fonte ---
@@ -246,19 +286,19 @@ def main():
         "--source",
         type=Path,
         default=DEFAULT_SOURCE,
-        help=f"HTML fonte (default: {DEFAULT_SOURCE.relative_to(ROOT)})",
+        help=f"HTML fonte (default: {_rel(DEFAULT_SOURCE)})",
     )
     parser.add_argument(
         "--config",
         type=Path,
         default=DEFAULT_CONFIG,
-        help=f"Config do aeroporto (default: {DEFAULT_CONFIG.relative_to(ROOT)})",
+        help=f"Config do aeroporto (default: {_rel(DEFAULT_CONFIG)})",
     )
     parser.add_argument(
         "--output",
         type=Path,
         default=DEFAULT_OUTPUT,
-        help=f"HTML final (default: {DEFAULT_OUTPUT.relative_to(ROOT)})",
+        help=f"HTML final (default: {_rel(DEFAULT_OUTPUT)})",
     )
     parser.add_argument(
         "--no-validate",

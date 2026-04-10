@@ -1,21 +1,70 @@
 # Changelog
 
-Todas as mudanças notáveis do Portal COE são documentadas neste ficheiro.
+Todas as mudanças notáveis do **Portal DREA** (plataforma com módulos Portal COE e Portal SSCI) são documentadas neste ficheiro.
 
 Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/).
 Versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
 
 ---
 
-## [Unreleased] — Fase 1
+## [Unreleased] — Fase 1 (em curso)
 
 ### Em desenvolvimento
-- Build script `scripts/build.py` (passthrough → modular)
-- Configuração externa por aeroporto em `config/airport-XXXX.json`
-- Extracção de `AWM_CONTACTS_DEFAULT` para ficheiro de config
-- Footer com versão visível
-- Página "Sobre" em Sistema → Sobre
-- Manual de utilizador em `docs/manual-utilizador.md`
+- Extracção de `AWM_CONTACTS_DEFAULT` (Portal COE) para `config/airport-fnmo.json`
+- Extracção paralela de contactos hard-coded do Portal SSCI
+- Criação de `shared/scripts/awm-contacts.js` consumido por ambos os portais
+- Extracção da camada UX partilhada para `shared/` (modal, toast, save badge)
+- Footer com versão visível em runtime (ambos os portais)
+- Página "Sobre" em Sistema → Sobre (ambos os portais)
+- Manual de utilizador COE e SSCI
+- Checklist de validação manual antes de cada release
+
+---
+
+## [2.0.0-alpha.2] — 2026-04-10
+
+### Reorganização para monorepo Portal DREA
+
+Esta versão **não muda funcionalidade** dos portais — apenas reorganiza o repositório para acomodar o Portal SSCI como segundo módulo da plataforma **Portal DREA** (Direcção de Resposta a Emergências Aeroportuárias).
+
+### Motivação
+
+A `v2.0.0-alpha.1` criou o repositório apenas para o Portal COE, tratando o Portal PSCI como "artefacto histórico" em `docs/reference/`. Esta decisão foi identificada como incorrecta após discussão com o utilizador: o PSCI é um produto activo com utilizadores reais, e tratá-lo como histórico criaria dívida técnica grave (duplicação de código, divergência inevitável).
+
+Decisão: reorganizar como **monorepo** com dois packages independentes mais uma camada partilhada, tudo sob a marca unificada **Portal DREA**.
+
+### Changed
+
+- **Repositório GitHub renomeado** de `portal-coe` para `portal-drea`
+- **Pasta local renomeada** de `Portal_COE/` para `Portal_DREA/`
+- **Estrutura reorganizada**:
+  - `src/` → `packages/portal-coe/src/`
+  - `scripts/build.py` → `packages/portal-coe/scripts/build.py`
+  - `dist/` → `packages/portal-coe/dist/` (continua gitignored)
+  - `src/assets/logo-sga*.png` → `shared/assets/` (promoção a código partilhado)
+- **Build script do Portal COE** actualizado para reconhecer `PACKAGE_ROOT` vs `REPO_ROOT`, com helper `_rel()` para prints relativos
+- **`README.md` e `docs/ARCHITECTURE.md`** reescritos para narrativa da plataforma DREA com 2+ portais
+
+### Added
+
+- **Package `packages/portal-ssci/`** com estrutura paralela ao COE:
+  - `src/Portal_PSCI_AWM.source.html` (cópia do portal activo PSCI)
+  - `scripts/build.py` (adaptado do COE para o SSCI)
+  - `README.md` específico do módulo SSCI
+  - `dist/` (gitignored)
+- **`scripts/build-all.py`** — orquestrador que builda todos os packages em sequência com argumentos uniformes (`--config`, `--no-validate`, `--only`)
+- **`shared/README.md`** — governance do que vai para a camada partilhada
+- **`packages/portal-coe/README.md`** — readme específico do módulo COE
+- **`packages/portal-ssci/README.md`** — readme específico do módulo SSCI
+
+### Validação
+
+Ambos os builds passam na nova localização:
+- `python packages/portal-coe/scripts/build.py` → 18 blocks, 0 errors
+- `python packages/portal-ssci/scripts/build.py` → 7 blocks, 0 errors
+- `python scripts/build-all.py` → ambos OK
+
+Os HTMLs gerados são **byte-a-byte idênticos** aos que estavam antes da reorganização — zero alteração funcional.
 
 ---
 
