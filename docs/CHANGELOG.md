@@ -7,17 +7,140 @@ Versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
 
 ---
 
-## [Unreleased] — Fase 1 (em curso)
+## [Unreleased] — Fase 2 (futura)
 
-### Em desenvolvimento
-- Extracção de `AWM_CONTACTS_DEFAULT` (Portal COE) para `config/airport-fnmo.json`
-- Extracção paralela de contactos hard-coded do Portal SSCI
-- Criação de `shared/scripts/awm-contacts.js` consumido por ambos os portais
-- Extracção da camada UX partilhada para `shared/` (modal, toast, save badge)
-- Footer com versão visível em runtime (ambos os portais)
-- Página "Sobre" em Sistema → Sobre (ambos os portais)
-- Manual de utilizador COE e SSCI
-- Checklist de validação manual antes de cada release
+### Previsto
+- Empacotamento dos portais como instaladores Windows via Tauri
+- Ícones nativos + auto-update opcional
+- Assinatura digital do `.exe` para evitar avisos de antivírus
+- Instaladores separados: `Portal_DREA-COE_setup.exe` e `Portal_DREA-SSCI_setup.exe`
+- Extracção da camada UX partilhada (modal, toast, save badge) para `shared/scripts/`
+- Extracção paralela de contactos hard-coded do Portal SSCI para consumir o schema unificado
+
+---
+
+## [2.0.0-beta.1] — 2026-04-10
+
+### Fase 1 essencialmente completa
+
+Marco importante: o projecto passou de "HTML editado à mão" para "plataforma profissional
+versionada, com build pipeline, configuração externa por aeroporto, documentação completa
+e checklist de validação". A partir daqui, a Fase 1 é considerada **feature-complete** —
+qualquer trabalho futuro é refinement ou Fase 2+.
+
+### Added — Etapa 4 (branding visível + documentação)
+
+- **Footer de versão** discreto no fim da sidebar de ambos os portais, mostrando:
+  - Nome do produto (Portal COE / Portal SSCI)
+  - Versão semântica (ex: `v2.0.0-beta.1`)
+  - Data do build (`YYYY-MM-DD`)
+  - OACI · operador (ex: `FNMO · SGA`)
+  - Todos os valores resolvidos pelo build via placeholders
+- **Manual do utilizador completo** em `docs/manual-utilizador.md` (~400 linhas), cobrindo:
+  - Primeiros passos + configuração inicial
+  - Fluxo operacional COE — Emergência Aeronáutica
+  - Fluxo operacional COE — Segurança AVSEC
+  - Verificação Mensal de Contactos
+  - Fluxo operacional SSCI (registo de serviço, inspecções, testes, avarias, estoque)
+  - Documentação técnica
+  - Exports, impressão, backups
+  - Atalhos de teclado
+  - Troubleshooting de 5 problemas comuns
+  - Glossário de 24 termos
+- **Manual de instalação** em `docs/manual-instalacao.md` para o IT do aeroporto:
+  - Requisitos hardware/software
+  - Instalação passo-a-passo
+  - Configurações do browser recomendadas
+  - Política de updates e backups
+  - Troubleshooting de 6 problemas de instalação
+  - Estrutura interna do portal (informativo)
+  - Lista de localStorage keys
+- **Checklist de validação** em `docs/checklist-validacao.md` com 16 blocos de verificação:
+  - Build e sintaxe
+  - Abertura, login, sidebar (ambos os portais)
+  - Todas as secções principais
+  - Editor de contactos com casos de teste
+  - Modais, save badge, toasts, impressão
+  - Persistência e backup/restore
+  - Diferenciação entre aeroportos
+  - Secção de registo de problemas e assinaturas
+
+### Changed
+
+- `README.md` actualizado com novo status (Etapas 3 e 4 completas)
+- `VERSION` bump: `2.0.0-alpha.2` → `2.0.0-beta.1`
+- `docs/CHANGELOG.md` entrada desta versão
+
+### Validation
+
+- `python scripts/build-all.py` → ambos OK (18 + 7 blocks, 0 errors)
+- Footers de versão aparecem correctamente no output HTML, com placeholders resolvidos
+- 3 manuais escritos completamente (sem placeholders, prontos a distribuir)
+
+---
+
+## [2.0.0-alpha.4] — 2026-04-10
+
+### Etapa 3.2 — Extracção de AWM_CONTACTS_DEFAULT para config
+
+### Added
+
+- **Campo `contacts.items`** em `config/airport-fnmo.json` com os 26 contactos operacionais do FNMO em JSON estruturado. Cada contacto tem `id`, `legacyId`, `cat`, `label`, `nome`, `funcao`, `cisco`, `cel`, `cel2`, `quente`, `email`, `tags`.
+- **Placeholder `{{CONTACTS_JSON}}`** no source HTML do COE substituindo o array literal de ~7 KB que estava hard-coded.
+- **Lógica especial no `build.py`** de ambos os portais para serializar `config.contacts.items` como JSON compacto (sem espaços, sem indentação) e injectar no placeholder.
+
+### Changed
+
+- `packages/portal-coe/src/Portal_COE_AWM.source.html` — 30 linhas de literal JS substituídas por uma única linha com placeholder (7.1 KB economizados no source)
+- `_flatten_dict()` nos build scripts agora ignora chaves com prefixo `_` (metadados) e valores do tipo lista
+
+### Impact
+
+- Runtime do Portal COE é **idêntico** ao pré-extracção
+- `window.awmContacts` continua a funcionar sem mudanças
+- Editor unificado em Configurações continua a editar via overlay
+- A única diferença é **onde** os defaults vivem: antes inline JS, agora injectado pelo build
+
+### Cloning process
+
+Adicionar um novo aeroporto agora é:
+1. Copiar `config/airport-fnmo.json` → `config/airport-XXX.json`
+2. Editar `airport.*` e `contacts.items` com dados do novo aeroporto
+3. Correr `python scripts/build-all.py --config config/airport-XXX.json`
+4. Distribuir os HTMLs em `packages/*/dist/`
+
+**Zero edição de HTML necessária** para identidade + contactos.
+
+---
+
+## [2.0.0-alpha.3] — 2026-04-10
+
+### Etapa 3.1 — Extracção de strings de identidade do aeroporto
+
+Ambos os portais passam a referenciar o aeroporto via placeholders `{{AIRPORT.*}}` resolvidos no build a partir de `config/airport-fnmo.json`. Clonar o Portal DREA para um segundo aeroporto passa a requerer apenas copiar e editar este ficheiro de config (para os campos de identidade).
+
+### Scope (conservador)
+
+Apenas "strings de identidade visível" foram extraídas:
+- `AIRPORT.NAME`, `NAME_SHORT`, `OACI`, `IATA`
+- `AIRPORT.LOCATION`, `LOCATION_SHORT`
+- `AIRPORT.OPERATOR`, `OPERATOR_SHORT`, `OPERATOR_LONG`
+- `AIRPORT.COORD`, `ELEVATION_M`, `RUNWAY`, `SCI_CATEGORY`
+- `VERSION` e `BUILD_DATE_SHORT`
+
+### Not extracted (decisão documentada)
+
+- Códigos de documentos (`PL-FNMO-PEA-001`, `FRM-FNMO-*`, `MQ-FNMO-*`, `PR-FNMO-*`, `OCC-FNMO-*`)
+- localStorage keys (`coe_awm_config`, `psci_awm_config`)
+
+### Bug fix incluído
+
+Linha 10916 do Portal COE tinha `"Aeroporto Welwitschia Mirabilis (FNMO) — Ondjiva"`. Ondjiva é cidade na província de Cunene (norte de Angola), não Namibe. Corrigido para usar `{{AIRPORT.LOCATION_SHORT}}` que resolve para "Namibe".
+
+### Changed
+
+- Portal COE: 17 sites modificados (title, header, footer, PDF generators, CSV headers, DEFAULT_CFG, about)
+- Portal SSCI: 7 sites modificados (title, header, suporte, about, PDF headers)
 
 ---
 

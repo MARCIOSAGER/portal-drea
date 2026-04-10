@@ -2,7 +2,7 @@
 
 > **Direcção de Resposta a Emergências Aeroportuárias** — Plataforma operacional para aeroportos SGA
 
-**Versão da plataforma:** `v2.0.0-alpha.1` · **Aeroporto de referência:** FNMO (Namibe) · **Operador:** SGA — Sociedade de Gestão Aeroportuária
+**Versão da plataforma:** `v2.0.0-beta.1` · **Aeroporto de referência:** FNMO (Namibe) · **Operador:** SGA — Sociedade de Gestão Aeroportuária
 
 ---
 
@@ -123,7 +123,7 @@ Ver [docs/manual-instalacao.md](docs/manual-instalacao.md) (em preparação na E
 
 ## Estado actual do projecto
 
-**Fase 1 — Preparação e profissionalização** (em curso)
+**Fase 1 — Preparação e profissionalização** ✅ **COMPLETA**
 
 - [x] Estrutura monorepo (packages/ + shared/ + config/)
 - [x] Build scripts individuais funcionais para ambos os portais
@@ -131,14 +131,33 @@ Ver [docs/manual-instalacao.md](docs/manual-instalacao.md) (em preparação na E
 - [x] Repositório git + GitHub privado
 - [x] Documentação base (README, ARCHITECTURE, CHANGELOG)
 - [x] Logotipos SGA extraídos para `shared/assets/`
-- [ ] Extracção de config externa (Etapa 3)
-- [ ] Branding visível em runtime, versão no footer, página Sobre (Etapa 4)
-- [ ] Manual de utilizador v1.0
-- [ ] Manual de instalação para IT
+- [x] **Etapa 3.1** — Extracção de strings de identidade do aeroporto (placeholders `{{AIRPORT.*}}`)
+- [x] **Etapa 3.2** — Extracção de `AWM_CONTACTS_DEFAULT` para `config/airport-fnmo.json` (`{{CONTACTS_JSON}}`)
+- [x] **Etapa 4** — Footer de versão visível em runtime, manual de utilizador, manual de instalação, checklist de validação
 
 **Próxima fase**: Fase 2 — Empacotamento como instaladores Windows (Tauri).
 
 Ver [docs/CHANGELOG.md](docs/CHANGELOG.md) para histórico completo.
+
+### Clonar para outro aeroporto
+
+Com a Fase 1 completa, adicionar um novo aeroporto é directo:
+
+```bash
+# 1. Copiar e editar o config
+cp config/airport-fnmo.json config/airport-lad.json
+# Editar airport-lad.json: airport.name, oaci, iata, location, coord, etc.
+# Editar airport-lad.json: contacts.items com contactos do LAD
+
+# 2. Buildar
+python scripts/build-all.py --config config/airport-lad.json
+
+# 3. Distribuir
+# packages/portal-coe/dist/Portal_COE_AWM.html  →  PC do COE do LAD
+# packages/portal-ssci/dist/Portal_PSCI_AWM.html →  PC do SSCI do LAD
+```
+
+**Zero edição de HTML necessária** para identidade + contactos.
 
 ---
 

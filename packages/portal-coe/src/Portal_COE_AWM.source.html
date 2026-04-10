@@ -1819,6 +1819,13 @@
                 <li><a href="#" onclick="openSection('configuracoes', event)" class="nav-btn">⚙ Configurações</a></li>
             </ul>
         </div>
+
+        <!-- Footer de versão (injectado via build — Fase 1 Etapa 4) -->
+        <div class="sidebar-version-footer" style="margin-top:auto;padding:0.9rem 0.8rem 0.3rem;border-top:1px solid rgba(255,255,255,0.08);font-size:0.68rem;line-height:1.4;color:rgba(255,255,255,0.55);text-align:center;">
+            <div style="font-weight:600;letter-spacing:0.3px;color:rgba(255,255,255,0.75);">Portal COE</div>
+            <div>v{{VERSION}} · {{BUILD_DATE_SHORT}}</div>
+            <div style="margin-top:0.15rem;">{{AIRPORT.OACI}} · {{AIRPORT.OPERATOR_SHORT}}</div>
+        </div>
     </div>
 
     <div class="main-container">
