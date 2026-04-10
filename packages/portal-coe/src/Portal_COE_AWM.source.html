@@ -6,7 +6,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>Portal COE — Aeroporto Welwitschia Mirabilis</title>
+    <title>Portal COE — {{AIRPORT.NAME}}</title>
     <style>
         :root {
             --dark-blue: #004C7B;
@@ -1730,7 +1730,7 @@
             <div style="margin-bottom:1.5rem;">
                 <div style="font-size:2.5rem;margin-bottom:0.5rem;">🛡️</div>
                 <h2 style="color:#004C7B;margin:0;font-size:1.4rem;">Centro de Operações de Emergência</h2>
-                <p style="color:#666;font-size:0.9rem;margin:0.3rem 0 0;">Aeroporto Welwitschia Mirabilis (FNMO)</p>
+                <p style="color:#666;font-size:0.9rem;margin:0.3rem 0 0;">{{AIRPORT.NAME}} ({{AIRPORT.OACI}})</p>
             </div>
             <div style="border-top:2px solid #f0f0f0;padding-top:1.5rem;">
                 <label style="display:block;text-align:left;font-size:0.85rem;font-weight:600;color:#333;margin-bottom:0.4rem;">Operador de Plantão:</label>
@@ -1828,7 +1828,7 @@
                 <img src="data:image/png;base64,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" alt="SGA Logo" class="header-logo">
                 <div class="header-title">
                     <h1>Centro de Operações de Emergência</h1>
-                    <div class="header-title-small">Aeroporto Welwitschia Mirabilis (FNMO) • Namibe, Angola</div>
+                    <div class="header-title-small">{{AIRPORT.NAME}} ({{AIRPORT.OACI}}) • {{AIRPORT.LOCATION}}</div>
                 </div>
             </div>
             <div style="text-align:right;">
@@ -3520,7 +3520,7 @@
             </div>
 
     <footer>
-        Portal de Simulacros — Aeroporto Welwitschia Mirabilis (FNMO) | Operado por SGA | Versão 7.0 — Abril 2026 | Classificação: CONFIDENCIAL / RESTRITO AVSEC
+        Portal de Simulacros — {{AIRPORT.NAME}} ({{AIRPORT.OACI}}) | Operado por {{AIRPORT.OPERATOR_SHORT}} | Versão 7.0 — Abril 2026 | Classificação: CONFIDENCIAL / RESTRITO AVSEC
     </footer>
 
     <script>
@@ -4279,7 +4279,7 @@
             var dateStr = new Date(occ.dateCreated).toLocaleDateString('pt-PT');
 
             var html = '<h2 style="color:#d32f2f;text-align:center;margin:0 0 6px;">RELATÓRIO DE OCORRÊNCIA</h2>';
-            html += '<p style="text-align:center;color:#666;margin:0 0 20px;">Aeroporto Welwitschia Mirabilis — FNMO — Namibe, Angola</p>';
+            html += '<p style="text-align:center;color:#666;margin:0 0 20px;">{{AIRPORT.NAME}} — {{AIRPORT.OACI}} — {{AIRPORT.LOCATION}}</p>';
 
             html += '<table><thead><tr><th colspan="2">Dados da Ocorrência</th></tr></thead><tbody>';
             function r(lbl, val) { if (!val && val !== 0) return ''; return '<tr><td style="width:35%;font-weight:bold;">' + lbl + '</td><td>' + val + '</td></tr>'; }
@@ -4531,7 +4531,7 @@ function openPdfWindow(title, contentHtml) {
     var utcStr = now.toLocaleTimeString('pt-PT', {hour12:false, timeZone:'UTC'});
     w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>' + title + '</title>');
     w.document.write('<style>' + getPdfStyles() + '</style></head><body>');
-    w.document.write('<div class="pdf-header"><div><h1>COE — Aeroporto Welwitschia Mirabilis (FNMO)</h1><div style="font-size:9pt;margin-top:2px;">Operado por SGA — Sociedade Gestora de Aeroportos</div></div>');
+    w.document.write('<div class="pdf-header"><div><h1>COE — {{AIRPORT.NAME}} ({{AIRPORT.OACI}})</h1><div style="font-size:9pt;margin-top:2px;">Operado por {{AIRPORT.OPERATOR_LONG}}</div></div>');
     w.document.write('<div class="pdf-meta">' + dateStr + ' ' + timeStr + '<br>UTC ' + utcStr + (coeOperatorName ? '<br>Operador: ' + coeOperatorName + ' (' + coeOperatorRole + ')' : '') + '</div></div>');
     w.document.write('<div class="pdf-body">');
     w.document.write(contentHtml);
@@ -4587,10 +4587,10 @@ function exportRelatorioPDF() {
     var isReal = (typeof currentMode !== 'undefined' && currentMode === 'real');
     if (isReal) {
         html += '<h2 style="color:#d32f2f;text-align:center;margin:0 0 6px;">RELATÓRIO DE OCORRÊNCIA</h2>';
-        html += '<p style="text-align:center;color:#666;margin:0 0 20px;">Aeroporto Welwitschia Mirabilis — FNMO — Namibe, Angola</p>';
+        html += '<p style="text-align:center;color:#666;margin:0 0 20px;">{{AIRPORT.NAME}} — {{AIRPORT.OACI}} — {{AIRPORT.LOCATION}}</p>';
     } else {
         html += '<h2 style="color:#004C7B;text-align:center;margin:0 0 6px;">RELATÓRIO DE EXERCÍCIO</h2>';
-        html += '<p style="text-align:center;color:#666;margin:0 0 20px;">Aeroporto Welwitschia Mirabilis — FNMO — Namibe, Angola</p>';
+        html += '<p style="text-align:center;color:#666;margin:0 0 20px;">{{AIRPORT.NAME}} — {{AIRPORT.OACI}} — {{AIRPORT.LOCATION}}</p>';
     }
 
     // Info table
@@ -5160,7 +5160,7 @@ function exportTimeline() {
     csv += 'Duração Total;' + document.getElementById('summary-total').textContent + '\n';
     csv += 'Acções Completadas;' + document.getElementById('summary-checked').textContent + '\n';
     csv += (isReal ? 'Data da Ocorrência' : 'Data do Exercício') + ';' + new Date().toLocaleDateString('pt-PT') + '\n';
-    csv += 'Aeroporto;Welwitschia Mirabilis - FNMO\n';
+    csv += 'Aeroporto;{{AIRPORT.NAME_SHORT}} - {{AIRPORT.OACI}}\n';
     if (isReal) {
         var occNum = document.getElementById('realOccNum');
         if (occNum && occNum.value) csv += 'Nº Ocorrência;' + occNum.value + '\n';
@@ -5892,11 +5892,11 @@ async function clearContacts() {
             <section id="guia-uso" class="section">
 
             <h1 style="color: var(--dark-blue); margin-bottom: 0.5rem;">GUIA DE UTILIZAÇÃO DO PORTAL</h1>
-            <p style="color: #666; margin-bottom: 2rem;">Portal de Simulacros — Aeroporto Welwitschia Mirabilis (FNMO) | Versão 9.0</p>
+            <p style="color: #666; margin-bottom: 2rem;">Portal de Simulacros — {{AIRPORT.NAME}} ({{AIRPORT.OACI}}) | Versão 9.0</p>
 
             <div class="role-card" style="border-left-color: var(--medium-blue);">
                 <h2 class="section-title" style="margin-top: 0;">O QUE É ESTE PORTAL?</h2>
-                <p style="margin-bottom: 1rem;">Este portal é a ferramenta central de apoio aos exercícios de simulacro do Aeroporto Welwitschia Mirabilis (FNMO), operado pela SGA — Sociedade Gestora de Aeroportos. Reúne todos os procedimentos, fichas de função, guias e ferramentas necessárias para a preparação, execução e avaliação de simulacros de emergência aeronáutica e segurança (AVSEC).</p>
+                <p style="margin-bottom: 1rem;">Este portal é a ferramenta central de apoio aos exercícios de simulacro do {{AIRPORT.NAME}} ({{AIRPORT.OACI}}), operado pela {{AIRPORT.OPERATOR_LONG}}. Reúne todos os procedimentos, fichas de função, guias e ferramentas necessárias para a preparação, execução e avaliação de simulacros de emergência aeronáutica e segurança (AVSEC).</p>
                 <p>Desenvolvido em conformidade com o PEA (Plano de Emergência Aeroportuário), PSA (Programa de Segurança da Aviação) e PCA (Plano de Contingência Aeroportuário), baseados no ICAO Doc 9137, ICAO Annex 17 e NTA 32 da ANAC de Angola.</p>
             
 
@@ -6002,7 +6002,7 @@ async function clearContacts() {
                     <strong>⚠ DOCUMENTO CONFIDENCIAL / RESTRITO AVSEC</strong><br><br>
                     Este portal contém informação operacional sensível sobre procedimentos de emergência e segurança do aeroporto. A sua distribuição é restrita ao pessoal autorizado e participantes designados para os exercícios de simulacro. Não deve ser partilhado publicamente nem armazenado em sistemas sem controlo de acesso.
                 </div>
-                <p style="margin-top: 1rem;"><strong>Responsável:</strong> Gabinete de Segurança Operacional — Aeroporto Welwitschia Mirabilis</p>
+                <p style="margin-top: 1rem;"><strong>Responsável:</strong> Gabinete de Segurança Operacional — {{AIRPORT.NAME}}</p>
                 <p><strong>Contacto:</strong> Centro de Operações de Emergência (COE) — FNMO</p>
             </div>
 
@@ -8228,7 +8228,7 @@ async function clearContacts() {
                 <div class="info-card" style="border-left:4px solid var(--medium-blue);">
                     <h3>🚀 O que é este portal?</h3>
                     <p style="font-size:0.92rem; line-height:1.7;">
-                        O <strong>Portal COE</strong> é a ferramenta digital do <strong>Centro de Operações de Emergência</strong> do Aeroporto Welwitschia Mirabilis (FNMO).
+                        O <strong>Portal COE</strong> é a ferramenta digital do <strong>Centro de Operações de Emergência</strong> do {{AIRPORT.NAME}} ({{AIRPORT.OACI}}).
                         Centraliza a activação, coordenação e registo de resposta a emergências aeroportuárias conforme o <strong>PEA / PCA / PSA</strong>, com acesso rápido a contactos, mapas de quadrícula, fichas operacionais e documentação técnica.
                     </p>
                 </div>
@@ -8338,7 +8338,7 @@ async function clearContacts() {
                 <div class="info-card" style="border-left:4px solid #c0392b;">
                     <h3>🆘 Suporte</h3>
                     <p style="font-size:0.9rem; line-height:1.7;">
-                        Dúvidas sobre o portal ou problemas técnicos? Contacte a <strong>equipa de TI</strong> do Aeroporto Welwitschia Mirabilis.<br>
+                        Dúvidas sobre o portal ou problemas técnicos? Contacte a <strong>equipa de TI</strong> do {{AIRPORT.NAME}}.<br>
                         Para alterações estruturais do portal (novos formulários, integrações, campos extra), exporte primeiro todos os dados como backup antes de substituir o ficheiro.
                     </p>
                 </div>
@@ -8481,7 +8481,7 @@ async function clearContacts() {
                     </div>
                     <div class="info-card">
                         <h3 style="color:var(--dark-blue);margin-top:0;">Sobre o Portal</h3>
-                        <p style="font-size:0.88rem; color:#666;">Portal COE AWM — Versão 2.0 (Abril 2026)<br>Desenvolvido para o Aeroporto Welwitschia Mirabilis (FNMO), Namibe, Angola.<br>Dados armazenados localmente em <code>localStorage</code> (chave: <code>coe_awm_config</code>).</p>
+                        <p style="font-size:0.88rem; color:#666;">Portal COE {{AIRPORT.NAME_SHORT}} — Versão {{VERSION}} ({{BUILD_DATE_SHORT}})<br>Desenvolvido para o {{AIRPORT.NAME}} ({{AIRPORT.OACI}}), {{AIRPORT.LOCATION}}.<br>Dados armazenados localmente em <code>localStorage</code> (chave: <code>coe_awm_config</code>).</p>
                     </div>
                 </div>
 
@@ -9288,7 +9288,7 @@ function exportFichaGeralPDF() {
     html += 'th{background:#004C7B;color:white;}.info-row td:first-child{font-weight:700;width:200px;background:#f0f8ff;}';
     html += '@media print{body{padding:0.5rem;}}</style></head><body>';
     html += '<h1>RELATÓRIO DO EXERCÍCIO DE EMERGÊNCIA</h1>';
-    html += '<p style="color:#888;">Aeroporto Welwitschia Mirabilis — FNMO — Namibe, Angola</p>';
+    html += '<p style="color:#888;">{{AIRPORT.NAME}} — {{AIRPORT.OACI}} — {{AIRPORT.LOCATION}}</p>';
 
     // General data
     html += '<h2>1. Dados Gerais</h2><table>';
@@ -9373,7 +9373,7 @@ var COE_CONFIG_KEY = 'coe_awm_config';
 
 var DEFAULT_CFG = {
     aeroporto: {
-        nome: 'Aeroporto Welwitschia Mirabilis',
+        nome: '{{AIRPORT.NAME}}',
         oaci: 'FNMO',
         iata: 'MSZ',
         local: 'Namibe, Angola',
@@ -9381,7 +9381,7 @@ var DEFAULT_CFG = {
         catsci: '7',
         pista: '05/23',
         pistalen: '2700',
-        endereco: 'Aeroporto Welwitschia Mirabilis, Namibe, Angola',
+        endereco: '{{AIRPORT.NAME}}, {{AIRPORT.LOCATION}}',
         coord: "15°16'32\"S 12°08'46\"E",
         elev: '210'
     },
@@ -10913,7 +10913,7 @@ if (document.readyState !== 'loading') {
         var stamp = dd + '/' + mm + '/' + yyyy + ' ' + hh + ':' + mi;
         return '' +
             '<div class="print-header">' +
-            '<div class="brand">SGA — Sociedade de Gestão de Aeroportos<small>Aeroporto Welwitschia Mirabilis (FNMO) — Ondjiva</small></div>' +
+            '<div class="brand">SGA — Sociedade de Gestão de Aeroportos<small>{{AIRPORT.NAME}} ({{AIRPORT.OACI}}) — {{AIRPORT.LOCATION_SHORT}}</small></div>' +
             '<div class="confid">🔒 RESTRITO AVSEC<small>Impresso: ' + stamp + '</small></div>' +
             '</div>';
     }
@@ -10951,7 +10951,7 @@ if (document.readyState !== 'loading') {
         return '' +
             '<div class="cover-page">' +
             '<h1>FICHAS DE SEGURANÇA</h1>' +
-            '<h2>Simulacro de Ameaça de Bomba — Aeroporto Welwitschia Mirabilis</h2>' +
+            '<h2>Simulacro de Ameaça de Bomba — {{AIRPORT.NAME}}</h2>' +
             '<div class="cover-box">' +
             '<strong>🔒 DOCUMENTO RESTRITO AVSEC — CONFIDENCIAL</strong><br><br>' +
             'Este pack contém ' + total + ' fichas de papéis para distribuição durante o briefing do simulacro. ' +

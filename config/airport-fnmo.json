@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "comment": "Configuração do aeroporto FNMO (Aeroporto Welwitschia Mirabilis, Namibe). Este ficheiro é single-tenant — cada instalação do Portal COE tem o seu próprio airport-XXXX.json. A versão completa (com 26 contactos, referências de documentos, coordenadas exactas) será populada quando o build.py passar a consumir este ficheiro nas Etapas 3 e 4. Esta primeira versão (Fase 1 Etapa 1) é um stub mínimo apenas para validar o pipeline.",
+    "comment": "Configuração do aeroporto FNMO (Aeroporto Welwitschia Mirabilis, Namibe). Cada instalação do Portal DREA tem o seu próprio ficheiro airport-XXXX.json. Este ficheiro é consumido pelos build.py de packages/portal-coe e packages/portal-ssci para gerar HTMLs específicos do aeroporto.",
     "schema_version": "1.0",
     "last_updated": "2026-04-10"
   },
@@ -10,7 +10,10 @@
     "oaci": "FNMO",
     "iata": "MSZ",
     "location": "Namibe, Angola",
+    "location_short": "Namibe",
     "operator": "SGA — Sociedade de Gestão Aeroportuária",
+    "operator_short": "SGA",
+    "operator_long": "SGA — Sociedade Gestora de Aeroportos",
     "coord": "15°16'32\"S 12°08'46\"E",
     "elevation_m": 210,
     "runway": {

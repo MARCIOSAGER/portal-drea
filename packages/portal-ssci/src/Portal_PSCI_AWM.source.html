@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal PSCI — SSCI Aeroporto Welwitschia Mirabilis</title>
+    <title>Portal PSCI — SSCI {{AIRPORT.NAME}}</title>
     <style>
         :root {
             --dark-blue: #004C7B;
@@ -307,7 +307,7 @@
 <div class="header">
     <div>
         <h1>🚒 Portal PSCI — SSCI</h1>
-        <div class="header-sub">Aeroporto Welwitschia Mirabilis — FNMO — Namibe, Angola</div>
+        <div class="header-sub">{{AIRPORT.NAME}} — {{AIRPORT.OACI}} — {{AIRPORT.LOCATION}}</div>
     </div>
     <div style="text-align:right;">
         <div class="time-display" id="psci-clock"></div>
@@ -1803,7 +1803,7 @@
             <div class="form-card" style="border-left:4px solid #c0392b;">
                 <h3>🆘 Suporte</h3>
                 <p style="font-size:0.9rem;line-height:1.7;">
-                    Dúvidas sobre o portal ou problemas técnicos? Contacte a <strong>equipa de TI</strong> do Aeroporto Welwitschia Mirabilis.<br>
+                    Dúvidas sobre o portal ou problemas técnicos? Contacte a <strong>equipa de TI</strong> do {{AIRPORT.NAME}}.<br>
                     Para actualizações da estrutura do portal (novos formulários, campos, layouts), exporte primeiro todos os JSONs como backup.
                 </p>
             </div>
@@ -1953,7 +1953,7 @@
                 </div>
                 <div class="form-card" style="margin-top:1rem;">
                     <h3 style="color:var(--dark-blue);margin-top:0;">Sobre o Portal PSCI</h3>
-                    <p style="font-size:0.88rem;color:#666;">Portal PSCI AWM — Versão 1.0 (Abril 2026)<br>Desenvolvido para o Serviço de Salvamento e Combate a Incêndios do Aeroporto Welwitschia Mirabilis (FNMO).<br>Dados armazenados em <code>localStorage</code> (chave: <code>psci_awm_config</code>).</p>
+                    <p style="font-size:0.88rem;color:#666;">Portal PSCI {{AIRPORT.NAME_SHORT}} — Versão {{VERSION}} ({{BUILD_DATE_SHORT}})<br>Desenvolvido para o Serviço de Salvamento e Combate a Incêndios do {{AIRPORT.NAME}} ({{AIRPORT.OACI}}).<br>Dados armazenados em <code>localStorage</code> (chave: <code>psci_awm_config</code>).</p>
                 </div>
             </div>
         </div>
@@ -2367,8 +2367,8 @@ function exportForm(sectionId) {
     html += '.no-print{position:fixed;top:8px;right:8px;background:#004C7B;color:#fff;padding:8px 14px;border:none;border-radius:4px;cursor:pointer;font-weight:bold;box-shadow:0 2px 6px rgba(0,0,0,0.2);}';
     html += '</style></head><body>';
     html += '<button class="no-print" onclick="window.print()">🖨️ Imprimir / Guardar PDF</button>';
-    html += '<div class="hdr"><h1>SGA — Aeroporto Welwitschia Mirabilis (FNMO)</h1>';
-    html += '<div class="sub">Serviço de Salvamento e Combate a Incêndio — Namibe, Angola</div></div>';
+    html += '<div class="hdr"><h1>{{AIRPORT.OPERATOR_SHORT}} — {{AIRPORT.NAME}} ({{AIRPORT.OACI}})</h1>';
+    html += '<div class="sub">Serviço de Salvamento e Combate a Incêndio — {{AIRPORT.LOCATION}}</div></div>';
     html += bodyHtml;
     html += '<div class="sign-row"><div class="sign-box">Bombeiro Responsável</div><div class="sign-box">Chefe de Turno</div><div class="sign-box">SGSO</div></div>';
     html += '<div class="footer"><span>Gerado em: ' + stamp + '</span><span>Portal PSCI — AWM</span></div>';
@@ -2483,7 +2483,7 @@ function printFormHistory(id) {
         html += 'th{background:#004C7B;color:#fff;}.no-print{position:fixed;top:8px;right:8px;background:#004C7B;color:#fff;padding:8px 14px;border:none;border-radius:4px;cursor:pointer;}';
         html += '@media print{.no-print{display:none!important;}}</style></head><body>';
         html += '<button class="no-print" onclick="window.print()">🖨️ Imprimir</button>';
-        html += '<div class="hdr"><h1>SGA — Aeroporto Welwitschia Mirabilis (FNMO)</h1>';
+        html += '<div class="hdr"><h1>{{AIRPORT.OPERATOR_SHORT}} — {{AIRPORT.NAME}} ({{AIRPORT.OACI}})</h1>';
         html += '<div style="font-size:10px;color:#888;">Registo histórico — ' + entry.stamp + '</div></div>';
         html += bodyHtml + '</body></html>';
         var w = window.open('', '_blank');
