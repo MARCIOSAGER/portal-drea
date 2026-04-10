@@ -1,0 +1,59 @@
+# ========================================================================
+# Portal COE — .gitignore
+# ========================================================================
+
+# ---- Output do build ----
+# O dist/ contém o HTML final gerado por build.py — é um artefacto, não fonte.
+# Fica fora do repositório para forçar o fluxo "edita fonte → build → testa".
+dist/
+
+# ---- Ficheiros binários grandes específicos do aeroporto ----
+# PDFs dos planos (PEA, PSCI, PCA, PSA, MOA) são dados operacionais do
+# aeroporto, não código. Cada instalação tem os seus próprios ficheiros.
+config/**/*.pdf
+config/**/*.PDF
+
+# Imagens de mapas de quadrícula são específicas do aeroporto
+config/**/maps/*.png
+config/**/maps/*.jpg
+config/**/maps/*.jpeg
+
+# ---- Ficheiros locais de desenvolvimento ----
+*.tmp
+*.bak
+*.swp
+*~
+.DS_Store
+Thumbs.db
+
+# ---- IDE / editores ----
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# ---- Python (usado pelo build.py) ----
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+venv/
+.venv/
+env/
+
+# ---- Logs ----
+*.log
+logs/
+
+# ---- Node (caso venha a ser usado no futuro) ----
+node_modules/
+package-lock.json.bak
+
+# ---- Backups de configuração sensíveis ----
+config/**/secrets.json
+config/**/*.secret.json
+
+# ---- OneDrive / Dropbox artifacts ----
+.~lock.*
+~$*

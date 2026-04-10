@@ -1,0 +1,41 @@
+# Portal COE — .gitattributes
+# =============================
+# Normaliza line endings entre Windows e Unix. Todos os ficheiros de texto
+# ficam como LF no repositório; o Windows converte para CRLF na working tree.
+
+# Padrão: auto-detect com normalização
+* text=auto
+
+# Ficheiros de texto explícitos (LF no repo, CRLF no checkout Windows)
+*.md       text eol=lf
+*.html     text eol=lf
+*.css      text eol=lf
+*.js       text eol=lf
+*.json     text eol=lf
+*.py       text eol=lf
+*.yml      text eol=lf
+*.yaml     text eol=lf
+*.txt      text eol=lf
+*.sh       text eol=lf
+.gitignore text eol=lf
+.gitattributes text eol=lf
+VERSION    text eol=lf
+
+# Ficheiros que devem ter line endings Windows nativos
+*.bat      text eol=crlf
+*.cmd      text eol=crlf
+*.ps1      text eol=crlf
+
+# Binários — nunca tocar
+*.png      binary
+*.jpg      binary
+*.jpeg     binary
+*.gif      binary
+*.ico      binary
+*.pdf      binary
+*.docx     binary
+*.xlsx     binary
+*.pptx     binary
+*.zip      binary
+*.exe      binary
+*.dll      binary

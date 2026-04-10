@@ -1,0 +1,57 @@
+{
+  "_meta": {
+    "comment": "Configuração do aeroporto FNMO (Aeroporto Welwitschia Mirabilis, Namibe). Este ficheiro é single-tenant — cada instalação do Portal COE tem o seu próprio airport-XXXX.json. A versão completa (com 26 contactos, referências de documentos, coordenadas exactas) será populada quando o build.py passar a consumir este ficheiro nas Etapas 3 e 4. Esta primeira versão (Fase 1 Etapa 1) é um stub mínimo apenas para validar o pipeline.",
+    "schema_version": "1.0",
+    "last_updated": "2026-04-10"
+  },
+  "airport": {
+    "name": "Aeroporto Welwitschia Mirabilis",
+    "name_short": "AWM",
+    "oaci": "FNMO",
+    "iata": "MSZ",
+    "location": "Namibe, Angola",
+    "operator": "SGA — Sociedade de Gestão Aeroportuária",
+    "coord": "15°16'32\"S 12°08'46\"E",
+    "elevation_m": 210,
+    "runway": {
+      "designator": "05/23",
+      "length_m": 2700
+    },
+    "sci_category": 7
+  },
+  "documents": {
+    "pea": {
+      "code": "PL-FNMO-PEA-001",
+      "revision": "Rev. 00",
+      "date": "2025-07-04",
+      "title": "Plano de Emergência Aeroportuária"
+    },
+    "psci": {
+      "code": "PL-FNMO-PSCI-001",
+      "revision": "Rev. 00",
+      "date": "2025-07-04",
+      "title": "Plano de Salvamento e Combate a Incêndios"
+    },
+    "pca": {
+      "revision": "Rev. 00",
+      "date": "2025-07-04",
+      "title": "Plano de Contingência de Aeroporto"
+    },
+    "psa": {
+      "revision": "Rev. 00",
+      "date": "2025-07-04",
+      "title": "Plano de Segurança de Aeroporto"
+    },
+    "moa": {
+      "title": "Manual de Operações do Aeródromo"
+    }
+  },
+  "contacts": {
+    "_comment": "Os 26 contactos operacionais serão migrados de AWM_CONTACTS_DEFAULT (inline no HTML) para este ficheiro na Etapa 3.",
+    "_placeholder": true
+  },
+  "parameters": {
+    "sci_response_time_target_seconds": 180,
+    "coe_activation_time_target_minutes": 15
+  }
+}
