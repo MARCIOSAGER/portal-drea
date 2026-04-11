@@ -1,0 +1,104 @@
+/* =========================================================================
+ * Design System SGA — Component: Form group + Input + Select + Textarea
+ * + Checkbox + Radio scaffolding (Plan 3 Task 4)
+ * =========================================================================
+ * Bundles all form element primitives per user brief. Legacy .form-row,
+ * .form-group, .form-group label/input/textarea/select classes preserved
+ * verbatim (re-tokenised). New scaffolding for .ds-input, .ds-checkbox,
+ * .ds-radio per spec §5.1.
+ * ========================================================================= */
+
+/* ---------- Legacy form-group (re-tokenised from COE block 1 ~513-558) ---------- */
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-weight: 600;
+    color: var(--ds-brand-primary);
+    font-size: 0.85rem;
+    margin-bottom: 0.3rem;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    padding: 0.6rem;
+    border: 1px solid var(--ds-neutral-muted);
+    border-radius: 4px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    transition: border-color 0.3s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: var(--ds-brand-secondary-fill);
+    box-shadow: 0 0 4px rgba(0, 148, 207, 0.3);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.form-full-width {
+    grid-column: 1 / -1;
+}
+
+.form-actions {
+    display: flex;
+    gap: 0.8rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+}
+
+/* ---------- New .ds-input / .ds-checkbox / .ds-radio scaffolding ---------- */
+.ds-input {
+    display: block;
+    width: 100%;
+    min-height: var(--ds-input-height);
+    padding: var(--ds-space-3) var(--ds-space-4);
+    border: 1px solid var(--ds-neutral-muted);
+    border-radius: var(--ds-radius-md);
+    background: var(--ds-neutral-surface);
+    color: var(--ds-neutral-fg);
+    font-family: inherit;
+    font-size: var(--ds-text-base);
+    transition: border-color var(--ds-transition-fast),
+                box-shadow var(--ds-transition-fast);
+}
+
+.ds-input:focus-visible {
+    outline: 2px solid var(--ds-brand-secondary-text);
+    outline-offset: 2px;
+    border-color: var(--ds-brand-secondary-text);
+}
+
+.ds-input[aria-invalid="true"] {
+    border-color: var(--ds-status-alert-border);
+}
+
+.ds-checkbox,
+.ds-radio {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--ds-brand-primary);
+    cursor: pointer;
+}
+
+.ds-checkbox:focus-visible,
+.ds-radio:focus-visible {
+    outline: 2px solid var(--ds-brand-secondary-text);
+    outline-offset: 2px;
+}
