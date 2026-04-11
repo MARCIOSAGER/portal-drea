@@ -2513,6 +2513,27 @@ html { scroll-behavior: smooth; }
     #verif-contactos table.vc-table { font-size:0.75rem; }
     #verif-contactos .vc-footer-sign { grid-template-columns:1fr; }
 }
+
+
+        /* ===========================
+         * PLAN 2 CONSOLIDATION — block 15 (COE print safety PATCH v11)
+         * =========================== */
+/* Rede de segurança para impressão — esconde elementos da camada UXP que nunca
+   devem aparecer em PDFs ou print. Aditivo: não toca nos @media print existentes
+   das fichas/cartões, apenas adiciona hides globais. */
+@media print {
+    .uxp-savebadge,
+    .uxp-toasts,
+    .uxp-toast,
+    .uxp-totop,
+    .uxp-skip,
+    .awm-modal-overlay,
+    #awm-section-announcer,
+    .no-print {
+        display: none !important;
+    }
+    body { background: #ffffff !important; }
+}
 </style>
 </head>
 <body>
@@ -13370,24 +13391,7 @@ if (document.readyState !== 'loading') {
 <!-- ===== /PATCH v10 — PDF base64 data ===== -->
 
 <!-- ===== PATCH v11 — Print safety rede (esconder UXP chrome + no-print global) ===== -->
-<style>
-/* Rede de segurança para impressão — esconde elementos da camada UXP que nunca
-   devem aparecer em PDFs ou print. Aditivo: não toca nos @media print existentes
-   das fichas/cartões, apenas adiciona hides globais. */
-@media print {
-    .uxp-savebadge,
-    .uxp-toasts,
-    .uxp-toast,
-    .uxp-totop,
-    .uxp-skip,
-    .awm-modal-overlay,
-    #awm-section-announcer,
-    .no-print {
-        display: none !important;
-    }
-    body { background: #ffffff !important; }
-}
-</style>
+<!-- PLAN 2 CONSOLIDATION: original block 15 merged into block 1 above -->
 <!-- ===== /PATCH v11 — Print safety rede ===== -->
 
 <!-- ===== PATCH v12 — Redesign do grupo SIMULACROS na sidebar (tracks Emergência/Segurança) ===== -->
