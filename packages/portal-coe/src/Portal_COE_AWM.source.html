@@ -1860,27 +1860,7 @@
 .uxp-skip:focus { top: 0; outline: 3px solid #38C7F4; }
 
 /* --- Save / Status badge --- */
-.uxp-savebadge {
-    position: fixed; top: 12px; right: 12px; z-index: 9998;
-    background: #fff; border: 1px solid #cfd8dc; border-left: 4px solid #0094CF;
-    padding: 6px 12px; border-radius: 6px; font-size: 0.78rem;
-    color: #263238; box-shadow: 0 4px 14px rgba(0,0,0,0.08);
-    display: flex; align-items: center; gap: 6px; min-width: 160px;
-    transition: opacity 0.35s ease, transform 0.35s ease;
-    opacity: 0; transform: translateY(-8px); pointer-events: none;
-}
-.uxp-savebadge.visible { opacity: 1; transform: translateY(0); }
-.uxp-savebadge.saving { border-left-color: #ff9800; }
-.uxp-savebadge.saved { border-left-color: #2e7d32; }
-.uxp-savebadge.error { border-left-color: #c62828; background: #ffebee; }
-.uxp-savebadge .dot {
-    width: 8px; height: 8px; border-radius: 50%;
-    background: #0094CF; flex: 0 0 auto;
-}
-.uxp-savebadge.saving .dot { background: #ff9800; animation: uxp-pulse 1s infinite; }
-.uxp-savebadge.saved   .dot { background: #2e7d32; }
-.uxp-savebadge.error   .dot { background: #c62828; }
-@keyframes uxp-pulse { 0%,100%{opacity:1;}50%{opacity:0.25;} }
+/* .uxp-savebadge* migrated to shared/styles/components/uxp-savebadge.css (Plan 3 Task 11) */
 
 /* --- Toast --- */
 .uxp-toasts {
