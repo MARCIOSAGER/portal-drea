@@ -742,12 +742,7 @@
         /* ======== Contactos & Fluxo Styles ======== */
         /* Contactos & Fluxo Styles */
         .contacts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem; }
-        .contact-card { background: white; border-radius: 8px; border: 1px solid #ddd; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-        .contact-card-header { padding: 0.8rem 1rem; color: white; font-weight: 700; font-size: 0.95rem; display: flex; align-items: center; gap: 0.5rem; }
-        .contact-card-header.internal { background: var(--dark-blue); }
-        .contact-card-header.external { background: var(--alert-yellow); }
-        .contact-card-header.authority { background: var(--warning-red); }
-        .contact-card-body { padding: 0.8rem 1rem; }
+        /* .contact-card* migrated to shared/styles/components/card.css (Plan 3 Task 5) */
         .contact-field { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; font-size: 0.9rem; }
         .contact-field label { font-weight: 600; color: var(--dark-blue); min-width: 80px; font-size: 0.8rem; }
         .contact-field input { flex: 1; padding: 0.4rem 0.6rem; border: 1px solid #ddd; border-radius: 4px; font-size: 0.9rem; font-family: inherit; }
@@ -864,16 +859,10 @@
         .alarm-title { font-size: 1.1rem; font-weight: 700; color: var(--dark-blue); margin-bottom: 0.3rem; }
         .alarm-desc { font-size: 0.85rem; color: #666; margin-bottom: 0.8rem; }
         .alarm-options { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-        .alarm-card { border: 2px solid #ddd; border-radius: 8px; overflow: hidden; cursor: pointer; transition: all 0.2s; opacity: 0.9; }
-        .alarm-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); opacity: 1; }
-        .alarm-card.selected { opacity: 1; transform: scale(1.02); }
-        .alarm-card.selected.alarm-socorro { border-color: #c62828; box-shadow: 0 0 0 3px rgba(198,40,40,0.2); }
-        .alarm-card.selected.alarm-urgencia { border-color: #e65100; box-shadow: 0 0 0 3px rgba(230,81,0,0.2); }
-        .alarm-card.dimmed { opacity: 0.35; pointer-events: none; transform: scale(0.97); }
-        .alarm-card-header { padding: 0.6rem 1rem; font-weight: 700; font-size: 0.95rem; text-align: center; }
+        /* .alarm-card* migrated to shared/styles/components/card.css (Plan 3 Task 5) */
         .alarm-red { background: #c62828; color: white; }
         .alarm-amber { background: #e65100; color: white; }
-        .alarm-card-body { padding: 0.8rem; font-size: 0.82rem; }
+        /* .alarm-card-body migrated to shared/styles/components/card.css (Plan 3 Task 5) */
         .alarm-signal { background: #f5f5f5; padding: 0.4rem 0.6rem; border-radius: 4px; margin-bottom: 0.5rem; }
         .alarm-when { margin-bottom: 0.4rem; color: #333; }
         .alarm-list { margin: 0.3rem 0 0.4rem 1.2rem; padding: 0; }
