@@ -1,5 +1,11 @@
 # Design System SGA — Plan 2: Style Block Consolidation (Implementation Plan)
 
+> **Status:** ✅ **COMPLETED 2026-04-11** on branch `feat/consolidate-style-blocks` (worktree `../Portal_DREA-consolidate`).
+> 18 atomic commits (`313fb21..25d678f`), 33 pytest tests passing (20 Plan 1 + 13 Plan 2), both portal builds OK.
+> COE: 18 → 8 style blocks (10 real CSS consolidated into block 1, 6 JS-embedded blocks untouched). Consolidated block 1 = 100,006 chars, byte-for-byte matches `[1,5,6,7,9,11,12,13,15,16,17]` concatenation from baseline.
+> SSCI: 8 → 5 style blocks (4 real CSS consolidated, 3 JS-embedded untouched). Consolidated block 1 = 21,720 chars.
+> Plan 3 (Component Migration) can now extract one component at a time from the single consolidated block per portal.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Consolidate the scattered legacy `<style>` blocks in both portal source HTMLs into a single legacy block per portal (COE: 10 real CSS blocks → 1; SSCI: 4 → 1), preserving the exact cascade order that makes the current visual state work. This is pure plumbing — zero visual change. It unblocks component-by-component migration in Plans 3+ because after consolidation each selector lives in exactly one place.
