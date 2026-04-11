@@ -1,0 +1,98 @@
+/* =========================================================================
+ * Design System SGA — Component: Tabs (Plan 3 Task 7)
+ * =========================================================================
+ * Migrates .main-tabs, .main-tab-btn, .sub-tabs, .sub-tab-btn, .tab-content
+ * from COE block 1. Preserves .tab-content class name verbatim (JS load-
+ * bearing in section switcher).
+ *
+ * Spec: §5.2 (Tier 2 layout patterns).
+ * ========================================================================= */
+
+/* ---------- Main Navigation Tabs ---------- */
+.main-tabs {
+    background-color: #E8F4FD; /* --light-bg legacy */
+    border-bottom: 3px solid var(--ds-brand-secondary-fill);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+    padding: 0;
+    margin: 0;
+    overflow-x: auto;
+}
+
+.main-tab-btn {
+    flex: 0 0 auto;
+    padding: 1rem 1.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--ds-brand-primary);
+    border-bottom: 3px solid transparent;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.main-tab-btn:hover {
+    background-color: var(--ds-neutral-surface);
+    color: var(--ds-brand-secondary-fill);
+}
+
+.main-tab-btn.active {
+    background-color: var(--ds-neutral-surface);
+    color: var(--ds-brand-secondary-fill);
+    border-bottom-color: var(--ds-brand-secondary-fill);
+}
+
+/* ---------- Sub-tabs for role cards ---------- */
+.sub-tabs {
+    background-color: #f5f5f5; /* --gray-light legacy */
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+    padding: 0;
+    margin: 0;
+    border-bottom: 1px solid var(--ds-neutral-muted);
+    overflow-x: auto;
+}
+
+.sub-tab-btn {
+    flex: 0 0 auto;
+    padding: 0.75rem 1rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--ds-neutral-fg-muted);
+    border-bottom: 2px solid transparent;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.sub-tab-btn:hover {
+    background-color: var(--ds-neutral-surface);
+    color: var(--ds-brand-secondary-fill);
+}
+
+.sub-tab-btn.active {
+    background-color: var(--ds-neutral-surface);
+    color: var(--ds-brand-secondary-fill);
+    border-bottom-color: var(--ds-brand-secondary-fill);
+}
+
+/* ---------- Tab content area ---------- */
+.tab-content {
+    display: none;
+    animation: fadeIn 0.3s ease;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}

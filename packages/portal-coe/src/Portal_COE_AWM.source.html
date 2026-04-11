@@ -86,79 +86,7 @@
             header { padding: 0.5rem 1rem; }
         }
 
-        /* Main Navigation Tabs */
-        .main-tabs {
-            background-color: var(--light-bg);
-            border-bottom: 3px solid var(--medium-blue);
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0;
-            padding: 0;
-            margin: 0;
-            overflow-x: auto;
-        }
-
-        .main-tab-btn {
-            flex: 0 0 auto;
-            padding: 1rem 1.5rem;
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: var(--dark-blue);
-            border-bottom: 3px solid transparent;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-        }
-
-        .main-tab-btn:hover {
-            background-color: var(--white);
-            color: var(--medium-blue);
-        }
-
-        .main-tab-btn.active {
-            background-color: var(--white);
-            color: var(--medium-blue);
-            border-bottom-color: var(--medium-blue);
-        }
-
-        /* Sub-tabs for role cards */
-        .sub-tabs {
-            background-color: var(--gray-light);
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0;
-            padding: 0;
-            margin: 0;
-            border-bottom: 1px solid #ddd;
-            overflow-x: auto;
-        }
-
-        .sub-tab-btn {
-            flex: 0 0 auto;
-            padding: 0.75rem 1rem;
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 0.85rem;
-            font-weight: 500;
-            color: #666;
-            border-bottom: 2px solid transparent;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-        }
-
-        .sub-tab-btn:hover {
-            background-color: var(--white);
-            color: var(--medium-blue);
-        }
-
-        .sub-tab-btn.active {
-            background-color: var(--white);
-            color: var(--medium-blue);
-            border-bottom-color: var(--medium-blue);
-        }
+        /* .main-tabs, .main-tab-btn, .sub-tabs, .sub-tab-btn, .tab-content migrated to shared/styles/components/tabs.css (Plan 3 Task 7) */
 
         /* Content Area */
         .content-wrapper {
@@ -167,15 +95,6 @@
             padding: 2rem;
             max-width: 1400px;
             margin: 0 auto;
-        }
-
-        .tab-content {
-            display: none;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .tab-content.active {
-            display: block;
         }
 
         @keyframes fadeIn {
