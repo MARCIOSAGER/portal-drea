@@ -1,0 +1,233 @@
+/* =========================================================================
+ * Design System SGA — chrome/shell-bar.css
+ * =========================================================================
+ * Top shell bar: light background, 3 zones, institutional 4px stripe,
+ * UTC clock + local time + user badge, optional emergency pill.
+ * Spec §4.1
+ * ========================================================================= */
+
+.ds-shell-bar {
+  /* Layout */
+  position: fixed;
+  top: 0;
+  inset-inline: 0;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  /* Full padding shorthand (not padding-inline) to override the legacy
+     `header { padding: 1rem 2rem; }` rule in block 1 — otherwise the
+     legacy padding-top/bottom combined with height:56px + box-sizing
+     would squeeze the content. Block-axis padding is 0 because the
+     shell bar is vertically centered via align-items:center. */
+  padding: 0 var(--ds-space-6, 16px);
+  gap: var(--ds-space-6, 16px);
+
+  /* Appearance */
+  background: var(--ds-neutral-surface);
+  color: var(--ds-neutral-fg);
+  border-bottom: 1px solid var(--ds-neutral-muted);
+  box-shadow: var(--ds-shadow-1, 0 1px 2px rgba(9,30,66,0.08));
+  z-index: 100;
+}
+
+/* Institutional 4px stripe anchored directly below the bar */
+.ds-shell-bar::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -4px;
+  height: 4px;
+  background: var(--ds-brand-primary);
+  pointer-events: none;
+}
+
+:root[data-density="comfortable"] .ds-shell-bar {
+  height: 64px;
+}
+
+/* ---------- Zone: left (brand + OACI) ---------- */
+.ds-shell-bar__brand {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-4, 8px);
+  flex: 0 0 auto;
+  min-width: 0;
+}
+
+.ds-shell-bar__logo {
+  width: 32px;
+  height: 32px;
+  flex: 0 0 32px;
+  color: var(--ds-brand-primary);
+}
+
+.ds-shell-bar__logo svg {
+  width: 100%;
+  height: 100%;
+}
+
+.ds-shell-bar__portal-name {
+  font-size: var(--ds-text-md, 16px);
+  font-weight: 600;
+  color: var(--ds-brand-primary);
+  white-space: nowrap;
+}
+
+.ds-shell-bar__separator {
+  width: 1px;
+  height: 20px;
+  background: var(--ds-neutral-muted);
+}
+
+.ds-shell-bar__oaci {
+  font-size: var(--ds-text-sm, 13px);
+  color: var(--ds-neutral-fg-muted);
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+/* ---------- Zone: centre (breadcrumb) ---------- */
+.ds-shell-bar__breadcrumb {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  font-size: var(--ds-text-sm, 13px);
+  color: var(--ds-neutral-fg-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ds-shell-bar__breadcrumb-item + .ds-shell-bar__breadcrumb-item::before {
+  content: "›";
+  margin-inline: var(--ds-space-3, 6px);
+  color: var(--ds-neutral-fg-subtle);
+}
+
+/* ---------- Zone: right (clocks + user + occurrence pill) ---------- */
+.ds-shell-bar__meta {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-5, 12px);
+  flex: 0 0 auto;
+}
+
+.ds-shell-bar__clocks {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  line-height: 1.1;
+}
+
+.ds-shell-bar__utc {
+  font-size: var(--ds-text-sm, 13px);
+  font-weight: 600;
+  color: var(--ds-neutral-fg);
+  font-variant-numeric: tabular-nums;
+}
+
+.ds-shell-bar__local {
+  font-size: var(--ds-text-xs, 11px);
+  color: var(--ds-neutral-fg-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.ds-shell-bar__operator {
+  display: none;                         /* shown by JS when logged in */
+  align-items: center;
+  gap: var(--ds-space-2, 4px);
+  padding: 2px var(--ds-space-4, 8px);
+  background: var(--ds-neutral-subtle);
+  color: var(--ds-neutral-fg);
+  border-radius: var(--ds-radius-pill, 9999px);
+  font-size: var(--ds-text-xs, 11px);
+  font-weight: 600;
+}
+
+.ds-shell-bar__operator[data-logged-in="true"] {
+  display: inline-flex;
+}
+
+.ds-shell-bar__logout {
+  margin-inline-start: var(--ds-space-2, 4px);
+  font-size: var(--ds-text-xs, 11px);
+  color: var(--ds-brand-secondary-text);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* -------------------------------------------------------------------------
+ * Legacy "Sair" button override — JS contract compatibility
+ * -------------------------------------------------------------------------
+ * The legacy COE JS injects the logout button via
+ *   badge.innerHTML += ' <button onclick="logoutCOE()" style="background:
+ *   rgba(255,255,255,0.25); border:1px solid rgba(255,255,255,0.4);
+ *   color:white; ...">Sair</button>';
+ * at ~lines 6256 and 10449 of Portal_COE_AWM.source.html. Those inline
+ * styles were authored for the legacy gradient `#004C7B` header — on the
+ * new white shell bar the button becomes white-on-white and invisible.
+ *
+ * We cannot touch the legacy JS (out of scope for Plan 4), so we neutralise
+ * the inline colours at the CSS layer. `!important` is required here
+ * because it is the ONLY CSS mechanism that outranks an element-level
+ * `style="..."` attribute. This is a deliberate, scoped exception to the
+ * normal "no !important" rule, justified by the legacy JS constraint.
+ * Plan 6 should migrate the inline-styled button to a CSS class and
+ * remove these overrides.
+ * ------------------------------------------------------------------------- */
+.ds-shell-bar__operator > button {
+  background: var(--ds-neutral-subtle) !important;
+  color: var(--ds-neutral-fg) !important;
+  border: 1px solid var(--ds-neutral-muted) !important;
+  border-radius: var(--ds-radius-sm, 3px) !important;
+  padding: 2px var(--ds-space-3, 6px) !important;
+  font-size: var(--ds-text-xs, 11px) !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+}
+
+.ds-shell-bar__operator > button:hover {
+  background: var(--ds-neutral-muted) !important;
+  color: var(--ds-brand-primary) !important;
+}
+
+/* ---------- Emergency pill (pulsating red when occurrence active) ---------- */
+.ds-shell-bar__emg-pill {
+  display: none;
+  align-items: center;
+  gap: var(--ds-space-2, 4px);
+  padding: 4px var(--ds-space-4, 8px);
+  background: var(--ds-status-emergency-emphasis);
+  color: var(--ds-status-emergency-on-emphasis);
+  border-radius: var(--ds-radius-pill, 9999px);
+  font-size: var(--ds-text-xs, 11px);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  animation: ds-emg-pulse 1.2s ease-in-out infinite;
+}
+
+.ds-shell-bar__emg-pill[data-active="true"] {
+  display: inline-flex;
+}
+
+@keyframes ds-emg-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(139, 0, 0, 0.6); }
+  50%      { box-shadow: 0 0 0 6px rgba(139, 0, 0, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-shell-bar__emg-pill { animation: none; }
+}
+
+/* ---------- Responsive: collapse breadcrumb <1024px ---------- */
+@media (max-width: 1023px) {
+  .ds-shell-bar__breadcrumb { display: none; }
+}
+
+@media (max-width: 767px) {
+  .ds-shell-bar__local { display: none; }
+  .ds-shell-bar__portal-name { display: none; }
+}
