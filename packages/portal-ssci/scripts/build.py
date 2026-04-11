@@ -296,9 +296,41 @@ def build(
     # the same manual-replace pattern as {{CONTACTS_JSON}} inside
     # substitute_placeholders itself. These placeholders hold large blobs
     # that bypass the _flatten_dict mechanism.
-    source_html = source_html.replace("{{DS_CSS}}", ds_css)
-    source_html = source_html.replace("{{DS_INTER_WOFF2_BASE64}}", ds_inter_b64)
-    source_html = source_html.replace("{{ICON_SPRITE}}", icon_sprite)
+    #
+    # Sanity check: each DS marker must appear exactly once in source_html
+    # before replace, and be fully consumed after. Catches source HTML typos
+    # and prevents accidental silent double-replace.
+    #
+    # Note: {{DS_INTER_WOFF2_BASE64}} is NOT expected in source_html at this
+    # point — it only appears AFTER {{DS_CSS}} is replaced (it lives inside
+    # fonts.css which is part of ds_css). The two-phase replacement below
+    # handles the ordering correctly.
+    _ds_markers_in_source = [
+        ("{{DS_CSS}}", ds_css),
+        ("{{ICON_SPRITE}}", icon_sprite),
+    ]
+    for marker, value in _ds_markers_in_source:
+        count = source_html.count(marker)
+        if count != 1:
+            print(f"  [error] Expected exactly 1 occurrence of {marker!r} in source HTML, found {count}")
+            return 1
+        source_html = source_html.replace(marker, value)
+        if marker in source_html:
+            print(f"  [error] {marker!r} still present after replacement")
+            return 1
+
+    # Now source_html contains ds_css expanded, which itself contains
+    # {{DS_INTER_WOFF2_BASE64}} inside the fonts.css @font-face src: url() line.
+    # Replace it (expect exactly 1 occurrence after the fonts.css single-src fix).
+    inter_marker = "{{DS_INTER_WOFF2_BASE64}}"
+    count = source_html.count(inter_marker)
+    if count != 1:
+        print(f"  [error] Expected exactly 1 occurrence of {inter_marker!r} after DS_CSS replace, found {count}")
+        return 1
+    source_html = source_html.replace(inter_marker, ds_inter_b64)
+    if inter_marker in source_html:
+        print(f"  [error] {inter_marker!r} still present after replacement")
+        return 1
     # Note: {{BUILD_DATE}} and {{BUILD_DATE_SHORT}} already exist in context and
     # are handled by substitute_placeholders.
     # ======================================================================
