@@ -1,5 +1,12 @@
 # Design System SGA — Plan 5: SSCI Full Migration (Components + Chrome)
 
+> **Status:** ✅ **COMPLETED 2026-04-11** on branch `feat/ssci-migration`.
+> 3 commits covering Tasks 2-14 (Task 15 and 16 are verification no-ops).
+> 43 pytest tests passing, both portal builds OK.
+> SSCI now uses the same DS chrome as COE: Shell Bar, light sidebar, splash, footer. 17 nav-btn preserved (openSection 2-arg contract). emg-pill markup omitted per portal.config (show_occurrence_pill=false). Plan 4 psci-turno dual-class integration.
+> Legacy component/chrome CSS removed from SSCI block 1 (~14 KB freed). Domain CSS (.result-toggle, #tr-occ-real-block, UXP layer minus savebadge) retained.
+> SSCI dist delta: 2,050,315 → 2,093,248 (+42,933 bytes — gained the same DS chrome CSS propagation as COE + new shell bar HTML, lost legacy component CSS).
+
 > **Status:** Draft — depende dos Planos 3 e 4 estarem **merged** antes de executar.
 > Plan 5 é deliberadamente **mais curto** que os Planos 3 e 4 porque **reutiliza** os artefactos criados por eles (`shared/styles/components/*.css`, `shared/styles/chrome/*.css`, `shared/styles/base/*.css`, `shared/styles/print/print.css`, `shared/assets/logo-sga-*.svg`, sprite SVG expandida, `shared/scripts/*.js`). Plan 5 não **cria** componentes nem chrome CSS — só **consome** e remove os duplicados da versão legada do SSCI.
 
