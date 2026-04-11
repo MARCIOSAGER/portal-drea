@@ -1,11 +1,20 @@
 # Design System SGA — Design Document
 
 **Data**: 2026-04-11
-**Versão do documento**: 1.0
+**Versão do documento**: 1.1 (post spec-review fixes)
 **Autor**: Marcio Sager (consultor SGSO) + Claude (brainstorming session)
-**Status**: Draft — aguarda spec review e aprovação final
+**Status**: Aprovado pelo spec-review — aguarda aprovação final do utilizador
 **Pesquisa de mercado associada**: [2026-04-11-design-system-market-research.md](../research/2026-04-11-design-system-market-research.md)
 **Milestone de destino**: Portal DREA v2.1.0-alpha.1
+
+### Revisions
+- **v1.0** (2026-04-11): draft inicial consolidando brainstorming session
+- **v1.1** (2026-04-11): aplicados 5 fixes não-bloqueantes identificados no spec-review:
+  1. Assinatura real do `build()` preservada (`source_path, config_path, output_path, validate`); nota explícita de que há dois `build.py` a actualizar em paralelo; refactoring opcional para `scripts/ds_build_helpers.py` documentado
+  2. Coexistência de CSS legado com `{{DS_CSS}}` durante Fases 1-4 explicitada com regras determinísticas de posicionamento e ordem
+  3. Convenção de placeholders alinhada com `_flatten_dict` existente: blobs manuais em `{{UPPER_SNAKE}}`, campos de config em `{{PARENT.CHILD}}`
+  4. `--status-<level>-emphasis` e `--status-<level>-on-emphasis` com hex explícitos para os 5 níveis, incluindo nota crítica de que warning emphasis exige texto escuro (amber brilhante falha WCAG com branco)
+  5. Threshold de tamanho de HTML na validação Nível 1 refinado para deltas intencionais pré-declarados por fase
 
 ---
 
@@ -92,20 +101,25 @@ Padrão Carbon/Primer:
 
 #### Semantic status — escala de 5 níveis
 
-| Nível | bg | border | fg texto | Contraste texto |
-|---|---|---|---|---|
-| `info` | `#e6f4fb` | `#0073a0` | `#003a5e` | 11.2:1 ✓ AAA |
-| `success` | `#e8f5e9` | `#2e7d32` | `#1b5e20` | 9.7:1 ✓ AAA |
-| `warning` | `#fef5e7` | `#f39c12` | `#8a5a00` | 6.3:1 ✓ AA |
-| `alert` | `#fdecea` | `#c62828` | `#b71c1c` | 6.8:1 ✓ AA |
-| `emergency` | `#ffcdd2` | `#8b0000` (pulsante 2px) | `#8b0000` | 9.3:1 ✓ AAA |
+Cada nível tem **4 tokens**: `bg` (fundo subtle), `border` (aresta e status stripe), `fg` (texto sobre bg), `emphasis` (fill forte — usado em botões e banners carregados, com texto branco acima).
 
-Tokens por nível:
+| Nível | `bg` | `border` | `fg` (texto sobre bg) | Contraste texto | `emphasis` (fill forte) | Texto sobre emphasis |
+|---|---|---|---|---|---|---|
+| `info` | `#e6f4fb` | `#0073a0` | `#003a5e` | 11.2:1 ✓ AAA | `#0073a0` | `#ffffff` (5.6:1 ✓ AA) |
+| `success` | `#e8f5e9` | `#2e7d32` | `#1b5e20` | 9.7:1 ✓ AAA | `#2e7d32` | `#ffffff` (5.7:1 ✓ AA) |
+| `warning` | `#fef5e7` | `#f39c12` | `#8a5a00` | 6.3:1 ✓ AA | `#f39c12` | `#1a1200` (14.5:1 ✓ AAA — amber **exige** texto escuro, não branco) |
+| `alert` | `#fdecea` | `#c62828` | `#b71c1c` | 6.8:1 ✓ AA | `#c62828` | `#ffffff` (5.9:1 ✓ AA) |
+| `emergency` | `#ffcdd2` | `#8b0000` (pulsante 2px) | `#8b0000` | 9.3:1 ✓ AAA | `#8b0000` | `#ffffff` (11.4:1 ✓ AAA) |
+
+**Nota importante sobre `warning` emphasis**: o amber `#f39c12` é suficientemente brilhante para **exigir texto escuro** sobre si (o branco daria apenas 2.2:1, falha WCAG). Este é o único nível com texto escuro sobre emphasis. Para botões warning, sempre `color: #1a1200` (quase-preto quente).
+
+Tokens por nível (nomenclatura completa):
 ```
---status-<level>-bg
---status-<level>-border
---status-<level>-fg
---status-<level>-emphasis  (fill forte quando preciso)
+--status-<level>-bg         (fundo subtle de banner/card)
+--status-<level>-border     (border e status stripe 4px)
+--status-<level>-fg         (texto sobre bg subtle)
+--status-<level>-emphasis   (fill forte para botão/banner)
+--status-<level>-on-emphasis (texto sobre emphasis)
 ```
 
 **Nota sobre `success` — adição à paleta SGA**: a paleta SGA original não tem verde. Acrescentamos `#2e7d32` / `#e8f5e9` / `#1b5e20` como adição formal, justificada pela necessidade operacional (checklists completos, veículos VCI operacionais, estado "OPERACIONAL").
@@ -513,6 +527,8 @@ shared/
 
 ### 6.2 Cascade order (determinística)
 
+O `{{DS_CSS}}` é um blob único que o `build.py` concatena na seguinte ordem e injecta num só `<style>` no `<head>` do portal source. **Crítico para reproduzibilidade e para evitar conflitos de specificity.**
+
 ```
 1. tokens/primitive.css
 2. tokens/semantic.css
@@ -525,6 +541,15 @@ shared/
 9. components/*.css                            (alfabética)
 10. print/print.css                            (último)
 ```
+
+#### Coexistência com CSS legado durante a migração (Fases 1-4)
+
+Durante as Fases 1-4 o portal source ainda contém o seu CSS monolítico original (incluindo `:root { --dark-blue, --medium-blue, ... }` existentes) **em paralelo** com o `{{DS_CSS}}` injectado. Regras determinísticas para esta coexistência:
+
+- **Posicionamento no HTML**: o `<style>` do `{{DS_CSS}}` é o **primeiro** `<style>` no `<head>`, **antes** do `<style>` legado do source. Isto faz o legado ganhar por ordem em caso de empate de specificity, preservando o comportamento visual do portal para componentes **ainda não migrados**.
+- **Namespace `--ds-*`**: durante a transição, os tokens do DS usam o prefixo `--ds-*` (ver Secção 7) para não colidirem com `--dark-blue`, `--medium-blue` existentes.
+- **Migração componente a componente**: quando um componente migra (ex: `button`), o CSS legado desse componente é **removido do source** e o componente passa a ser servido **exclusivamente pelo `{{DS_CSS}}`**. Não há duplicação nem override — há remoção limpa.
+- **Fase 5**: depois de todos os componentes migrados, o `<style>` legado fica praticamente vazio (só com variáveis já não usadas) e é removido em commit atómico, junto com o rename do namespace `--ds-*` → `--*`.
 
 **Regra**: componentes são **auto-contidos**. Dependências entre ficheiros de `components/` são proibidas. Cada componente selecciona os seus próprios tokens semânticos.
 
@@ -579,52 +604,107 @@ Resolução no build: `airport override` → `portal.config.json` → default `c
 
 ### 6.4 Novos placeholders
 
+**Convenção (alinhada com o `build.py` existente)**:
+
+O `substitute_placeholders` do `build.py` actual usa duas mecânicas:
+1. **Manual replacement** — blobs grandes de asset que são substituídos em linha por uma string: convenção `{{UPPER_SNAKE_CASE}}` (ex: `{{CONTACTS_JSON}}`, `{{VERSION}}`, `{{BUILD_DATE}}`)
+2. **Flatten-based** — campos aninhados de um dict de config, achatados por `_flatten_dict` com separador `.` e uppercase: convenção `{{PARENT.CHILD}}` (ex: `{{AIRPORT.NAME}}`, `{{AIRPORT.OACI}}`)
+
+Os novos placeholders seguem a mesma convenção conforme o tipo:
+
+**Manual replacement** (blobs de asset/código, inserção directa):
 | Placeholder | Conteúdo | Localização |
 |---|---|---|
-| `{{DS_FONTS_CSS}}` | `@font-face` Inter base64 | Topo do `<style>` |
+| `{{DS_FONTS_CSS}}` | `@font-face` Inter base64 | Topo do `<style>` principal |
 | `{{DS_CSS}}` | Todo o CSS do DS concatenado em cascade order | Único `<style>` no `<head>` |
 | `{{DS_JS}}` | Utilities + awm-* concatenados | Primeiro `<script>` no body |
 | `{{ICON_SPRITE}}` | SVG sprite com `<symbol>`s | Primeiro elemento do `<body>`, hidden |
 | `{{LOGO_SGA_MARK}}` | SVG inline do símbolo | Substitui referências no source |
 | `{{LOGO_SGA_FULL}}` | SVG inline do lockup | Usado no splash |
-| `{{PORTAL_NAME}}` | Nome do portal | Do portal.config.json |
-| `{{PORTAL_TAGLINE}}` | Tagline | Splash, about |
-| `{{PORTAL_DENSITY}}` | `compact` ou `comfortable` | `<html data-density="X">` |
-| `{{BUILD_TIMESTAMP}}` | ISO timestamp | Footer, splash |
+| `{{BUILD_TIMESTAMP}}` | ISO timestamp do build | Footer, splash |
 
-### 6.5 Build pipeline — mudanças no `build.py`
+**Flatten-based** (do novo `portal.config.json`, injectado no `context` passado a `substitute_placeholders` com chave `portal`, gera placeholders `{{PORTAL.*}}`):
+| Placeholder | Vem de | Exemplo |
+|---|---|---|
+| `{{PORTAL.ID}}` | `portal.config.json::id` | `portal-coe` |
+| `{{PORTAL.NAME}}` | `portal.config.json::name` | `Portal COE` |
+| `{{PORTAL.NAME_SHORT}}` | `portal.config.json::name_short` | `COE` |
+| `{{PORTAL.TAGLINE}}` | `portal.config.json::tagline` | `Centro de Operações de Emergência` |
+| `{{PORTAL.ROLE}}` | `portal.config.json::role` | `Coordenador do Centro de Operações de Emergência` |
+| `{{PORTAL.DENSITY}}` | resolvido (airport override → portal.config.json → default) | `compact` ou `comfortable` |
 
-Funções novas a implementar:
-- `compile_design_system_css(shared_root, density)` — lê ficheiros na cascade order e concatena
-- `inline_font_face(woff2_path)` — base64 encode + template `@font-face`
-- `compile_design_system_js(shared_root)` — concatena utilities/ + awm-*.js
+Dentro do atributo `<html data-density="{{PORTAL.DENSITY}}">` o valor final escolhido é usado directamente.
 
-Fluxo pseudocódigo:
+### 6.5 Build pipeline — mudanças nos `build.py`
+
+**Importante**: existem **dois** `build.py` independentes, um em `packages/portal-coe/scripts/build.py` e outro em `packages/portal-ssci/scripts/build.py`. As mudanças descritas abaixo têm que ser aplicadas a ambos, em paralelo, preservando a assinatura existente.
+
+**Assinatura real actual** (não alterar — preserva compatibilidade com `scripts/build-all.py`):
 ```python
-def build(portal_root, airport_config, no_validate=False):
-    version = read(REPO_ROOT / "VERSION")
-    airport = json.load(airport_config)
-    portal_config = json.load(portal_root / "portal.config.json")
+def build(
+    source_path: Path,
+    config_path: Path,
+    output_path: Path,
+    validate: bool = True,
+) -> int:
+```
 
+Funções novas a adicionar (idealmente num módulo partilhado — ver nota abaixo):
+- `compile_design_system_css(shared_root: Path, density: str) -> str` — lê ficheiros na cascade order e concatena
+- `inline_font_face(woff2_path: Path) -> str` — base64 encode + template `@font-face`
+- `compile_design_system_js(shared_root: Path) -> str` — concatena `utilities/*.js` + `awm-*.js`
+- `load_portal_config(portal_config_path: Path) -> dict` — carrega `packages/portal-XXX/portal.config.json`
+- `resolve_density(airport: dict, portal_config: dict, default: str = "compact") -> str` — resolve override chain
+
+**Refactoring opcional mas recomendado**: extrair estas funções partilhadas para um novo módulo `scripts/ds_build_helpers.py` (na raiz do monorepo), importado pelos dois `build.py`, para evitar duplicação. Decisão deferida para a Fase 0 durante a implementação.
+
+Fluxo actualizado dentro da função `build()` existente (pseudocódigo, a integrar com a função actual):
+
+```python
+def build(source_path, config_path, output_path, validate=True):
+    # Existing
+    version = read(REPO_ROOT / "VERSION")
+    airport = json.loads(config_path.read_text(encoding="utf-8"))
+
+    # NEW: portal config + density resolution
+    portal_config_path = source_path.parent.parent / "portal.config.json"
+    portal_config = load_portal_config(portal_config_path)
     density = resolve_density(airport, portal_config)
 
-    ds_css = compile_design_system_css(REPO_ROOT / "shared" / "styles", density)
-    ds_fonts_css = inline_font_face(REPO_ROOT / "shared" / "assets" / "fonts" / "Inter-VariableFont.woff2")
-    ds_js = compile_design_system_js(REPO_ROOT / "shared" / "scripts")
-    icon_sprite = (REPO_ROOT / "shared" / "assets" / "icons" / "sprite.svg").read_text()
-    logo_mark = (REPO_ROOT / "shared" / "assets" / "logo-sga-mark.svg").read_text()
-    logo_full = (REPO_ROOT / "shared" / "assets" / "logo-sga-full.svg").read_text()
+    # NEW: compile design system artefacts
+    shared_root = REPO_ROOT / "shared"
+    ds_css = compile_design_system_css(shared_root / "styles", density)
+    ds_fonts_css = inline_font_face(shared_root / "assets" / "fonts" / "Inter-VariableFont.woff2")
+    ds_js = compile_design_system_js(shared_root / "scripts")
+    icon_sprite = (shared_root / "assets" / "icons" / "sprite.svg").read_text(encoding="utf-8")
+    logo_mark = (shared_root / "assets" / "logo-sga-mark.svg").read_text(encoding="utf-8")
+    logo_full = (shared_root / "assets" / "logo-sga-full.svg").read_text(encoding="utf-8")
 
-    output = read_source_html(portal_root)
-    output = replace_existing_placeholders(output, airport, version)
-    output = replace_new_placeholders(output, ds_css, ds_fonts_css, ds_js,
-                                       icon_sprite, logo_mark, logo_full,
-                                       portal_config, density)
-    output = inline_base64_binaries(output, portal_root)
+    # Read source HTML (existing)
+    html = source_path.read_text(encoding="utf-8")
 
-    write_dist(portal_root, output)
-    if not no_validate:
-        validate_syntax(output)
+    # NEW: manual blob placeholders (same mechanism as {{CONTACTS_JSON}})
+    html = html.replace("{{DS_FONTS_CSS}}", ds_fonts_css)
+    html = html.replace("{{DS_CSS}}", ds_css)
+    html = html.replace("{{DS_JS}}", ds_js)
+    html = html.replace("{{ICON_SPRITE}}", icon_sprite)
+    html = html.replace("{{LOGO_SGA_MARK}}", logo_mark)
+    html = html.replace("{{LOGO_SGA_FULL}}", logo_full)
+    html = html.replace("{{BUILD_TIMESTAMP}}", datetime.now(UTC).isoformat())
+
+    # Existing: substitute_placeholders handles flatten-based from airport config
+    # NEW: include portal config under key "portal" to generate {{PORTAL.*}} placeholders
+    context = {**airport, "portal": {**portal_config, "density": density}}
+    html = substitute_placeholders(html, context)
+
+    # Existing: inline base64 binaries (PDFs, maps)
+    html = inline_base64_binaries(html, source_path.parent)
+
+    # Write dist (existing)
+    output_path.write_text(html, encoding="utf-8")
+
+    if validate:
+        validate_inline_scripts(html, output_path)
 ```
 
 ### 6.6 Boundaries de responsabilidade
@@ -735,7 +815,11 @@ Todo o trabalho de Fases 0-6 no worktree. `main` permanece em `v2.0.0-beta.1`, d
 **Nível 1 — Automático**:
 - `python scripts/build-all.py` → exit 0
 - Validação sintáctica das secções script (existente)
-- Tamanho dos HTMLs dentro de ±5% vs commit anterior (excepto deltas intencionais)
+- Tamanho dos HTMLs dentro de ±5% vs commit anterior, **excepto deltas intencionais pré-declarados**:
+  - **Fase 1** tem delta intencional esperado: **+200 KB** por portal (Inter Variable woff2 em base64) + **~15 KB** por sprite SVG. No COE (~4 MB) isto é ~5.5% → roça o limite. No SSCI (~1.5 MB) é ~14% → excede largamente. A verificação nessa fase específica **passa** se o delta estiver dentro de `+250 KB` absoluto (não percentual) para cada portal.
+  - **Fases 2-4** espera-se delta neutro ou ligeiramente negativo (componentes migrados removem CSS legado equivalente — net zero ou shrink).
+  - **Fase 5** espera-se shrink: remoção de `--dark-blue`, CSS comentado, `logo-sga-white.png` → expected ~-20 KB por portal.
+  - Qualquer commit fora destes padrões sem delta pré-declarado é um **warning** que requer inspecção manual antes de avançar.
 
 **Nível 2 — Smoke test manual**:
 - Abrir `dist/Portal_COE_AWM.html` em Chrome
@@ -833,5 +917,5 @@ Items que surgiram durante o brainstorming e ficaram para decisão posterior (n�
 | Stakeholder | Papel | Data | Status |
 |---|---|---|---|
 | Marcio Sager | Consultor SGSO / autor do Portal DREA | 2026-04-11 | ✅ Aprovado (brainstorming session) |
-| spec-document-reviewer | Subagent validation | — | ⏳ Pendente |
+| spec-document-reviewer | Subagent validation | 2026-04-11 | ✅ Aprovado com recomendações (5 issues fixed em v1.1) |
 | User final review | — | — | ⏳ Pendente |
