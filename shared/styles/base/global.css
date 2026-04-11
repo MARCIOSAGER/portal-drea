@@ -1,0 +1,36 @@
+/* =========================================================================
+ * Design System SGA — base/global.css
+ * =========================================================================
+ * Global rules that are always safe during migration. Focus ring, selection,
+ * data-density hook. DOES NOT touch body background — legacy still controls.
+ * ========================================================================= */
+
+:root {
+  color-scheme: light;
+}
+
+/* Focus ring — applied to all interactive elements inside DS chrome */
+:where(.ds-shell-bar, .ds-sidebar, .ds-page-grid, .ds-splash, .ds-footer)
+  :is(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: var(--ds-focus-ring-width, 2px) solid var(--ds-focus-ring-color, #0073a0);
+  outline-offset: var(--ds-focus-ring-offset, 2px);
+  border-radius: var(--ds-radius-sm, 3px);
+}
+
+/* Selection color — neutral institutional */
+::selection {
+  background: rgba(0, 148, 207, 0.25);
+  color: inherit;
+}
+
+/* Respect reduced motion globally */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
