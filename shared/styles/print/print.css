@@ -1,0 +1,109 @@
+/* =========================================================================
+ * Design System SGA — print/print.css
+ * =========================================================================
+ * Print stylesheet. Hides interactive chrome, offsets page content,
+ * prints document header in @page area with airport + portal + section
+ * + timestamp. Uses counter(page) for pagination.
+ * ========================================================================= */
+
+@media print {
+  .ds-shell-bar,
+  .ds-sidebar,
+  .ds-splash,
+  .ds-footer,
+  .header,                              /* legacy fallback */
+  .sidebar,                             /* legacy fallback */
+  .main-container > header              /* legacy fallback */
+  {
+    display: none !important;
+  }
+
+  html, body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    font-size: 10pt !important;
+  }
+
+  .ds-page-grid {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #ffffff !important;
+  }
+
+  .ds-page-grid__inner {
+    max-width: none !important;
+  }
+
+  /* Cards lose their shadows and keep their borders for legibility */
+  .ds-card, .stat-card {
+    box-shadow: none !important;
+    border: 1px solid #cccccc !important;
+    break-inside: avoid;
+  }
+
+  /* Tables */
+  table {
+    border-collapse: collapse !important;
+    width: 100% !important;
+  }
+
+  thead {
+    display: table-header-group !important;  /* repeat on each page */
+  }
+
+  tr {
+    break-inside: avoid !important;
+  }
+
+  /* Avoid orphan headings */
+  h1, h2, h3, h4 {
+    break-after: avoid;
+  }
+
+  /* URL output */
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 9pt;
+    color: #555;
+  }
+
+  /* Hide sections that are not the active one */
+  .section:not(.active) { display: none !important; }
+}
+
+/* @page — document header and footer on each printed page */
+@page {
+  size: A4;
+  margin: 3cm 1.5cm 2cm;
+
+  @top-left {
+    content: "SGA — Sociedade de Gestão Aeroportuária";
+    font-family: "Inter", "Segoe UI", sans-serif;
+    font-size: 9pt;
+    color: #004C7B;
+  }
+
+  @top-right {
+    content: "Portal COE · FNMO";
+    font-family: "Inter", "Segoe UI", sans-serif;
+    font-size: 9pt;
+    color: #004C7B;
+  }
+
+  @bottom-left {
+    content: "Confidencial · Impresso via Portal COE";
+    font-size: 8pt;
+    color: #888;
+  }
+
+  @bottom-right {
+    content: "Página " counter(page) " de " counter(pages);
+    font-size: 8pt;
+    color: #888;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@page :first {
+  margin-top: 4cm;  /* extra room for first-page hero */
+}
