@@ -918,4 +918,4 @@ Items que surgiram durante o brainstorming e ficaram para decisão posterior (n�
 |---|---|---|---|
 | Marcio Sager | Consultor SGSO / autor do Portal DREA | 2026-04-11 | ✅ Aprovado (brainstorming session) |
 | spec-document-reviewer | Subagent validation | 2026-04-11 | ✅ Aprovado com recomendações (5 issues fixed em v1.1) |
-| User final review | — | — | ⏳ Pendente |
+| Marcio Sager | User final review pós-fixes | 2026-04-11 | ✅ Aprovado — transição para writing-plans |
