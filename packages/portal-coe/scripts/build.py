@@ -76,6 +76,13 @@ DEFAULT_CONFIG = CONFIG_DIR / "airport-fnmo.json"
 DEFAULT_OUTPUT = DIST_DIR / "Portal_COE_AWM.html"
 
 
+# --- Design System helpers (Plan 1: Foundation Dormant) -------------------
+# Import ds_build_helpers from scripts/ at the repo root. Shared between
+# portal-coe and portal-ssci builds.
+sys.path.insert(0, str(REPO_ROOT / "scripts"))
+import ds_build_helpers as dsh  # noqa: E402
+
+
 # ========================================================================
 # Helpers
 # ========================================================================
@@ -266,11 +273,58 @@ def build(
     # --- 2. Ler config do aeroporto ---
     config = read_config(config_path)
 
+    # === Plan 1: Design System Foundation — dormant payload ==============
+    # (1) Load the portal-level config
+    portal_config_path = PACKAGE_ROOT / "portal.config.json"
+    if not portal_config_path.exists():
+        print(f"  [error] portal.config.json não encontrado em {portal_config_path}")
+        return 1
+    portal_config = dsh.load_portal_config(portal_config_path)
+
+    # (2) Resolve density (airport override → portal default → fallback)
+    density = dsh.resolve_density(config, portal_config, default="compact")
+    print(f"  [ds] portal={portal_config['id']} density={density}")
+
+    # (3) Compile the Design System CSS (tokens + base/fonts)
+    shared_styles_root = SHARED_DIR / "styles"
+    ds_css = dsh.compile_design_system_css(shared_styles_root, density=density)
+    print(f"  [ds] compiled ds_css ({len(ds_css):,} chars)")
+
+    # (4) Encode the Inter Variable font as base64
+    inter_woff2_path = SHARED_DIR / "assets" / "fonts" / "Inter-VariableFont.woff2"
+    if inter_woff2_path.exists():
+        ds_inter_b64 = dsh.encode_font_woff2_base64(inter_woff2_path)
+        print(f"  [ds] encoded Inter woff2 ({len(ds_inter_b64):,} base64 chars)")
+    else:
+        print(f"  [warn] Inter-VariableFont.woff2 não encontrado — base64 vazio")
+        ds_inter_b64 = ""
+
+    # (5) Read the icon sprite (inline SVG, already wrapped in <svg style="display:none">)
+    sprite_path = SHARED_DIR / "assets" / "icons" / "sprite.svg"
+    if sprite_path.exists():
+        icon_sprite = sprite_path.read_text(encoding="utf-8")
+    else:
+        print(f"  [warn] sprite.svg não encontrado — sprite vazio")
+        icon_sprite = '<svg style="display:none" aria-hidden="true"></svg>'
+
+    # (6) Inject DS blobs into source_html via direct string replacement.
+    # This is done BEFORE the existing substitute_placeholders call, using
+    # the same manual-replace pattern as {{CONTACTS_JSON}} inside
+    # substitute_placeholders itself. These placeholders hold large blobs
+    # that bypass the _flatten_dict mechanism.
+    source_html = source_html.replace("{{DS_CSS}}", ds_css)
+    source_html = source_html.replace("{{DS_INTER_WOFF2_BASE64}}", ds_inter_b64)
+    source_html = source_html.replace("{{ICON_SPRITE}}", icon_sprite)
+    # Note: {{BUILD_DATE}} and {{BUILD_DATE_SHORT}} already exist in context and
+    # are handled by substitute_placeholders.
+    # ======================================================================
+
     # --- 3. Construir contexto de substituição ---
     context = {
         "version": version,
         "build_date": build_date.isoformat(timespec="seconds"),
         "build_date_short": build_date.strftime("%Y-%m-%d"),
+        "portal": {**portal_config, "density": density},  # NEW: enables {{PORTAL.*}} placeholders
         **config,
     }
 
