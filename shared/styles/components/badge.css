@@ -1,0 +1,85 @@
+/* =========================================================================
+ * Design System SGA — Component: Badge (Plan 3 Task 3)
+ * =========================================================================
+ * Introduces .badge base class + status variants + category variants (new
+ * in Plan 3) AND re-tokenises the legacy .cr-chip / .cr-chips classes that
+ * existed in COE block 1. Legacy names preserved verbatim.
+ *
+ * Spec: §5.1 (Tier 1 core primitives), §3.2 (Category tokens).
+ * ========================================================================= */
+
+/* ---------- Base .badge class (new in Plan 3) ---------- */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-space-1);
+  padding: 2px 8px;
+  border-radius: var(--ds-radius-pill);
+  font-size: var(--ds-text-xs);
+  font-weight: 600;
+  line-height: 1.4;
+  white-space: nowrap;
+  border: 1px solid transparent;
+}
+
+/* ---------- Status variants ---------- */
+.badge--info {
+  background: var(--ds-status-info-bg);
+  color: var(--ds-status-info-fg);
+  border-color: var(--ds-status-info-border);
+}
+.badge--success {
+  background: var(--ds-status-success-bg);
+  color: var(--ds-status-success-fg);
+  border-color: var(--ds-status-success-border);
+}
+.badge--warning {
+  background: var(--ds-status-warning-bg);
+  color: var(--ds-status-warning-fg);
+  border-color: var(--ds-status-warning-border);
+}
+.badge--alert {
+  background: var(--ds-status-alert-bg);
+  color: var(--ds-status-alert-fg);
+  border-color: var(--ds-status-alert-border);
+}
+.badge--emergency {
+  background: var(--ds-status-emergency-bg);
+  color: var(--ds-status-emergency-fg);
+  border-color: var(--ds-status-emergency-border);
+}
+
+/* ---------- Category variants ---------- */
+.badge--cat-avsec { background: var(--ds-cat-avsec-bombeiros); color: #fff; }
+.badge--cat-sga { background: var(--ds-cat-sga-interna); color: #fff; }
+.badge--cat-enna { background: var(--ds-cat-enna-navegacao); color: #fff; }
+.badge--cat-seg-ordem { background: var(--ds-cat-seg-ordem); color: #fff; }
+.badge--cat-ext-emg { background: var(--ds-cat-externa-emg); color: #fff; }
+.badge--cat-operadores { background: var(--ds-cat-operadores); color: #fff; }
+
+/* =========================================================================
+ * Legacy classes — re-tokenised verbatim from COE block 1 (~lines 876-878)
+ * ========================================================================= */
+
+.cr-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-top: 0.3rem;
+}
+
+.cr-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  background: #f0f4f8;
+  border: 1px solid #d8e2ec;
+  border-radius: 4px;
+  padding: 0.15rem 0.5rem;
+  font-size: 0.72rem;
+}
+
+.cr-chip b {
+  color: var(--ds-brand-primary);
+  margin-right: 0.2rem;
+}
