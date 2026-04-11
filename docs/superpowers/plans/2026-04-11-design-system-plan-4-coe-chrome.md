@@ -1,5 +1,12 @@
 # Design System SGA — Plan 4: COE Chrome Migration (Implementation Plan)
 
+> **Status:** ✅ **COMPLETED 2026-04-11** on branch `feat/coe-chrome` (worktree `../Portal_DREA-chrome`).
+> 13 atomic commits executing all 14 tasks.
+> 43 pytest tests passing (38 from Plans 1-3 + 5 new for base/chrome/print cascade).
+> New files: base/{reset,typography,global}.css, chrome/{shell-bar,sidebar,page-grid,splash,footer}.css, print/print.css, scripts/chrome/splash.js, scripts/utilities/date-utc.js, logo-sga-mark.svg + logo-sga-full.svg (stubs), icon-siren in sprite.
+> COE source HTML surgery: 14 nav-btn preserved, 6 IDs preserved (clockDisplay, headerUTC, headerDate, operatorBadge, dsSplash, dsEmgPill), dual class `ds-shell-bar__oaci header-title-small` for cfgApplyToPortal() contract, splash script inlined before </body>.
+> File size delta: COE 4,452,780 → 4,473,169 bytes (+20,389 bytes — new chrome CSS added, legacy header+sidebar HTML removed including the embedded PNG logo). SSCI inherits the new chrome CSS via compile_design_system_css but has no HTML consumer yet (Plan 5 territory).
+
 > **Status:** DRAFT — aguarda execução noutra sessão.
 > Este é o plano **mais visualmente consequente** de toda a migração DS SGA: substitui o chrome actual do Portal COE (sidebar azul-escura + header gradient + logo duplicado) pela nova Shell Bar light + faixa institucional de 4 px + logo único + relógio UTC permanente + splash screen + footer institucional + print stylesheet. Depois deste plano o Portal COE passa finalmente a parecer-se com a especificação do Design System SGA.
 
