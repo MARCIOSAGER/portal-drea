@@ -14,8 +14,113 @@ Versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
 - Ícones nativos + auto-update opcional
 - Assinatura digital do `.exe` para evitar avisos de antivírus
 - Instaladores separados: `Portal_DREA-COE_setup.exe` e `Portal_DREA-SSCI_setup.exe`
-- Extracção da camada UX partilhada (modal, toast, save badge) para `shared/scripts/`
-- Extracção paralela de contactos hard-coded do Portal SSCI para consumir o schema unificado
+
+---
+
+## [2.1.0-alpha.1] — 2026-04-11
+
+### Design System SGA — Fundação completa entregue
+
+Marco importante: Portal COE e Portal SSCI partilham agora uma fundação
+visual unificada (Design System SGA), com chrome Shell Bar light +
+4px stripe institucional, sidebar light, splash screen, sistema de
+tokens em 3 camadas (primitivos → semânticos → densidade), e 13
+componentes CSS partilhados. A partir desta versão, criar um novo
+portal (Portal SOA, AVSEC, DIRECÇÃO) consiste em escrever apenas o
+HTML de secções e consumir a fundação partilhada.
+
+A migração foi executada em 6 plans atómicos (1-6), cada um num
+PR separado e mergeado via rebase para preservar o histórico
+bisectable.
+
+### Added
+
+**Plan 1 — Foundation Dormant**
+- `shared/styles/tokens/{primitive,semantic,density-compact,density-comfortable}.css`
+- `shared/styles/base/fonts.css` com Inter Variable embebido em base64
+- `shared/assets/fonts/Inter-VariableFont.woff2` (SIL OFL)
+- `shared/assets/icons/sprite.svg` (3 ícones seed: sga-mark, menu, close)
+- `scripts/ds_build_helpers.py` com 4 helpers (load_portal_config,
+  resolve_density, compile_design_system_css, encode_font_woff2_base64)
+- `packages/portal-{coe,ssci}/portal.config.json` per-portal identity
+  (density, tagline, UI feature flags)
+- `tests/test_ds_build_helpers.py` — 20 pytest tests
+
+**Plan 2 — Style Block Consolidation**
+- `scripts/verify_consolidation.py` + 13 pytest tests
+- COE: 18 → 8 style blocks (10 real CSS consolidated into block 1)
+- SSCI: 8 → 5 style blocks (4 real CSS consolidated)
+
+**Plan 3 — COE Component Migration**
+- 13 component CSS files in `shared/styles/components/`:
+  button, badge, form-group, card, table, tabs, dropdown, awm-modal,
+  awm-toast, uxp-savebadge, skeleton, empty-state, stat-card
+- `compile_design_system_css()` extended to discover `components/*.css`
+- 5 new pytest tests
+
+**Plan 4 — COE Chrome Migration**
+- `shared/styles/base/{reset,typography,global}.css`
+- `shared/styles/chrome/{shell-bar,sidebar,page-grid,splash,footer}.css`
+- `shared/styles/print/print.css`
+- `shared/assets/logo-sga-{mark,full}.svg` (stub placeholders)
+- `shared/assets/icons/sprite.svg` expanded with `icon-siren`
+- `shared/scripts/chrome/splash.js` + `shared/scripts/utilities/date-utc.js`
+- COE HTML surgery: legacy header + sidebar + main-container replaced
+  with Shell Bar + DS sidebar + page-grid + splash + footer. 14 nav-btn
+  preserved, 6 critical IDs preserved.
+
+**Plan 5 — SSCI Full Migration**
+- SSCI consumes the same shared chrome + components as COE
+- 17 nav-btn with 2-arg `openSection(id, event)` signature
+- SSCI-specific: emergency pill omitted (config flag), psci-turno in
+  operator slot, comfortable density, psci-clock legacy hidden dual
+- `updateClock()` rewritten to tick 1s + write to shell bar IDs
+
+**Plan 6 — Cleanup + Release**
+- `scripts/rename_ds_namespace.py` + 15 pytest tests
+- Global `--ds-*` → `--*` rename (558 replacements across 24 files)
+- VERSION: 2.0.0-beta.1 → 2.1.0-alpha.1
+- `docs/releases/v2.1.0-alpha.1.md` (first release notes file)
+
+### Changed
+
+- `scripts/ds_build_helpers.py::compile_design_system_css()` evolved
+  from hardcoded file list to alphabetical directory discovery
+- Both `build.py` scripts inject DS payload via new placeholder set
+  (`{{DS_CSS}}`, `{{DS_INTER_WOFF2_BASE64}}`, `{{ICON_SPRITE}}`,
+  `{{PORTAL.*}}`)
+- COE dist: 3.8 MB → 4.47 MB (Inter Variable base64 + DS CSS propagation)
+- SSCI dist: 1.5 MB → 2.09 MB (same propagation pattern)
+
+### Removed
+
+- Duplicated component CSS in COE block 1 (now in shared/components/)
+- Duplicated component CSS in SSCI block 1 (now consumed from same shared)
+- `--ds-*` namespace globally (renamed to `--*` in Plan 6)
+
+### Validation
+
+- `python scripts/build-all.py` → both portals OK, 19 blocks COE + 8 SSCI
+- `python -m pytest tests/ -v` → **58 tests passing**
+- `node --check` passes on all inline scripts
+- Both dist HTMLs verified programmatically: data-density attribute
+  present, all JS-load-bearing class names preserved, no unresolved
+  `{{...}}` markers, body font-family still legacy Segoe UI stack
+  (Inter loaded but dormant — the final typography switch is deferred
+  to a future minor release)
+
+### Known limitations
+
+- Logo SGA is a stub SVG (triangle + text) — replace with real
+  vectorised SGA lockup when available
+- `date-utc.js` produced but not consumed (legacy `updateHeaderClock`
+  in COE and rewritten `updateClock` in SSCI handle clocks inline)
+- `ls-wrapper.js`, `esc-html.js`, `awm-modal.js`, `awm-toast.js`,
+  `awm-save-badge.js` NOT extracted — SSCI still has inline
+  implementations. Deferred to Fase 2+
+- Legacy `:root` tokens (`--dark-blue`, `--medium-blue`, etc.) in
+  SSCI block 1 retained because domain CSS (.result-toggle,
+  #tr-occ-real-block, UXP layer) still references them
 
 ---
 
