@@ -247,9 +247,7 @@ html { scroll-behavior: smooth; }
 <!-- DS Shell Bar (replaces legacy .header) — Plan 5 Task 13 -->
 <header class="ds-shell-bar" role="banner">
     <div class="ds-shell-bar__brand">
-        <span class="ds-shell-bar__logo" aria-hidden="true">
-            <svg viewBox="0 0 32 32"><use href="#icon-sga-mark"/></svg>
-        </span>
+        <img class="ds-shell-bar__logo" src="data:image/png;base64,{{LOGO_SGA_PNG_BASE64}}" alt="SGA">
         <span class="ds-shell-bar__portal-name">Portal SSCI</span>
         <span class="ds-shell-bar__separator" aria-hidden="true"></span>
         <span class="ds-shell-bar__oaci">{{AIRPORT.OACI}}</span>

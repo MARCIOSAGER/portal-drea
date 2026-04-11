@@ -56,13 +56,24 @@
 }
 
 .ds-shell-bar__logo {
+  /* Real SGA horizontal lockup — aspect 2.47:1. Height locked to ~30px,
+     width auto follows. Displayed as block to avoid inline baseline gap. */
+  height: 30px;
+  width: auto;
+  flex: 0 0 auto;
+  display: block;
+  color: var(--brand-primary);
+  user-select: none;
+}
+
+/* Legacy fallback for the sprite-based icon (if a portal still uses
+   <svg><use href="#icon-sga-mark"/></svg> inside a span.ds-shell-bar__logo) */
+span.ds-shell-bar__logo {
   width: 32px;
   height: 32px;
   flex: 0 0 32px;
-  color: var(--brand-primary);
 }
-
-.ds-shell-bar__logo svg {
+span.ds-shell-bar__logo svg {
   width: 100%;
   height: 100%;
 }
