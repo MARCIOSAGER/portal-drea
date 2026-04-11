@@ -1,5 +1,7 @@
 # Design System SGA — Plan 6: Cleanup, Documentation, Release (Implementation Plan)
 
+> **Status**: ✅ **COMPLETO** (2026-04-11) — Fase 1 do Design System SGA fechada. Release `v2.1.0-alpha.1` cortada, tagged, documentada. Ver resumo de execução no fim deste ficheiro.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use `superpowers:executing-plans` (or `superpowers:subagent-driven-development` se houver paralelismo útil) para implementar este plano task-by-task. Os passos usam checkbox (`- [ ]`) para tracking.
 
 **Goal:** Fechar a Fase 1 do Design System SGA: retirar o namespace de transição `--ds-*`, eliminar todos os resíduos do CSS legado, escrever a documentação definitiva do sistema, e cortar a release `v2.1.0-alpha.1` com changelog, release notes e tag git. Este plano não inova — é o acto de arrumação que transforma um conjunto de migrações em produto.
@@ -2249,3 +2251,55 @@ Zero impacto no repositório principal.
 Plan 6 é a tarefa de encerramento do ciclo de migração Design System SGA. É composto por 18 tasks agrupadas em 3 fases funcionais (cleanup técnico, documentação, release) com uma task de prerequisites (Task 0) e uma task de gate (Task 8) a dividir as fases. Todas as operações mutagénicas têm rollback por commit atómico; a operação mais crítica — o rename global — é defendida por TDD rigoroso na Task 1, dry-run obrigatório na Task 2, e smoke test visual em 3 browsers. O produto final é `VERSION=2.1.0-alpha.1`, um `CHANGELOG` com entrada detalhada, release notes user-facing em `docs/releases/`, documentação de contribuição em `shared/*/README.md`, guia de consumo em `docs/design-system-guide.md`, e uma tag git anotada — pronto para o utilizador fazer merge e push quando decidir.
 
 **Tone do plan**: tone wrap-up. Nada inovador — apenas encerramento rigoroso do que os Plans 1-5 construíram. "Finish strong" é o valor orientador.
+
+---
+
+## Execution log (2026-04-11)
+
+Plan 6 executado inline na worktree `../Portal_DREA-release` (branch `feat/release-v2.1.0-alpha.1`). Resultado:
+
+### Commits atómicos produzidos (10)
+
+```
+c06efb7  test(ds): TDD rename_ds_namespace.py script                      (Task 1)
+f375c4b  refactor(ds): rename --ds-* tokens to --* globally              (Task 2 — 558 subst.)
+de83cc1  docs(ds): bump VERSION to 2.1.0-alpha.1 + CHANGELOG + release notes (Tasks 15+16+17)
+24fb38b  chore(ds): remove PLAN 2 CONSOLIDATION breadcrumb banners        (Task 4)
+37ffe52  chore(ds): remove deprecated logo-sga PNG assets                 (Task 5)
+65e81d2  chore(repo): remove validate_plan1_extended.py, archive Plan 2 tools (Task 6)
+ac2d5da  docs(ds): add design-system-guide.md — canonical DS consumer guide (Task 9)
+513ecb0  docs(architecture): add Design System SGA section                (Task 10)
+ed51c60  docs(shared): finalize shared/ READMEs for v2.1.0-alpha.1        (Tasks 11+12+13)
+3b57499  docs(readme): update root README for v2.1.0-alpha.1 release      (Task 14)
+```
+
+### Desvios do plano como escrito
+
+1. **Task 3 skipped** (remove `:root` legacy). Motivo: re-verificação com `grep "var(--dark-blue)"` mostrou ~180 consumers ainda vivos em domain CSS dos source HTMLs (secções de conteúdo operacional que não foram migradas pelos Plans 3-5 por serem específicas do domínio, não do DS). Manter o bloco `:root { --dark-blue: ... }` é load-bearing para essas secções. Documentado em CHANGELOG como known limitation para v2.2.0.
+
+2. **Task 7 zero-commit** (unicode icons). Inspecção mostrou 409 matches no COE + 149 no SSCI, mas todos em posições intencionais (section header labels com emoji decorativo, toast messages, print templates, section navigation). Plans 3-5 já tinham migrado os casos estruturais via sprite SVG. Nada a fazer — classificação registada aqui.
+
+3. **Test count final = 45** (não 58 como durante Plan 6 execution). O delta de -13 veio da Task 6 que arquivou `tests/test_verify_consolidation.py` para `docs/reference/plan-2-tools/`. Os 45 restantes = 30 (`test_ds_build_helpers.py`) + 15 (`test_rename_ds_namespace.py`).
+
+### Green gate final
+
+- `python scripts/build-all.py` → OK (ambos os portais)
+- `python -m pytest tests/ -q` → 45 passed
+- `git status` → clean
+- `git log --oneline main..HEAD` → 10 commits legíveis com Co-Authored-By trailer consistente
+
+### Tag
+
+`v2.1.0-alpha.1` (annotated) — criada no commit `3b57499` com mensagem completa referenciando `docs/releases/v2.1.0-alpha.1.md` e os Plans 1-6.
+
+### Next steps manuais (fora do Plan 6)
+
+1. Push da branch `feat/release-v2.1.0-alpha.1`
+2. Criar PR #6 no GitHub
+3. Merge (rebase preferido, consistência com Plans anteriores)
+4. Push da tag: `git push origin v2.1.0-alpha.1`
+5. Criar GitHub Release a apontar para `docs/releases/v2.1.0-alpha.1.md`
+6. Cleanup worktree
+7. Smoke test em ambiente real (1 semana) antes de promover para v2.1.0 estável
+
+✅ **Plan 6 concluído. Fase 1 do Design System SGA fechada.**
