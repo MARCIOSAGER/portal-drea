@@ -1,0 +1,77 @@
+/* =========================================================================
+ * Design System SGA — Component: Dropdown menu (Plan 3 Task 8)
+ * =========================================================================
+ * New scaffolding — no legacy CSS existed in COE block 1. Provides
+ * .ds-menu container + .ds-menu-item / .ds-menu-item--danger /
+ * .ds-menu-divider / .ds-menu-section-heading per spec §5.2.
+ *
+ * Usage:
+ *   <div class="ds-menu" role="menu">
+ *     <button class="ds-menu-item">Editar</button>
+ *     <div class="ds-menu-divider"></div>
+ *     <button class="ds-menu-item ds-menu-item--danger">Eliminar</button>
+ *   </div>
+ * ========================================================================= */
+
+.ds-menu {
+    background: var(--ds-neutral-surface);
+    border: 1px solid var(--ds-neutral-muted);
+    border-radius: var(--ds-radius-md);
+    box-shadow: var(--ds-elevation-overlay);
+    padding: var(--ds-space-2) 0;
+    min-width: 200px;
+    max-width: 320px;
+}
+
+.ds-menu-section-heading {
+    padding: var(--ds-space-2) var(--ds-space-5);
+    font-size: var(--ds-text-xs);
+    font-weight: 600;
+    color: var(--ds-neutral-fg-subtle);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.ds-menu-item {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-space-3);
+    width: 100%;
+    padding: var(--ds-space-3) var(--ds-space-5);
+    border: none;
+    background: transparent;
+    color: var(--ds-neutral-fg);
+    font-family: inherit;
+    font-size: var(--ds-text-sm);
+    text-align: left;
+    cursor: pointer;
+    transition: background-color var(--ds-transition-fast);
+}
+
+.ds-menu-item:hover:not(:disabled) {
+    background: var(--ds-neutral-subtle);
+}
+
+.ds-menu-item:focus-visible {
+    outline: 2px solid var(--ds-brand-secondary-text);
+    outline-offset: -2px;
+}
+
+.ds-menu-item:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.ds-menu-item--danger {
+    color: var(--ds-status-alert-fg);
+}
+
+.ds-menu-item--danger:hover:not(:disabled) {
+    background: var(--ds-status-alert-bg);
+}
+
+.ds-menu-divider {
+    height: 1px;
+    background: var(--ds-neutral-muted);
+    margin: var(--ds-space-2) 0;
+}
