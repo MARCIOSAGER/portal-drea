@@ -11,62 +11,62 @@
 
 /* ---------- Base .card class (new in Plan 3) ---------- */
 .card {
-    background: var(--ds-neutral-surface);
-    border: 1px solid var(--ds-neutral-muted);
-    border-radius: var(--ds-radius-lg);
-    padding: var(--ds-space-6);
-    box-shadow: var(--ds-elevation-card);
+    background: var(--neutral-surface);
+    border: 1px solid var(--neutral-muted);
+    border-radius: var(--radius-lg);
+    padding: var(--space-6);
+    box-shadow: var(--elevation-card);
 }
 
 .card--interactive {
     cursor: pointer;
-    transition: transform var(--ds-transition-fast),
-                box-shadow var(--ds-transition-fast);
+    transition: transform var(--transition-fast),
+                box-shadow var(--transition-fast);
 }
 .card--interactive:hover {
     transform: translateY(-2px);
-    box-shadow: var(--ds-elevation-hover);
+    box-shadow: var(--elevation-hover);
 }
 
 /* Status-stripe variant — 4 px left border in a semantic colour */
-.card--stripe-info { border-left: 4px solid var(--ds-status-info-border); }
-.card--stripe-success { border-left: 4px solid var(--ds-status-success-border); }
-.card--stripe-warning { border-left: 4px solid var(--ds-status-warning-border); }
-.card--stripe-alert { border-left: 4px solid var(--ds-status-alert-border); }
-.card--stripe-emergency { border-left: 4px solid var(--ds-status-emergency-border); }
+.card--stripe-info { border-left: 4px solid var(--status-info-border); }
+.card--stripe-success { border-left: 4px solid var(--status-success-border); }
+.card--stripe-warning { border-left: 4px solid var(--status-warning-border); }
+.card--stripe-alert { border-left: 4px solid var(--status-alert-border); }
+.card--stripe-emergency { border-left: 4px solid var(--status-emergency-border); }
 
 /* ---------- Base .stat-card class (new in Plan 3) ---------- */
 .stat-card {
-    background: var(--ds-neutral-surface);
-    border: 1px solid var(--ds-neutral-muted);
-    border-radius: var(--ds-radius-lg);
-    padding: var(--ds-space-6);
+    background: var(--neutral-surface);
+    border: 1px solid var(--neutral-muted);
+    border-radius: var(--radius-lg);
+    padding: var(--space-6);
     display: flex;
     flex-direction: column;
-    gap: var(--ds-space-2);
+    gap: var(--space-2);
 }
 
 .stat-card__label {
-    font-size: var(--ds-text-sm);
-    color: var(--ds-neutral-fg-muted);
+    font-size: var(--text-sm);
+    color: var(--neutral-fg-muted);
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
 
 .stat-card__value {
-    font-size: var(--ds-text-3xl);
+    font-size: var(--text-3xl);
     font-weight: 700;
-    color: var(--ds-brand-primary);
+    color: var(--brand-primary);
     font-variant-numeric: tabular-nums;
 }
 
 .stat-card__trend {
-    font-size: var(--ds-text-xs);
-    color: var(--ds-neutral-fg-muted);
+    font-size: var(--text-xs);
+    color: var(--neutral-fg-muted);
 }
 
-.stat-card--trend-up .stat-card__trend { color: var(--ds-status-success-fg); }
-.stat-card--trend-down .stat-card__trend { color: var(--ds-status-alert-fg); }
+.stat-card--trend-up .stat-card__trend { color: var(--status-success-fg); }
+.stat-card--trend-down .stat-card__trend { color: var(--status-alert-fg); }
 
 /* =========================================================================
  * Legacy card classes — re-tokenised verbatim from COE block 1
@@ -91,9 +91,9 @@
     gap: 0.5rem;
 }
 
-.contact-card-header.internal { background: var(--ds-brand-primary); }
+.contact-card-header.internal { background: var(--brand-primary); }
 .contact-card-header.external { background: #f39c12; } /* TODO(ds): tokenise — was --alert-yellow */
-.contact-card-header.authority { background: var(--ds-status-alert-emphasis); }
+.contact-card-header.authority { background: var(--status-alert-emphasis); }
 
 .contact-card-body { padding: 0.8rem 1rem; }
 
@@ -119,7 +119,7 @@
 }
 
 .alarm-card.selected.alarm-socorro {
-    border-color: var(--ds-status-alert-border);
+    border-color: var(--status-alert-border);
     box-shadow: 0 0 0 3px rgba(198,40,40,0.2);
 }
 

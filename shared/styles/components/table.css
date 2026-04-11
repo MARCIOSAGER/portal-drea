@@ -14,20 +14,20 @@ table {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 1.5rem;
-    background-color: var(--ds-neutral-surface);
-    box-shadow: var(--ds-elevation-card);
+    background-color: var(--neutral-surface);
+    box-shadow: var(--elevation-card);
     font-variant-numeric: tabular-nums;
 }
 
 thead {
-    background-color: var(--ds-brand-primary);
-    color: var(--ds-neutral-surface);
+    background-color: var(--brand-primary);
+    color: var(--neutral-surface);
 }
 
 th, td {
     padding: 1rem;
     text-align: left;
-    border-bottom: 1px solid var(--ds-neutral-muted);
+    border-bottom: 1px solid var(--neutral-muted);
 }
 
 th {
@@ -36,9 +36,9 @@ th {
 }
 
 tbody tr:nth-child(even) {
-    background-color: var(--ds-neutral-subtle);
+    background-color: var(--neutral-subtle);
 }
 
 tbody tr:hover {
-    background-color: var(--ds-neutral-muted);
+    background-color: var(--neutral-muted);
 }

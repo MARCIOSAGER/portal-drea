@@ -14,9 +14,9 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: var(--ds-neutral-surface);
-  color: var(--ds-brand-primary);
-  gap: var(--ds-space-5, 12px);
+  background: var(--neutral-surface);
+  color: var(--brand-primary);
+  gap: var(--space-5, 12px);
   opacity: 1;
   transition: opacity 400ms ease-out;
   pointer-events: all;
@@ -35,7 +35,7 @@
 .ds-splash__logo {
   width: 120px;
   height: 120px;
-  color: var(--ds-brand-primary);
+  color: var(--brand-primary);
 }
 
 .ds-splash__logo svg {
@@ -44,32 +44,32 @@
 }
 
 .ds-splash__portal-name {
-  font-size: var(--ds-text-2xl, 31px);
+  font-size: var(--text-2xl, 31px);
   font-weight: 700;
-  color: var(--ds-brand-primary);
+  color: var(--brand-primary);
   margin: 0;
 }
 
 .ds-splash__tagline {
-  font-size: var(--ds-text-sm, 13px);
-  color: var(--ds-neutral-fg-muted);
+  font-size: var(--text-sm, 13px);
+  color: var(--neutral-fg-muted);
   margin: 0;
   text-align: center;
   max-width: 480px;
-  padding-inline: var(--ds-space-5, 12px);
+  padding-inline: var(--space-5, 12px);
 }
 
 .ds-splash__airport {
-  font-size: var(--ds-text-xs, 11px);
+  font-size: var(--text-xs, 11px);
   text-transform: uppercase;
   letter-spacing: 2px;
-  color: var(--ds-neutral-fg-subtle);
-  margin-top: var(--ds-space-3, 6px);
+  color: var(--neutral-fg-subtle);
+  margin-top: var(--space-3, 6px);
 }
 
 .ds-splash__version {
-  font-size: var(--ds-text-xs, 11px);
-  color: var(--ds-neutral-fg-subtle);
+  font-size: var(--text-xs, 11px);
+  color: var(--neutral-fg-subtle);
   font-variant-numeric: tabular-nums;
 }
 
@@ -80,7 +80,7 @@
   right: 0;
   bottom: 0;
   height: 4px;
-  background: var(--ds-brand-primary);
+  background: var(--brand-primary);
 }
 
 @media (prefers-reduced-motion: reduce) {

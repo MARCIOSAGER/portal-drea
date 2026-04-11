@@ -12,10 +12,10 @@
 .badge {
   display: inline-flex;
   align-items: center;
-  gap: var(--ds-space-1);
+  gap: var(--space-1);
   padding: 2px 8px;
-  border-radius: var(--ds-radius-pill);
-  font-size: var(--ds-text-xs);
+  border-radius: var(--radius-pill);
+  font-size: var(--text-xs);
   font-weight: 600;
   line-height: 1.4;
   white-space: nowrap;
@@ -24,38 +24,38 @@
 
 /* ---------- Status variants ---------- */
 .badge--info {
-  background: var(--ds-status-info-bg);
-  color: var(--ds-status-info-fg);
-  border-color: var(--ds-status-info-border);
+  background: var(--status-info-bg);
+  color: var(--status-info-fg);
+  border-color: var(--status-info-border);
 }
 .badge--success {
-  background: var(--ds-status-success-bg);
-  color: var(--ds-status-success-fg);
-  border-color: var(--ds-status-success-border);
+  background: var(--status-success-bg);
+  color: var(--status-success-fg);
+  border-color: var(--status-success-border);
 }
 .badge--warning {
-  background: var(--ds-status-warning-bg);
-  color: var(--ds-status-warning-fg);
-  border-color: var(--ds-status-warning-border);
+  background: var(--status-warning-bg);
+  color: var(--status-warning-fg);
+  border-color: var(--status-warning-border);
 }
 .badge--alert {
-  background: var(--ds-status-alert-bg);
-  color: var(--ds-status-alert-fg);
-  border-color: var(--ds-status-alert-border);
+  background: var(--status-alert-bg);
+  color: var(--status-alert-fg);
+  border-color: var(--status-alert-border);
 }
 .badge--emergency {
-  background: var(--ds-status-emergency-bg);
-  color: var(--ds-status-emergency-fg);
-  border-color: var(--ds-status-emergency-border);
+  background: var(--status-emergency-bg);
+  color: var(--status-emergency-fg);
+  border-color: var(--status-emergency-border);
 }
 
 /* ---------- Category variants ---------- */
-.badge--cat-avsec { background: var(--ds-cat-avsec-bombeiros); color: #fff; }
-.badge--cat-sga { background: var(--ds-cat-sga-interna); color: #fff; }
-.badge--cat-enna { background: var(--ds-cat-enna-navegacao); color: #fff; }
-.badge--cat-seg-ordem { background: var(--ds-cat-seg-ordem); color: #fff; }
-.badge--cat-ext-emg { background: var(--ds-cat-externa-emg); color: #fff; }
-.badge--cat-operadores { background: var(--ds-cat-operadores); color: #fff; }
+.badge--cat-avsec { background: var(--cat-avsec-bombeiros); color: #fff; }
+.badge--cat-sga { background: var(--cat-sga-interna); color: #fff; }
+.badge--cat-enna { background: var(--cat-enna-navegacao); color: #fff; }
+.badge--cat-seg-ordem { background: var(--cat-seg-ordem); color: #fff; }
+.badge--cat-ext-emg { background: var(--cat-externa-emg); color: #fff; }
+.badge--cat-operadores { background: var(--cat-operadores); color: #fff; }
 
 /* =========================================================================
  * Legacy classes — re-tokenised verbatim from COE block 1 (~lines 876-878)
@@ -80,6 +80,6 @@
 }
 
 .cr-chip b {
-  color: var(--ds-brand-primary);
+  color: var(--brand-primary);
   margin-right: 0.2rem;
 }

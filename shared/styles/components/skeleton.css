@@ -14,26 +14,26 @@
     display: block;
     background: linear-gradient(
         90deg,
-        var(--ds-neutral-subtle) 0%,
-        var(--ds-neutral-muted) 50%,
-        var(--ds-neutral-subtle) 100%
+        var(--neutral-subtle) 0%,
+        var(--neutral-muted) 50%,
+        var(--neutral-subtle) 100%
     );
     background-size: 200% 100%;
-    border-radius: var(--ds-radius-md);
+    border-radius: var(--radius-md);
     animation: ds-skeleton-shimmer 1.5s infinite linear;
 }
 
 .ds-skeleton--text {
     height: 0.9em;
-    margin-bottom: var(--ds-space-3);
-    border-radius: var(--ds-radius-sm);
+    margin-bottom: var(--space-3);
+    border-radius: var(--radius-sm);
 }
 
 .ds-skeleton--heading {
     height: 1.4em;
     width: 60%;
-    margin-bottom: var(--ds-space-4);
-    border-radius: var(--ds-radius-sm);
+    margin-bottom: var(--space-4);
+    border-radius: var(--radius-sm);
 }
 
 .ds-skeleton--avatar {
@@ -55,6 +55,6 @@
 @media (prefers-reduced-motion: reduce) {
     .ds-skeleton {
         animation: none;
-        background: var(--ds-neutral-subtle);
+        background: var(--neutral-subtle);
     }
 }

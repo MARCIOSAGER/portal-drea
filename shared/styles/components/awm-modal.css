@@ -22,9 +22,9 @@
 }
 
 .awm-modal {
-    background: var(--ds-neutral-surface);
+    background: var(--neutral-surface);
     border-radius: 14px;
-    box-shadow: var(--ds-elevation-modal);
+    box-shadow: var(--elevation-modal);
     max-width: 440px;
     width: 92%;
     overflow: hidden;
@@ -36,7 +36,7 @@
     display: flex;
     align-items: center;
     gap: 0.85rem;
-    border-bottom: 1px solid var(--ds-neutral-muted);
+    border-bottom: 1px solid var(--neutral-muted);
 }
 
 .awm-modal-icon {
@@ -47,24 +47,24 @@
     align-items: center;
     justify-content: center;
     font-size: 1.4rem;
-    color: var(--ds-neutral-surface);
+    color: var(--neutral-surface);
     flex-shrink: 0;
 }
 
-.awm-modal.question .awm-modal-icon { background: var(--ds-brand-secondary-fill); }
-.awm-modal.warning  .awm-modal-icon { background: var(--ds-status-warning-border); }
-.awm-modal.danger   .awm-modal-icon { background: var(--ds-status-alert-emphasis); }
+.awm-modal.question .awm-modal-icon { background: var(--brand-secondary-fill); }
+.awm-modal.warning  .awm-modal-icon { background: var(--status-warning-border); }
+.awm-modal.danger   .awm-modal-icon { background: var(--status-alert-emphasis); }
 
 .awm-modal-title {
     margin: 0;
     font-size: 1.1rem;
-    color: var(--ds-brand-primary);
+    color: var(--brand-primary);
     font-weight: 700;
 }
 
 .awm-modal-body {
     padding: 1rem 1.5rem 1.25rem;
-    color: var(--ds-neutral-fg);
+    color: var(--neutral-fg);
     font-size: 0.92rem;
     line-height: 1.5;
 }
@@ -74,8 +74,8 @@
     display: flex;
     gap: 0.6rem;
     justify-content: flex-end;
-    background: var(--ds-neutral-canvas);
-    border-top: 1px solid var(--ds-neutral-muted);
+    background: var(--neutral-canvas);
+    border-top: 1px solid var(--neutral-muted);
 }
 
 .awm-modal-btn {
@@ -92,24 +92,24 @@
 .awm-modal-btn:active { transform: translateY(1px); }
 
 .awm-modal-btn.cancel {
-    background: var(--ds-neutral-muted);
-    color: var(--ds-neutral-fg-muted);
+    background: var(--neutral-muted);
+    color: var(--neutral-fg-muted);
 }
-.awm-modal-btn.cancel:hover { background: var(--ds-neutral-strong); }
+.awm-modal-btn.cancel:hover { background: var(--neutral-strong); }
 
 .awm-modal-btn.primary {
-    background: var(--ds-brand-secondary-fill);
-    color: var(--ds-neutral-surface);
+    background: var(--brand-secondary-fill);
+    color: var(--neutral-surface);
     box-shadow: 0 2px 6px rgba(0, 148, 207, 0.3);
 }
-.awm-modal-btn.primary:hover { background: var(--ds-brand-secondary-text); }
+.awm-modal-btn.primary:hover { background: var(--brand-secondary-text); }
 
 .awm-modal-btn.danger {
-    background: var(--ds-status-alert-emphasis);
-    color: var(--ds-neutral-surface);
+    background: var(--status-alert-emphasis);
+    color: var(--neutral-surface);
     box-shadow: 0 2px 6px rgba(211, 47, 47, 0.3);
 }
-.awm-modal-btn.danger:hover { background: var(--ds-status-alert-fg); }
+.awm-modal-btn.danger:hover { background: var(--status-alert-fg); }
 
 @keyframes awmModalFade {
     from { opacity: 0; }

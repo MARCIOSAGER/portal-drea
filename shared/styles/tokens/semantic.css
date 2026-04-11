@@ -7,73 +7,73 @@
 
 :root {
   /* ---------- Neutrals / chrome ---------- */
-  --ds-neutral-canvas:    var(--ds-gray-50);
-  --ds-neutral-surface:   var(--ds-white);
-  --ds-neutral-subtle:    var(--ds-gray-100);
-  --ds-neutral-muted:     var(--ds-gray-200);
-  --ds-neutral-strong:    var(--ds-gray-300);
-  --ds-neutral-fg:        var(--ds-gray-800);
-  --ds-neutral-fg-muted:  var(--ds-gray-500);
-  --ds-neutral-fg-subtle: var(--ds-gray-400);
+  --neutral-canvas:    var(--gray-50);
+  --neutral-surface:   var(--white);
+  --neutral-subtle:    var(--gray-100);
+  --neutral-muted:     var(--gray-200);
+  --neutral-strong:    var(--gray-300);
+  --neutral-fg:        var(--gray-800);
+  --neutral-fg-muted:  var(--gray-500);
+  --neutral-fg-subtle: var(--gray-400);
 
   /* ---------- Brand SGA ---------- */
-  --ds-brand-primary:        var(--ds-blue-800);  /* 9.05:1 AAA — #004C7B on white */
-  --ds-brand-primary-hover:  var(--ds-blue-900);  /* 11.89:1 AAA — #003a5e on white */
-  --ds-brand-secondary-fill: var(--ds-blue-600);  /* 3.42:1 — FILL ONLY, never text (fails WCAG AA 4.5:1) */
-  --ds-brand-secondary-text: var(--ds-blue-700);  /* 5.30:1 AA — #0073a0 on white, safe as text */
-  --ds-brand-accent:         var(--ds-blue-500);
+  --brand-primary:        var(--blue-800);  /* 9.05:1 AAA — #004C7B on white */
+  --brand-primary-hover:  var(--blue-900);  /* 11.89:1 AAA — #003a5e on white */
+  --brand-secondary-fill: var(--blue-600);  /* 3.42:1 — FILL ONLY, never text (fails WCAG AA 4.5:1) */
+  --brand-secondary-text: var(--blue-700);  /* 5.30:1 AA — #0073a0 on white, safe as text */
+  --brand-accent:         var(--blue-500);
 
   /* ---------- Status — info ---------- */
-  --ds-status-info-bg:            var(--ds-blue-100);
-  --ds-status-info-border:        var(--ds-blue-700);
-  --ds-status-info-fg:            var(--ds-blue-900);  /* 10.58:1 AAA — #003a5e on #e6f4fb */
-  --ds-status-info-emphasis:      var(--ds-blue-700);
-  --ds-status-info-on-emphasis:   var(--ds-white);
+  --status-info-bg:            var(--blue-100);
+  --status-info-border:        var(--blue-700);
+  --status-info-fg:            var(--blue-900);  /* 10.58:1 AAA — #003a5e on #e6f4fb */
+  --status-info-emphasis:      var(--blue-700);
+  --status-info-on-emphasis:   var(--white);
 
   /* ---------- Status — success ---------- */
-  --ds-status-success-bg:          var(--ds-green-100);
-  --ds-status-success-border:      var(--ds-green-800);
-  --ds-status-success-fg:          var(--ds-green-900);  /* 7.00:1 AAA AT FLOOR — do not lighten bg or shift fg, any change drops to AA */
-  --ds-status-success-emphasis:    var(--ds-green-800);
-  --ds-status-success-on-emphasis: var(--ds-white);
+  --status-success-bg:          var(--green-100);
+  --status-success-border:      var(--green-800);
+  --status-success-fg:          var(--green-900);  /* 7.00:1 AAA AT FLOOR — do not lighten bg or shift fg, any change drops to AA */
+  --status-success-emphasis:    var(--green-800);
+  --status-success-on-emphasis: var(--white);
 
   /* ---------- Status — warning ---------- */
-  --ds-status-warning-bg:          var(--ds-amber-100);
-  --ds-status-warning-border:      var(--ds-amber-500);
-  --ds-status-warning-fg:          var(--ds-amber-900);  /* 5.48:1 AA — #8a5a00 on #fef5e7 */
-  --ds-status-warning-emphasis:    var(--ds-amber-500);
-  --ds-status-warning-on-emphasis: var(--ds-amber-on);   /* #1a1200 — MUST be dark, white fails */
+  --status-warning-bg:          var(--amber-100);
+  --status-warning-border:      var(--amber-500);
+  --status-warning-fg:          var(--amber-900);  /* 5.48:1 AA — #8a5a00 on #fef5e7 */
+  --status-warning-emphasis:    var(--amber-500);
+  --status-warning-on-emphasis: var(--amber-on);   /* #1a1200 — MUST be dark, white fails */
 
   /* ---------- Status — alert ---------- */
-  --ds-status-alert-bg:            var(--ds-red-100);
-  --ds-status-alert-border:        var(--ds-red-700);
-  --ds-status-alert-fg:            var(--ds-red-800);    /* 5.74:1 AA — #b71c1c on #fdecea */
-  --ds-status-alert-emphasis:      var(--ds-red-700);
-  --ds-status-alert-on-emphasis:   var(--ds-white);
+  --status-alert-bg:            var(--red-100);
+  --status-alert-border:        var(--red-700);
+  --status-alert-fg:            var(--red-800);    /* 5.74:1 AA — #b71c1c on #fdecea */
+  --status-alert-emphasis:      var(--red-700);
+  --status-alert-on-emphasis:   var(--white);
 
   /* ---------- Status — emergency ---------- */
-  --ds-status-emergency-bg:          var(--ds-red-50);
-  --ds-status-emergency-border:      var(--ds-red-900);
-  --ds-status-emergency-fg:          var(--ds-red-900);  /* 7.11:1 AAA — 0.11 margin, do not darken bg */
-  --ds-status-emergency-emphasis:    var(--ds-red-900);
-  --ds-status-emergency-on-emphasis: var(--ds-white);
+  --status-emergency-bg:          var(--red-50);
+  --status-emergency-border:      var(--red-900);
+  --status-emergency-fg:          var(--red-900);  /* 7.11:1 AAA — 0.11 margin, do not darken bg */
+  --status-emergency-emphasis:    var(--red-900);
+  --status-emergency-on-emphasis: var(--white);
 
   /* ---------- Category — branding of contact taxonomy ---------- */
-  --ds-cat-avsec-bombeiros: var(--ds-red-700);
-  --ds-cat-sga-interna:     var(--ds-blue-800);
-  --ds-cat-enna-navegacao:  var(--ds-blue-600);
-  --ds-cat-seg-ordem:       var(--ds-brown-700);
-  --ds-cat-externa-emg:     var(--ds-purple-800);
-  --ds-cat-operadores:      var(--ds-slate-600);
+  --cat-avsec-bombeiros: var(--red-700);
+  --cat-sga-interna:     var(--blue-800);
+  --cat-enna-navegacao:  var(--blue-600);
+  --cat-seg-ordem:       var(--brown-700);
+  --cat-externa-emg:     var(--purple-800);
+  --cat-operadores:      var(--slate-600);
 
   /* ---------- Elevation aliases ---------- */
-  --ds-elevation-card:    var(--ds-shadow-1);
-  --ds-elevation-hover:   var(--ds-shadow-2);
-  --ds-elevation-overlay: var(--ds-shadow-3);
-  --ds-elevation-modal:   var(--ds-shadow-4);
+  --elevation-card:    var(--shadow-1);
+  --elevation-hover:   var(--shadow-2);
+  --elevation-overlay: var(--shadow-3);
+  --elevation-modal:   var(--shadow-4);
 
   /* ---------- Focus ring ---------- */
-  --ds-focus-ring-color:  var(--ds-blue-700);
-  --ds-focus-ring-width:  2px;  /* no primitive — focus ring dimensions are semantic end-points */
-  --ds-focus-ring-offset: 2px;
+  --focus-ring-color:  var(--blue-700);
+  --focus-ring-width:  2px;  /* no primitive — focus ring dimensions are semantic end-points */
+  --focus-ring-offset: 2px;
 }
