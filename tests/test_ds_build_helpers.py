@@ -178,6 +178,68 @@ class TestCompileDesignSystemCss:
         assert "/* fonts */" not in result
         assert "/* primitive */" in result  # tokens still present
 
+    def test_components_dir_absent_is_ok(self, tmp_path: Path):
+        """Plan 1 world: no components/ directory — compile must still succeed."""
+        self._setup_fake_styles(tmp_path)
+        result = dsh.compile_design_system_css(tmp_path, density="compact")
+        assert "/* primitive */" in result
+        assert "components/" not in result
+
+    def test_components_dir_empty_is_ok(self, tmp_path: Path):
+        """Plan 3 Task 1 world: components/ exists but is empty — compile succeeds."""
+        self._setup_fake_styles(tmp_path)
+        (tmp_path / "components").mkdir()
+        result = dsh.compile_design_system_css(tmp_path, density="compact")
+        assert "/* primitive */" in result
+        assert "components/" not in result
+
+    def test_components_single_css_file_included_after_base(self, tmp_path: Path):
+        """Plan 3 Task 2+ world: components/button.css must appear AFTER base/fonts.css."""
+        self._setup_fake_styles(tmp_path)
+        (tmp_path / "components").mkdir()
+        (tmp_path / "components" / "button.css").write_text(
+            "/* button */\n.btn { color: red; }\n", encoding="utf-8"
+        )
+        result = dsh.compile_design_system_css(tmp_path, density="compact")
+        assert "/* button */" in result
+        assert ".btn { color: red; }" in result
+        assert result.index("/* fonts */") < result.index("/* button */")
+
+    def test_components_multiple_css_files_alphabetical_order(self, tmp_path: Path):
+        """Multiple components/*.css concatenated in alphabetical filename order."""
+        self._setup_fake_styles(tmp_path)
+        (tmp_path / "components").mkdir()
+        (tmp_path / "components" / "zebra.css").write_text(
+            "/* zebra */\n.zebra {}\n", encoding="utf-8"
+        )
+        (tmp_path / "components" / "button.css").write_text(
+            "/* button */\n.btn {}\n", encoding="utf-8"
+        )
+        (tmp_path / "components" / "card.css").write_text(
+            "/* card */\n.card {}\n", encoding="utf-8"
+        )
+        result = dsh.compile_design_system_css(tmp_path, density="compact")
+        assert result.index("/* button */") < result.index("/* card */")
+        assert result.index("/* card */") < result.index("/* zebra */")
+
+    def test_components_non_css_files_ignored(self, tmp_path: Path):
+        """Only files matching *.css are concatenated."""
+        self._setup_fake_styles(tmp_path)
+        (tmp_path / "components").mkdir()
+        (tmp_path / "components" / "button.css").write_text(
+            "/* button */\n.btn {}\n", encoding="utf-8"
+        )
+        (tmp_path / "components" / "README.md").write_text(
+            "Do not include me", encoding="utf-8"
+        )
+        (tmp_path / "components" / "button.css.bak").write_text(
+            "/* backup */\nbad-css {}\n", encoding="utf-8"
+        )
+        result = dsh.compile_design_system_css(tmp_path, density="compact")
+        assert "/* button */" in result
+        assert "Do not include me" not in result
+        assert "/* backup */" not in result
+
 
 class TestEncodeFontWoff2Base64:
     def test_encodes_bytes_to_base64_string(self, tmp_path: Path):
