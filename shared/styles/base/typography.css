@@ -1,0 +1,38 @@
+/* =========================================================================
+ * Design System SGA — base/typography.css
+ * =========================================================================
+ * Heading hierarchy + tabular-nums scoped to DS-namespaced elements.
+ * DOES NOT touch `body { font-family }` during the migration — the legacy
+ * block 1 CSS still controls the overall font. Plan 6 will remove the
+ * legacy override and let these rules take over globally.
+ * ========================================================================= */
+
+:where(.ds-shell-bar, .ds-sidebar, .ds-page-grid, .ds-splash, .ds-footer) {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont,
+               "Segoe UI Variable", "Segoe UI", Roboto,
+               "Helvetica Neue", Arial, sans-serif;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "cv11", "ss01", "ss03";
+}
+
+.ds-page-grid h1.ds-page-title {
+  font-size: var(--ds-text-2xl, 31px);
+  line-height: 1.2;
+  font-weight: 700;
+  color: var(--ds-brand-primary);
+  margin: 0 0 var(--ds-space-3, 6px);
+}
+
+.ds-page-grid p.ds-page-desc {
+  font-size: var(--ds-text-sm, 13px);
+  line-height: 1.5;
+  color: var(--ds-neutral-fg-muted);
+  margin: 0 0 var(--ds-space-6, 16px);
+}
+
+.ds-shell-bar .ds-clock,
+.ds-shell-bar .ds-utc-clock {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+  white-space: nowrap;
+}
