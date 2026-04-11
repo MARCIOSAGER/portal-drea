@@ -14696,11 +14696,10 @@ if (document.readyState !== 'loading') {
 </script>
 <!-- ===== /PATCH v19 — Editor unificado de contactos (editável) ===== -->
 
-
-
-
-
-
+<!-- Plan 4 Task 12 — Design System splash lifecycle (inlined from shared/scripts/chrome/splash.js) -->
+<script>
+(function(){'use strict';function dismiss(s){s.setAttribute('data-state','done');}function init(){var s=document.getElementById('dsSplash');if(!s)return;try{var p=new URLSearchParams(window.location.search);if(p.get('nosplash')==='1'){dismiss(s);return;}}catch(e){}setTimeout(function(){s.setAttribute('data-state','out');},1500);setTimeout(function(){dismiss(s);},1900);}if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',init);}else{init();}})();
+</script>
 
 </body>
 </html>
