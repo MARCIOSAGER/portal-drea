@@ -510,59 +510,7 @@
     font-size: 1rem;
 }
 
-.form-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-    margin-bottom: 1rem;
-}
-
-.form-group {
-    display: flex;
-    flex-direction: column;
-}
-
-.form-group label {
-    font-weight: 600;
-    color: var(--dark-blue);
-    font-size: 0.85rem;
-    margin-bottom: 0.3rem;
-}
-
-.form-group input,
-.form-group textarea,
-.form-group select {
-    padding: 0.6rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 0.95rem;
-    font-family: inherit;
-    transition: border-color 0.3s;
-}
-
-.form-group input:focus,
-.form-group textarea:focus,
-.form-group select:focus {
-    outline: none;
-    border-color: var(--medium-blue);
-    box-shadow: 0 0 4px rgba(0, 148, 207, 0.3);
-}
-
-.form-group textarea {
-    resize: vertical;
-    min-height: 80px;
-}
-
-.form-full-width {
-    grid-column: 1 / -1;
-}
-
-.form-actions {
-    display: flex;
-    gap: 0.8rem;
-    margin-top: 1rem;
-    flex-wrap: wrap;
-}
+/* .form-row, .form-group, .form-full-width, .form-actions migrated to shared/styles/components/form-group.css (Plan 3 Task 4) */
 
 /* ---------- Button component migrated to shared/styles/components/button.css (Plan 3 Task 2) ---------- */
 
