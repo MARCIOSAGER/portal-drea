@@ -1,0 +1,44 @@
+/* =========================================================================
+ * Design System SGA — Component: Table (Plan 3 Task 6)
+ * =========================================================================
+ * Generic table styling for data-dense tables used across COE sections.
+ * Uses element selectors (table, thead, th, td, tr) so it affects all
+ * tables without requiring markup changes. Domain tables (.check-table,
+ * .vc-table, etc.) stay in the portal — Plan 3 only migrates the generic
+ * base rules.
+ *
+ * Spec: §5.2 (Tier 2 layout patterns).
+ * ========================================================================= */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1.5rem;
+    background-color: var(--ds-neutral-surface);
+    box-shadow: var(--ds-elevation-card);
+    font-variant-numeric: tabular-nums;
+}
+
+thead {
+    background-color: var(--ds-brand-primary);
+    color: var(--ds-neutral-surface);
+}
+
+th, td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--ds-neutral-muted);
+}
+
+th {
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+tbody tr:nth-child(even) {
+    background-color: var(--ds-neutral-subtle);
+}
+
+tbody tr:hover {
+    background-color: var(--ds-neutral-muted);
+}
