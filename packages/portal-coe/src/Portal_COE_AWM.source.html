@@ -2214,6 +2214,85 @@
 /* Esconder rows aeronáuticos quando em modo bomba */
 #realOccurrenceFields.mode-bomba .aero-row { display: none !important; }
 #realOccurrenceFields.mode-emergencia #bombaFormBlock { display: none !important; }
+
+
+        /* ===========================
+         * PLAN 2 CONSOLIDATION — block 11 (COE emgFormBlock — EFB PATCH v5)
+         * =========================== */
+#emgFormBlock { margin-top: 1.25rem; padding: 1rem; background: #fff5f5;
+    border: 1px solid #ffcdd2; border-left: 4px solid #d32f2f; border-radius: 6px; }
+#emgFormBlock .efb-title { font-size: 0.95rem; font-weight: 700; color: #c62828;
+    margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
+#emgFormBlock .efb-note { font-size: 0.8rem; color: #5d4037; margin-bottom: 0.75rem;
+    background: #fffef0; padding: 0.5rem 0.7rem; border-radius: 4px;
+    border-left: 3px solid #ffb300; }
+#emgFormBlock .efb-sub { font-size: 0.82rem; font-weight: 700; color: #5d4037;
+    margin: 1rem 0 0.5rem 0; padding-bottom: 0.25rem; border-bottom: 1px dashed #ef9a9a;
+    text-transform: uppercase; letter-spacing: 0.03em; }
+#emgFormBlock .efb-grid { display: grid; gap: 0.75rem; }
+#emgFormBlock .efb-grid-2 { grid-template-columns: 1fr 1fr; }
+#emgFormBlock .efb-grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+#emgFormBlock .efb-grid-4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
+#emgFormBlock label { font-size: 0.78rem; font-weight: 600; color: #333;
+    display: block; margin-bottom: 0.2rem; }
+#emgFormBlock input[type=text], #emgFormBlock input[type=time],
+#emgFormBlock input[type=number], #emgFormBlock textarea,
+#emgFormBlock select { width: 100%; padding: 0.45rem 0.55rem; border: 1px solid #ccc;
+    border-radius: 4px; font-family: inherit; font-size: 0.85rem; background: #fff; }
+#emgFormBlock textarea { resize: vertical; min-height: 2.2rem; }
+
+#emgFormBlock .efb-declaracao { display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 0.4rem; margin-top: 0.3rem; }
+#emgFormBlock .efb-decl-btn { padding: 0.55rem 0.5rem; border: 2px solid #ccc;
+    border-radius: 5px; background: #fff; cursor: pointer; font-weight: 700;
+    font-size: 0.78rem; color: #555; text-align: center; user-select: none; }
+#emgFormBlock .efb-decl-btn:hover { border-color: #c62828; }
+#emgFormBlock .efb-decl-btn.active-mayday { background: #c62828; border-color: #c62828; color: #fff; }
+#emgFormBlock .efb-decl-btn.active-pan { background: #ff9800; border-color: #ff9800; color: #fff; }
+#emgFormBlock .efb-decl-btn.active-squawk { background: #7b1fa2; border-color: #7b1fa2; color: #fff; }
+#emgFormBlock .efb-decl-btn.active-none { background: #607d8b; border-color: #607d8b; color: #fff; }
+
+#emgFormBlock .efb-chips { display: flex; flex-wrap: wrap; gap: 0.35rem;
+    margin-top: 0.2rem; }
+#emgFormBlock .efb-chip { display: inline-flex; align-items: center;
+    padding: 0.3rem 0.7rem; border: 1px solid #ccc; border-radius: 14px;
+    background: #fff; cursor: pointer; font-size: 0.75rem; user-select: none;
+    color: #555; transition: all 0.15s; font-weight: 500; }
+#emgFormBlock .efb-chip:hover { border-color: #c62828; background: #fff5f5; }
+#emgFormBlock .efb-chip input { display: none; }
+#emgFormBlock .efb-chip.active { background: #c62828; color: #fff; border-color: #c62828; box-shadow: 0 2px 4px rgba(198,40,40,0.3); }
+#emgFormBlock .efb-chip.active::before { content: '✓ '; }
+#emgFormBlock .efb-chip:focus-visible { outline: 2px solid #004C7B; outline-offset: 2px; }
+
+/* Esconder o formulário legado (título + grids originais) quando em modo emergência.
+   Deixa visível apenas o bloco EFB (#emgFormBlock), evitando duplicação. */
+#realOccurrenceFields.mode-emergencia > .info-card > h3,
+#realOccurrenceFields.mode-emergencia > .info-card > div:not(#emgFormBlock):not(#bombaFormBlock) {
+    display: none !important;
+}
+/* Remover o padding duplicado do info-card quando só o EFB está visível */
+#realOccurrenceFields.mode-emergencia > .info-card { padding-top: 0.5rem; }
+
+#emgFormBlock .efb-eta-row { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 0.75rem; align-items: start; }
+#emgFormBlock .efb-eta-row > div { display: flex; flex-direction: column; }
+#emgFormBlock .efb-eta-row > div > label { margin-bottom: 0.25rem; }
+#emgFormBlock .efb-eta-row > div > input,
+#emgFormBlock .efb-eta-row > div > select { width: 100%; box-sizing: border-box; }
+#emgFormBlock .efb-eta-hint { font-size: 0.7rem; color: #888;
+    margin-top: 0.15rem; font-style: italic; }
+
+@media (max-width: 900px) {
+    #emgFormBlock .efb-grid-3, #emgFormBlock .efb-grid-4,
+    #emgFormBlock .efb-declaracao, #emgFormBlock .efb-eta-row { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 600px) {
+    #emgFormBlock .efb-grid-2, #emgFormBlock .efb-grid-3,
+    #emgFormBlock .efb-grid-4, #emgFormBlock .efb-declaracao,
+    #emgFormBlock .efb-eta-row { grid-template-columns: 1fr; }
+}
+
+#realOccurrenceFields.mode-bomba #emgFormBlock { display: none !important; }
 </style>
 </head>
 <body>
@@ -11551,82 +11630,7 @@ if (document.readyState !== 'loading') {
 
 
 <!-- ===== EMERGÊNCIA AERONÁUTICA — EXPANSÃO DINÂMICA — PATCH v5 ===== -->
-<style>
-#emgFormBlock { margin-top: 1.25rem; padding: 1rem; background: #fff5f5;
-    border: 1px solid #ffcdd2; border-left: 4px solid #d32f2f; border-radius: 6px; }
-#emgFormBlock .efb-title { font-size: 0.95rem; font-weight: 700; color: #c62828;
-    margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
-#emgFormBlock .efb-note { font-size: 0.8rem; color: #5d4037; margin-bottom: 0.75rem;
-    background: #fffef0; padding: 0.5rem 0.7rem; border-radius: 4px;
-    border-left: 3px solid #ffb300; }
-#emgFormBlock .efb-sub { font-size: 0.82rem; font-weight: 700; color: #5d4037;
-    margin: 1rem 0 0.5rem 0; padding-bottom: 0.25rem; border-bottom: 1px dashed #ef9a9a;
-    text-transform: uppercase; letter-spacing: 0.03em; }
-#emgFormBlock .efb-grid { display: grid; gap: 0.75rem; }
-#emgFormBlock .efb-grid-2 { grid-template-columns: 1fr 1fr; }
-#emgFormBlock .efb-grid-3 { grid-template-columns: 1fr 1fr 1fr; }
-#emgFormBlock .efb-grid-4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
-#emgFormBlock label { font-size: 0.78rem; font-weight: 600; color: #333;
-    display: block; margin-bottom: 0.2rem; }
-#emgFormBlock input[type=text], #emgFormBlock input[type=time],
-#emgFormBlock input[type=number], #emgFormBlock textarea,
-#emgFormBlock select { width: 100%; padding: 0.45rem 0.55rem; border: 1px solid #ccc;
-    border-radius: 4px; font-family: inherit; font-size: 0.85rem; background: #fff; }
-#emgFormBlock textarea { resize: vertical; min-height: 2.2rem; }
-
-#emgFormBlock .efb-declaracao { display: grid; grid-template-columns: repeat(4, 1fr);
-    gap: 0.4rem; margin-top: 0.3rem; }
-#emgFormBlock .efb-decl-btn { padding: 0.55rem 0.5rem; border: 2px solid #ccc;
-    border-radius: 5px; background: #fff; cursor: pointer; font-weight: 700;
-    font-size: 0.78rem; color: #555; text-align: center; user-select: none; }
-#emgFormBlock .efb-decl-btn:hover { border-color: #c62828; }
-#emgFormBlock .efb-decl-btn.active-mayday { background: #c62828; border-color: #c62828; color: #fff; }
-#emgFormBlock .efb-decl-btn.active-pan { background: #ff9800; border-color: #ff9800; color: #fff; }
-#emgFormBlock .efb-decl-btn.active-squawk { background: #7b1fa2; border-color: #7b1fa2; color: #fff; }
-#emgFormBlock .efb-decl-btn.active-none { background: #607d8b; border-color: #607d8b; color: #fff; }
-
-#emgFormBlock .efb-chips { display: flex; flex-wrap: wrap; gap: 0.35rem;
-    margin-top: 0.2rem; }
-#emgFormBlock .efb-chip { display: inline-flex; align-items: center;
-    padding: 0.3rem 0.7rem; border: 1px solid #ccc; border-radius: 14px;
-    background: #fff; cursor: pointer; font-size: 0.75rem; user-select: none;
-    color: #555; transition: all 0.15s; font-weight: 500; }
-#emgFormBlock .efb-chip:hover { border-color: #c62828; background: #fff5f5; }
-#emgFormBlock .efb-chip input { display: none; }
-#emgFormBlock .efb-chip.active { background: #c62828; color: #fff; border-color: #c62828; box-shadow: 0 2px 4px rgba(198,40,40,0.3); }
-#emgFormBlock .efb-chip.active::before { content: '✓ '; }
-#emgFormBlock .efb-chip:focus-visible { outline: 2px solid #004C7B; outline-offset: 2px; }
-
-/* Esconder o formulário legado (título + grids originais) quando em modo emergência.
-   Deixa visível apenas o bloco EFB (#emgFormBlock), evitando duplicação. */
-#realOccurrenceFields.mode-emergencia > .info-card > h3,
-#realOccurrenceFields.mode-emergencia > .info-card > div:not(#emgFormBlock):not(#bombaFormBlock) {
-    display: none !important;
-}
-/* Remover o padding duplicado do info-card quando só o EFB está visível */
-#realOccurrenceFields.mode-emergencia > .info-card { padding-top: 0.5rem; }
-
-#emgFormBlock .efb-eta-row { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr;
-    gap: 0.75rem; align-items: start; }
-#emgFormBlock .efb-eta-row > div { display: flex; flex-direction: column; }
-#emgFormBlock .efb-eta-row > div > label { margin-bottom: 0.25rem; }
-#emgFormBlock .efb-eta-row > div > input,
-#emgFormBlock .efb-eta-row > div > select { width: 100%; box-sizing: border-box; }
-#emgFormBlock .efb-eta-hint { font-size: 0.7rem; color: #888;
-    margin-top: 0.15rem; font-style: italic; }
-
-@media (max-width: 900px) {
-    #emgFormBlock .efb-grid-3, #emgFormBlock .efb-grid-4,
-    #emgFormBlock .efb-declaracao, #emgFormBlock .efb-eta-row { grid-template-columns: 1fr 1fr; }
-}
-@media (max-width: 600px) {
-    #emgFormBlock .efb-grid-2, #emgFormBlock .efb-grid-3,
-    #emgFormBlock .efb-grid-4, #emgFormBlock .efb-declaracao,
-    #emgFormBlock .efb-eta-row { grid-template-columns: 1fr; }
-}
-
-#realOccurrenceFields.mode-bomba #emgFormBlock { display: none !important; }
-</style>
+<!-- PLAN 2 CONSOLIDATION: original block 11 merged into block 1 above -->
 <script>
 (function() {
     'use strict';
