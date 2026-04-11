@@ -278,20 +278,18 @@ def build(
 
     # (4) Encode the Inter Variable font as base64
     inter_woff2_path = SHARED_DIR / "assets" / "fonts" / "Inter-VariableFont.woff2"
-    if inter_woff2_path.exists():
-        ds_inter_b64 = dsh.encode_font_woff2_base64(inter_woff2_path)
-        print(f"  [ds] encoded Inter woff2 ({len(ds_inter_b64):,} base64 chars)")
-    else:
-        print(f"  [warn] Inter-VariableFont.woff2 não encontrado — base64 vazio")
-        ds_inter_b64 = ""
+    if not inter_woff2_path.exists():
+        print(f"  [error] Inter-VariableFont.woff2 não encontrado em {inter_woff2_path}")
+        return 1
+    ds_inter_b64 = dsh.encode_font_woff2_base64(inter_woff2_path)
+    print(f"  [ds] encoded Inter woff2 ({len(ds_inter_b64):,} base64 chars)")
 
     # (5) Read the icon sprite (inline SVG, already wrapped in <svg style="display:none">)
     sprite_path = SHARED_DIR / "assets" / "icons" / "sprite.svg"
-    if sprite_path.exists():
-        icon_sprite = sprite_path.read_text(encoding="utf-8")
-    else:
-        print(f"  [warn] sprite.svg não encontrado — sprite vazio")
-        icon_sprite = '<svg style="display:none" aria-hidden="true"></svg>'
+    if not sprite_path.exists():
+        print(f"  [error] sprite.svg não encontrado em {sprite_path}")
+        return 1
+    icon_sprite = sprite_path.read_text(encoding="utf-8")
 
     # (6) Inject DS blobs into source_html via direct string replacement.
     # This is done BEFORE the existing substitute_placeholders call, using
@@ -310,7 +308,7 @@ def build(
         "version": version,
         "build_date": build_date.isoformat(timespec="seconds"),
         "build_date_short": build_date.strftime("%Y-%m-%d"),
-        "portal": {**portal_config, "density": density},  # NEW: enables {{PORTAL.*}} placeholders
+        "portal": {**portal_config, "density": density},  # NEW: enables {{PORTAL.*}} placeholders. density here is the RESOLVED value (airport override → portal config → default), not the raw portal.config.json value.
         **config,
     }
 
