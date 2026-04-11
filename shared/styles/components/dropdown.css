@@ -14,20 +14,20 @@
  * ========================================================================= */
 
 .ds-menu {
-    background: var(--ds-neutral-surface);
-    border: 1px solid var(--ds-neutral-muted);
-    border-radius: var(--ds-radius-md);
-    box-shadow: var(--ds-elevation-overlay);
-    padding: var(--ds-space-2) 0;
+    background: var(--neutral-surface);
+    border: 1px solid var(--neutral-muted);
+    border-radius: var(--radius-md);
+    box-shadow: var(--elevation-overlay);
+    padding: var(--space-2) 0;
     min-width: 200px;
     max-width: 320px;
 }
 
 .ds-menu-section-heading {
-    padding: var(--ds-space-2) var(--ds-space-5);
-    font-size: var(--ds-text-xs);
+    padding: var(--space-2) var(--space-5);
+    font-size: var(--text-xs);
     font-weight: 600;
-    color: var(--ds-neutral-fg-subtle);
+    color: var(--neutral-fg-subtle);
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
@@ -35,25 +35,25 @@
 .ds-menu-item {
     display: flex;
     align-items: center;
-    gap: var(--ds-space-3);
+    gap: var(--space-3);
     width: 100%;
-    padding: var(--ds-space-3) var(--ds-space-5);
+    padding: var(--space-3) var(--space-5);
     border: none;
     background: transparent;
-    color: var(--ds-neutral-fg);
+    color: var(--neutral-fg);
     font-family: inherit;
-    font-size: var(--ds-text-sm);
+    font-size: var(--text-sm);
     text-align: left;
     cursor: pointer;
-    transition: background-color var(--ds-transition-fast);
+    transition: background-color var(--transition-fast);
 }
 
 .ds-menu-item:hover:not(:disabled) {
-    background: var(--ds-neutral-subtle);
+    background: var(--neutral-subtle);
 }
 
 .ds-menu-item:focus-visible {
-    outline: 2px solid var(--ds-brand-secondary-text);
+    outline: 2px solid var(--brand-secondary-text);
     outline-offset: -2px;
 }
 
@@ -63,15 +63,15 @@
 }
 
 .ds-menu-item--danger {
-    color: var(--ds-status-alert-fg);
+    color: var(--status-alert-fg);
 }
 
 .ds-menu-item--danger:hover:not(:disabled) {
-    background: var(--ds-status-alert-bg);
+    background: var(--status-alert-bg);
 }
 
 .ds-menu-divider {
     height: 1px;
-    background: var(--ds-neutral-muted);
-    margin: var(--ds-space-2) 0;
+    background: var(--neutral-muted);
+    margin: var(--space-2) 0;
 }

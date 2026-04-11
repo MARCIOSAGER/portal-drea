@@ -23,7 +23,7 @@
 
 .form-group label {
     font-weight: 600;
-    color: var(--ds-brand-primary);
+    color: var(--brand-primary);
     font-size: 0.85rem;
     margin-bottom: 0.3rem;
 }
@@ -32,7 +32,7 @@
 .form-group textarea,
 .form-group select {
     padding: 0.6rem;
-    border: 1px solid var(--ds-neutral-muted);
+    border: 1px solid var(--neutral-muted);
     border-radius: 4px;
     font-size: 0.95rem;
     font-family: inherit;
@@ -43,7 +43,7 @@
 .form-group textarea:focus,
 .form-group select:focus {
     outline: none;
-    border-color: var(--ds-brand-secondary-fill);
+    border-color: var(--brand-secondary-fill);
     box-shadow: 0 0 4px rgba(0, 148, 207, 0.3);
 }
 
@@ -67,38 +67,38 @@
 .ds-input {
     display: block;
     width: 100%;
-    min-height: var(--ds-input-height);
-    padding: var(--ds-space-3) var(--ds-space-4);
-    border: 1px solid var(--ds-neutral-muted);
-    border-radius: var(--ds-radius-md);
-    background: var(--ds-neutral-surface);
-    color: var(--ds-neutral-fg);
+    min-height: var(--input-height);
+    padding: var(--space-3) var(--space-4);
+    border: 1px solid var(--neutral-muted);
+    border-radius: var(--radius-md);
+    background: var(--neutral-surface);
+    color: var(--neutral-fg);
     font-family: inherit;
-    font-size: var(--ds-text-base);
-    transition: border-color var(--ds-transition-fast),
-                box-shadow var(--ds-transition-fast);
+    font-size: var(--text-base);
+    transition: border-color var(--transition-fast),
+                box-shadow var(--transition-fast);
 }
 
 .ds-input:focus-visible {
-    outline: 2px solid var(--ds-brand-secondary-text);
+    outline: 2px solid var(--brand-secondary-text);
     outline-offset: 2px;
-    border-color: var(--ds-brand-secondary-text);
+    border-color: var(--brand-secondary-text);
 }
 
 .ds-input[aria-invalid="true"] {
-    border-color: var(--ds-status-alert-border);
+    border-color: var(--status-alert-border);
 }
 
 .ds-checkbox,
 .ds-radio {
     width: 16px;
     height: 16px;
-    accent-color: var(--ds-brand-primary);
+    accent-color: var(--brand-primary);
     cursor: pointer;
 }
 
 .ds-checkbox:focus-visible,
 .ds-radio:focus-visible {
-    outline: 2px solid var(--ds-brand-secondary-text);
+    outline: 2px solid var(--brand-secondary-text);
     outline-offset: 2px;
 }

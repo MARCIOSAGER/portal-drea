@@ -14,25 +14,25 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--ds-space-2);
-  min-height: var(--ds-input-height);
-  padding: var(--ds-space-3) var(--ds-space-5);
+  gap: var(--space-2);
+  min-height: var(--input-height);
+  padding: var(--space-3) var(--space-5);
   border: 1px solid transparent;
-  border-radius: var(--ds-radius-md);
-  background: var(--ds-neutral-surface);
-  color: var(--ds-neutral-fg);
+  border-radius: var(--radius-md);
+  background: var(--neutral-surface);
+  color: var(--neutral-fg);
   font-family: inherit;
-  font-size: var(--ds-text-base);
+  font-size: var(--text-base);
   font-weight: 500;
   line-height: 1;
   cursor: pointer;
-  transition: background-color var(--ds-transition-fast),
-              border-color var(--ds-transition-fast),
-              color var(--ds-transition-fast);
+  transition: background-color var(--transition-fast),
+              border-color var(--transition-fast),
+              color var(--transition-fast);
 }
 
 .btn:focus-visible {
-  outline: 2px solid var(--ds-brand-secondary-text);
+  outline: 2px solid var(--brand-secondary-text);
   outline-offset: 2px;
 }
 
@@ -44,38 +44,38 @@
 
 /* ---------- Semantic modifier variants ---------- */
 .btn--primary {
-  background: var(--ds-brand-primary);
-  color: var(--ds-neutral-surface);
-  border-color: var(--ds-brand-primary);
+  background: var(--brand-primary);
+  color: var(--neutral-surface);
+  border-color: var(--brand-primary);
 }
 .btn--primary:hover:not(:disabled) {
-  background: var(--ds-brand-primary-hover);
-  border-color: var(--ds-brand-primary-hover);
+  background: var(--brand-primary-hover);
+  border-color: var(--brand-primary-hover);
 }
 
 .btn--secondary {
-  background: var(--ds-brand-secondary-fill);
-  color: var(--ds-neutral-surface);
-  border-color: var(--ds-brand-secondary-fill);
+  background: var(--brand-secondary-fill);
+  color: var(--neutral-surface);
+  border-color: var(--brand-secondary-fill);
 }
 .btn--secondary:hover:not(:disabled) {
-  background: var(--ds-brand-primary);
-  border-color: var(--ds-brand-primary);
+  background: var(--brand-primary);
+  border-color: var(--brand-primary);
 }
 
 .btn--danger {
-  background: var(--ds-status-alert-emphasis);
-  color: var(--ds-status-alert-on-emphasis);
-  border-color: var(--ds-status-alert-emphasis);
+  background: var(--status-alert-emphasis);
+  color: var(--status-alert-on-emphasis);
+  border-color: var(--status-alert-emphasis);
 }
 .btn--danger:hover:not(:disabled) {
-  background: var(--ds-status-emergency-emphasis);
+  background: var(--status-emergency-emphasis);
 }
 
 .btn--success {
-  background: var(--ds-status-success-emphasis);
-  color: var(--ds-status-success-on-emphasis);
-  border-color: var(--ds-status-success-emphasis);
+  background: var(--status-success-emphasis);
+  color: var(--status-success-on-emphasis);
+  border-color: var(--status-success-emphasis);
 }
 .btn--success:hover:not(:disabled) {
   filter: brightness(0.92);
@@ -83,11 +83,11 @@
 
 .btn--ghost {
   background: transparent;
-  color: var(--ds-brand-primary);
+  color: var(--brand-primary);
   border-color: transparent;
 }
 .btn--ghost:hover:not(:disabled) {
-  background: var(--ds-neutral-subtle);
+  background: var(--neutral-subtle);
 }
 
 /* =========================================================================
@@ -96,7 +96,7 @@
  * ========================================================================= */
 
 .btn-print-card {
-    background-color: var(--ds-brand-secondary-fill);
+    background-color: var(--brand-secondary-fill);
     color: white;
     border: none;
     padding: 0.6rem 1.2rem;
@@ -107,11 +107,11 @@
 }
 
 .btn-print-card:hover {
-    background-color: var(--ds-brand-primary);
+    background-color: var(--brand-primary);
 }
 
 .btn-export {
-    background-color: var(--ds-status-success-emphasis);
+    background-color: var(--status-success-emphasis);
     color: white;
     border: none;
     padding: 0.6rem 1.2rem;
@@ -122,11 +122,11 @@
 }
 
 .btn-export:hover {
-    background-color: var(--ds-status-success-fg);
+    background-color: var(--status-success-fg);
 }
 
 .btn-clear {
-    background-color: var(--ds-neutral-fg-subtle);
+    background-color: var(--neutral-fg-subtle);
     color: white;
     border: none;
     padding: 0.6rem 1.2rem;
@@ -137,11 +137,11 @@
 }
 
 .btn-clear:hover {
-    background-color: var(--ds-neutral-fg-muted);
+    background-color: var(--neutral-fg-muted);
 }
 
 .btn-export-all {
-    background-color: var(--ds-brand-primary);
+    background-color: var(--brand-primary);
     color: white;
     border: none;
     padding: 0.8rem 1.5rem;
@@ -154,7 +154,7 @@
 }
 
 .btn-export-all:hover {
-    background-color: var(--ds-brand-secondary-fill);
+    background-color: var(--brand-secondary-fill);
 }
 
 /* Timeline / Cronómetro buttons */
@@ -168,18 +168,18 @@
     transition: all 0.3s;
 }
 
-.btn-start { background-color: var(--ds-status-success-emphasis); color: white; }
-.btn-start:hover { background-color: var(--ds-status-success-fg); }
-.btn-stop { background-color: var(--ds-status-alert-emphasis); color: white; }
-.btn-stop:hover { background-color: var(--ds-status-alert-fg); }
-.btn-reset { background-color: var(--ds-neutral-fg-subtle); color: white; }
-.btn-reset:hover { background-color: var(--ds-neutral-fg-muted); }
+.btn-start { background-color: var(--status-success-emphasis); color: white; }
+.btn-start:hover { background-color: var(--status-success-fg); }
+.btn-stop { background-color: var(--status-alert-emphasis); color: white; }
+.btn-stop:hover { background-color: var(--status-alert-fg); }
+.btn-reset { background-color: var(--neutral-fg-subtle); color: white; }
+.btn-reset:hover { background-color: var(--neutral-fg-muted); }
 
 /* Ficha unified actions (PATCH v2 fichas-seg) */
-.btn-uf-print { background: var(--ds-brand-secondary-fill); color: #ffffff; }
-.btn-uf-export { background: var(--ds-status-success-emphasis); color: #ffffff; }
-.btn-uf-clear { background: #95a5a6; color: #ffffff; } /* TODO(ds): tokenise to --ds-neutral-fg-subtle family */
+.btn-uf-print { background: var(--brand-secondary-fill); color: #ffffff; }
+.btn-uf-export { background: var(--status-success-emphasis); color: #ffffff; }
+.btn-uf-clear { background: #95a5a6; color: #ffffff; } /* TODO(ds): tokenise to --neutral-fg-subtle family */
 
 /* Ficha print bar */
-.btn-print-single { background: var(--ds-brand-secondary-fill); color: #ffffff; }
-.btn-print-pack { background: var(--ds-brand-primary); color: #ffffff; }
+.btn-print-single { background: var(--brand-secondary-fill); color: #ffffff; }
+.btn-print-pack { background: var(--brand-primary); color: #ffffff; }

@@ -12,9 +12,9 @@
 /* Focus ring — applied to all interactive elements inside DS chrome */
 :where(.ds-shell-bar, .ds-sidebar, .ds-page-grid, .ds-splash, .ds-footer)
   :is(a, button, input, select, textarea, [tabindex]):focus-visible {
-  outline: var(--ds-focus-ring-width, 2px) solid var(--ds-focus-ring-color, #0073a0);
-  outline-offset: var(--ds-focus-ring-offset, 2px);
-  border-radius: var(--ds-radius-sm, 3px);
+  outline: var(--focus-ring-width, 2px) solid var(--focus-ring-color, #0073a0);
+  outline-offset: var(--focus-ring-offset, 2px);
+  border-radius: var(--radius-sm, 3px);
 }
 
 /* Selection color — neutral institutional */

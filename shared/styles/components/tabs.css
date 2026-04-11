@@ -11,7 +11,7 @@
 /* ---------- Main Navigation Tabs ---------- */
 .main-tabs {
     background-color: #E8F4FD; /* --light-bg legacy */
-    border-bottom: 3px solid var(--ds-brand-secondary-fill);
+    border-bottom: 3px solid var(--brand-secondary-fill);
     display: flex;
     flex-wrap: wrap;
     gap: 0;
@@ -28,21 +28,21 @@
     cursor: pointer;
     font-size: 0.95rem;
     font-weight: 600;
-    color: var(--ds-brand-primary);
+    color: var(--brand-primary);
     border-bottom: 3px solid transparent;
     transition: all 0.3s ease;
     white-space: nowrap;
 }
 
 .main-tab-btn:hover {
-    background-color: var(--ds-neutral-surface);
-    color: var(--ds-brand-secondary-fill);
+    background-color: var(--neutral-surface);
+    color: var(--brand-secondary-fill);
 }
 
 .main-tab-btn.active {
-    background-color: var(--ds-neutral-surface);
-    color: var(--ds-brand-secondary-fill);
-    border-bottom-color: var(--ds-brand-secondary-fill);
+    background-color: var(--neutral-surface);
+    color: var(--brand-secondary-fill);
+    border-bottom-color: var(--brand-secondary-fill);
 }
 
 /* ---------- Sub-tabs for role cards ---------- */
@@ -53,7 +53,7 @@
     gap: 0;
     padding: 0;
     margin: 0;
-    border-bottom: 1px solid var(--ds-neutral-muted);
+    border-bottom: 1px solid var(--neutral-muted);
     overflow-x: auto;
 }
 
@@ -65,21 +65,21 @@
     cursor: pointer;
     font-size: 0.85rem;
     font-weight: 500;
-    color: var(--ds-neutral-fg-muted);
+    color: var(--neutral-fg-muted);
     border-bottom: 2px solid transparent;
     transition: all 0.3s ease;
     white-space: nowrap;
 }
 
 .sub-tab-btn:hover {
-    background-color: var(--ds-neutral-surface);
-    color: var(--ds-brand-secondary-fill);
+    background-color: var(--neutral-surface);
+    color: var(--brand-secondary-fill);
 }
 
 .sub-tab-btn.active {
-    background-color: var(--ds-neutral-surface);
-    color: var(--ds-brand-secondary-fill);
-    border-bottom-color: var(--ds-brand-secondary-fill);
+    background-color: var(--neutral-surface);
+    color: var(--brand-secondary-fill);
+    border-bottom-color: var(--brand-secondary-fill);
 }
 
 /* ---------- Tab content area ---------- */

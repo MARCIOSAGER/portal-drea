@@ -19,14 +19,14 @@
      legacy padding-top/bottom combined with height:56px + box-sizing
      would squeeze the content. Block-axis padding is 0 because the
      shell bar is vertically centered via align-items:center. */
-  padding: 0 var(--ds-space-6, 16px);
-  gap: var(--ds-space-6, 16px);
+  padding: 0 var(--space-6, 16px);
+  gap: var(--space-6, 16px);
 
   /* Appearance */
-  background: var(--ds-neutral-surface);
-  color: var(--ds-neutral-fg);
-  border-bottom: 1px solid var(--ds-neutral-muted);
-  box-shadow: var(--ds-shadow-1, 0 1px 2px rgba(9,30,66,0.08));
+  background: var(--neutral-surface);
+  color: var(--neutral-fg);
+  border-bottom: 1px solid var(--neutral-muted);
+  box-shadow: var(--shadow-1, 0 1px 2px rgba(9,30,66,0.08));
   z-index: 100;
 }
 
@@ -38,7 +38,7 @@
   right: 0;
   bottom: -4px;
   height: 4px;
-  background: var(--ds-brand-primary);
+  background: var(--brand-primary);
   pointer-events: none;
 }
 
@@ -50,7 +50,7 @@
 .ds-shell-bar__brand {
   display: flex;
   align-items: center;
-  gap: var(--ds-space-4, 8px);
+  gap: var(--space-4, 8px);
   flex: 0 0 auto;
   min-width: 0;
 }
@@ -59,7 +59,7 @@
   width: 32px;
   height: 32px;
   flex: 0 0 32px;
-  color: var(--ds-brand-primary);
+  color: var(--brand-primary);
 }
 
 .ds-shell-bar__logo svg {
@@ -68,21 +68,21 @@
 }
 
 .ds-shell-bar__portal-name {
-  font-size: var(--ds-text-md, 16px);
+  font-size: var(--text-md, 16px);
   font-weight: 600;
-  color: var(--ds-brand-primary);
+  color: var(--brand-primary);
   white-space: nowrap;
 }
 
 .ds-shell-bar__separator {
   width: 1px;
   height: 20px;
-  background: var(--ds-neutral-muted);
+  background: var(--neutral-muted);
 }
 
 .ds-shell-bar__oaci {
-  font-size: var(--ds-text-sm, 13px);
-  color: var(--ds-neutral-fg-muted);
+  font-size: var(--text-sm, 13px);
+  color: var(--neutral-fg-muted);
   font-weight: 500;
   letter-spacing: 0.5px;
   white-space: nowrap;
@@ -94,8 +94,8 @@
   display: flex;
   align-items: center;
   min-width: 0;
-  font-size: var(--ds-text-sm, 13px);
-  color: var(--ds-neutral-fg-muted);
+  font-size: var(--text-sm, 13px);
+  color: var(--neutral-fg-muted);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -103,15 +103,15 @@
 
 .ds-shell-bar__breadcrumb-item + .ds-shell-bar__breadcrumb-item::before {
   content: "›";
-  margin-inline: var(--ds-space-3, 6px);
-  color: var(--ds-neutral-fg-subtle);
+  margin-inline: var(--space-3, 6px);
+  color: var(--neutral-fg-subtle);
 }
 
 /* ---------- Zone: right (clocks + user + occurrence pill) ---------- */
 .ds-shell-bar__meta {
   display: flex;
   align-items: center;
-  gap: var(--ds-space-5, 12px);
+  gap: var(--space-5, 12px);
   flex: 0 0 auto;
 }
 
@@ -123,27 +123,27 @@
 }
 
 .ds-shell-bar__utc {
-  font-size: var(--ds-text-sm, 13px);
+  font-size: var(--text-sm, 13px);
   font-weight: 600;
-  color: var(--ds-neutral-fg);
+  color: var(--neutral-fg);
   font-variant-numeric: tabular-nums;
 }
 
 .ds-shell-bar__local {
-  font-size: var(--ds-text-xs, 11px);
-  color: var(--ds-neutral-fg-muted);
+  font-size: var(--text-xs, 11px);
+  color: var(--neutral-fg-muted);
   font-variant-numeric: tabular-nums;
 }
 
 .ds-shell-bar__operator {
   display: none;                         /* shown by JS when logged in */
   align-items: center;
-  gap: var(--ds-space-2, 4px);
-  padding: 2px var(--ds-space-4, 8px);
-  background: var(--ds-neutral-subtle);
-  color: var(--ds-neutral-fg);
-  border-radius: var(--ds-radius-pill, 9999px);
-  font-size: var(--ds-text-xs, 11px);
+  gap: var(--space-2, 4px);
+  padding: 2px var(--space-4, 8px);
+  background: var(--neutral-subtle);
+  color: var(--neutral-fg);
+  border-radius: var(--radius-pill, 9999px);
+  font-size: var(--text-xs, 11px);
   font-weight: 600;
 }
 
@@ -152,9 +152,9 @@
 }
 
 .ds-shell-bar__logout {
-  margin-inline-start: var(--ds-space-2, 4px);
-  font-size: var(--ds-text-xs, 11px);
-  color: var(--ds-brand-secondary-text);
+  margin-inline-start: var(--space-2, 4px);
+  font-size: var(--text-xs, 11px);
+  color: var(--brand-secondary-text);
   text-decoration: underline;
   cursor: pointer;
 }
@@ -179,31 +179,31 @@
  * remove these overrides.
  * ------------------------------------------------------------------------- */
 .ds-shell-bar__operator > button {
-  background: var(--ds-neutral-subtle) !important;
-  color: var(--ds-neutral-fg) !important;
-  border: 1px solid var(--ds-neutral-muted) !important;
-  border-radius: var(--ds-radius-sm, 3px) !important;
-  padding: 2px var(--ds-space-3, 6px) !important;
-  font-size: var(--ds-text-xs, 11px) !important;
+  background: var(--neutral-subtle) !important;
+  color: var(--neutral-fg) !important;
+  border: 1px solid var(--neutral-muted) !important;
+  border-radius: var(--radius-sm, 3px) !important;
+  padding: 2px var(--space-3, 6px) !important;
+  font-size: var(--text-xs, 11px) !important;
   font-weight: 600 !important;
   cursor: pointer !important;
 }
 
 .ds-shell-bar__operator > button:hover {
-  background: var(--ds-neutral-muted) !important;
-  color: var(--ds-brand-primary) !important;
+  background: var(--neutral-muted) !important;
+  color: var(--brand-primary) !important;
 }
 
 /* ---------- Emergency pill (pulsating red when occurrence active) ---------- */
 .ds-shell-bar__emg-pill {
   display: none;
   align-items: center;
-  gap: var(--ds-space-2, 4px);
-  padding: 4px var(--ds-space-4, 8px);
-  background: var(--ds-status-emergency-emphasis);
-  color: var(--ds-status-emergency-on-emphasis);
-  border-radius: var(--ds-radius-pill, 9999px);
-  font-size: var(--ds-text-xs, 11px);
+  gap: var(--space-2, 4px);
+  padding: 4px var(--space-4, 8px);
+  background: var(--status-emergency-emphasis);
+  color: var(--status-emergency-on-emphasis);
+  border-radius: var(--radius-pill, 9999px);
+  font-size: var(--text-xs, 11px);
   font-weight: 700;
   font-variant-numeric: tabular-nums;
   animation: ds-emg-pulse 1.2s ease-in-out infinite;

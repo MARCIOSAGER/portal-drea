@@ -6,11 +6,11 @@
  * ========================================================================= */
 
 .ds-footer {
-  padding: var(--ds-space-5, 12px) 0;
-  margin-top: var(--ds-space-7, 24px);
-  border-top: 1px solid var(--ds-neutral-muted);
-  font-size: var(--ds-text-xs, 11px);
-  color: var(--ds-neutral-fg-subtle);
+  padding: var(--space-5, 12px) 0;
+  margin-top: var(--space-7, 24px);
+  border-top: 1px solid var(--neutral-muted);
+  font-size: var(--text-xs, 11px);
+  color: var(--neutral-fg-subtle);
   text-align: center;
   line-height: 1.4;
 }
@@ -20,7 +20,7 @@
 }
 
 .ds-footer a {
-  color: var(--ds-brand-secondary-text);
+  color: var(--brand-secondary-text);
   text-decoration: none;
 }
 

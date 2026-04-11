@@ -16,13 +16,13 @@
     top: 12px;
     right: 12px;
     z-index: 9998;
-    background: var(--ds-neutral-surface);
+    background: var(--neutral-surface);
     border: 1px solid #cfd8dc;
-    border-left: 4px solid var(--ds-brand-secondary-fill);
+    border-left: 4px solid var(--brand-secondary-fill);
     padding: 6px 12px;
     border-radius: 6px;
     font-size: 0.78rem;
-    color: var(--ds-neutral-fg);
+    color: var(--neutral-fg);
     box-shadow: 0 4px 14px rgba(0,0,0,0.08);
     display: flex;
     align-items: center;
@@ -40,17 +40,17 @@
 }
 
 .uxp-savebadge.saving { border-left-color: #ff9800; } /* TODO(ds): tokenise to amber ramp */
-.uxp-savebadge.saved  { border-left-color: var(--ds-status-success-border); }
+.uxp-savebadge.saved  { border-left-color: var(--status-success-border); }
 .uxp-savebadge.error  {
-    border-left-color: var(--ds-status-alert-border);
-    background: var(--ds-status-alert-bg);
+    border-left-color: var(--status-alert-border);
+    background: var(--status-alert-bg);
 }
 
 .uxp-savebadge .dot {
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: var(--ds-brand-secondary-fill);
+    background: var(--brand-secondary-fill);
     flex: 0 0 auto;
 }
 
@@ -59,8 +59,8 @@
     animation: uxp-pulse 1s infinite;
 }
 
-.uxp-savebadge.saved .dot { background: var(--ds-status-success-border); }
-.uxp-savebadge.error .dot { background: var(--ds-status-alert-border); }
+.uxp-savebadge.saved .dot { background: var(--status-success-border); }
+.uxp-savebadge.error .dot { background: var(--status-alert-border); }
 
 @keyframes uxp-pulse {
     0%, 100% { opacity: 1; }
