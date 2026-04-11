@@ -75,7 +75,6 @@
   /* ---------- Type scale (Major Third 1.250) ---------- */
   --ds-text-xs:    11px;
   --ds-text-sm:    13px;
-  /* --ds-text-base is overridden by density files (14px compact, 16px comfortable) */
   --ds-text-md:    16px;
   --ds-text-lg:    20px;
   --ds-text-xl:    25px;
@@ -90,7 +89,26 @@
   --ds-line-2xl:   38px;
   --ds-line-3xl:   46px;
 
-  /* ---------- Focus ring ---------- */
-  --ds-focus-ring-width:  2px;
-  --ds-focus-ring-offset: 2px;
+  /* ---------- Density defaults ----------
+   * Fallback values used when <html> has no data-density attribute.
+   * Both density files use :root[data-density="X"] selectors which win
+   * over this :root block via specificity, so these defaults only apply
+   * in unusual contexts (error pages, dev fixtures, component isolation).
+   * Using comfortable values as the conservative accessibility default.
+   */
+  --ds-space-1: 4px;
+  --ds-space-2: 6px;
+  --ds-space-3: 8px;
+  --ds-space-4: 12px;
+  --ds-space-5: 16px;
+  --ds-space-6: 24px;
+  --ds-space-7: 32px;
+  --ds-space-8: 48px;
+
+  --ds-row-height:      40px;
+  --ds-input-height:    40px;
+  --ds-nav-item-height: 44px;
+
+  --ds-text-base: 16px;
+  --ds-line-base: 24px;
 }
