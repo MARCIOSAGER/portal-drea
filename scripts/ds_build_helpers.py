@@ -32,3 +32,34 @@ def load_portal_config(path: Path) -> dict:
     json.JSONDecodeError if malformed.
     """
     return json.loads(Path(path).read_text(encoding="utf-8"))
+
+
+def resolve_density(
+    airport: dict,
+    portal_config: dict,
+    default: str = "compact",
+) -> str:
+    """
+    Resolve the density mode for a portal build.
+
+    Resolution order (first wins):
+      1. airport.portals[portal_id].density  — per-airport per-portal override
+      2. portal_config.density               — portal default
+      3. default parameter                   — fallback (defaults to "compact")
+
+    Returns one of "compact" | "comfortable".
+    """
+    portal_id = portal_config.get("id", "")
+
+    # Step 1: airport override
+    airport_portals = airport.get("portals", {}) or {}
+    override = airport_portals.get(portal_id, {}) or {}
+    if "density" in override:
+        return override["density"]
+
+    # Step 2: portal default
+    if "density" in portal_config:
+        return portal_config["density"]
+
+    # Step 3: fallback
+    return default
