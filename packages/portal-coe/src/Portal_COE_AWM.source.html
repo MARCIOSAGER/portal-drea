@@ -2151,6 +2151,69 @@
 .fichas-print-bar button:active { transform: translateY(0); }
 .btn-print-single { background: #0094CF; color: #ffffff; }
 .btn-print-pack { background: #004C7B; color: #ffffff; }
+
+
+        /* ===========================
+         * PLAN 2 CONSOLIDATION — block 9 (COE bombaFormBlock — bomb threat form block)
+         * =========================== */
+/* Bloco AMEAÇA DE BOMBA dentro do formulário de Ocorrência */
+#bombaFormBlock { margin-top: 1.25rem; padding: 1rem; background: #fff8e1;
+    border: 1px solid #ffe082; border-left: 4px solid #e65100; border-radius: 6px; }
+#bombaFormBlock .bfb-title { font-size: 0.95rem; font-weight: 700; color: #e65100;
+    margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
+#bombaFormBlock .bfb-sub { font-size: 0.82rem; font-weight: 700; color: #5d4037;
+    margin: 1rem 0 0.5rem 0; padding-bottom: 0.25rem; border-bottom: 1px dashed #ffb300;
+    text-transform: uppercase; letter-spacing: 0.03em; }
+#bombaFormBlock .bfb-note { font-size: 0.8rem; color: #5d4037; margin-bottom: 0.75rem;
+    background: #fffef0; padding: 0.5rem 0.7rem; border-radius: 4px; }
+#bombaFormBlock .bfb-grid { display: grid; gap: 0.75rem; }
+#bombaFormBlock .bfb-grid-2 { grid-template-columns: 1fr 1fr; }
+#bombaFormBlock .bfb-grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+#bombaFormBlock .bfb-grid-4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
+#bombaFormBlock label { font-size: 0.78rem; font-weight: 600; color: #333;
+    display: block; margin-bottom: 0.2rem; }
+#bombaFormBlock input[type=text], #bombaFormBlock input[type=time],
+#bombaFormBlock input[type=number], #bombaFormBlock textarea,
+#bombaFormBlock select { width: 100%; padding: 0.45rem 0.55rem; border: 1px solid #ccc;
+    border-radius: 4px; font-family: inherit; font-size: 0.85rem; background: #fff; }
+#bombaFormBlock textarea { resize: vertical; min-height: 2.2rem; }
+#bombaFormBlock .bfb-q { background: #ffffff; border: 1px solid #ffe082;
+    border-radius: 4px; padding: 0.5rem 0.65rem; margin-bottom: 0.45rem; }
+#bombaFormBlock .bfb-q-label { font-size: 0.82rem; font-weight: 700; color: #333;
+    margin-bottom: 0.25rem; }
+#bombaFormBlock .bfb-q-label .bfb-num { display: inline-block; min-width: 1.4rem;
+    color: #e65100; }
+#bombaFormBlock .bfb-chips { display: flex; flex-wrap: wrap; gap: 0.35rem;
+    margin-top: 0.2rem; }
+#bombaFormBlock .bfb-chip { display: inline-flex; align-items: center;
+    padding: 0.25rem 0.55rem; border: 1px solid #ccc; border-radius: 14px;
+    background: #fff; cursor: pointer; font-size: 0.72rem; user-select: none;
+    color: #555; }
+#bombaFormBlock .bfb-chip input { display: none; }
+#bombaFormBlock .bfb-chip.active { background: #e65100; color: #fff;
+    border-color: #e65100; }
+#bombaFormBlock .bfb-accordion { margin-top: 0.75rem; border: 1px solid #ffe082;
+    border-radius: 5px; overflow: hidden; background: #fffef5; }
+#bombaFormBlock .bfb-accordion-head { padding: 0.55rem 0.75rem; cursor: pointer;
+    font-weight: 700; font-size: 0.82rem; color: #5d4037;
+    display: flex; justify-content: space-between; align-items: center;
+    background: #fff3e0; }
+#bombaFormBlock .bfb-accordion-head .bfb-acc-arrow { transition: transform 0.2s; }
+#bombaFormBlock .bfb-accordion.open .bfb-accordion-head .bfb-acc-arrow { transform: rotate(90deg); }
+#bombaFormBlock .bfb-accordion-body { display: none; padding: 0.75rem; }
+#bombaFormBlock .bfb-accordion.open .bfb-accordion-body { display: block; }
+
+@media (max-width: 900px) {
+    #bombaFormBlock .bfb-grid-3, #bombaFormBlock .bfb-grid-4 { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 600px) {
+    #bombaFormBlock .bfb-grid-2, #bombaFormBlock .bfb-grid-3,
+    #bombaFormBlock .bfb-grid-4 { grid-template-columns: 1fr; }
+}
+
+/* Esconder rows aeronáuticos quando em modo bomba */
+#realOccurrenceFields.mode-bomba .aero-row { display: none !important; }
+#realOccurrenceFields.mode-emergencia #bombaFormBlock { display: none !important; }
 </style>
 </head>
 <body>
@@ -11105,66 +11168,7 @@ if (document.readyState !== 'loading') {
 
 
 <!-- ===== OCORRÊNCIA — FORMULÁRIO DINÂMICO POR TIPO — PATCH v4 ===== -->
-<style>
-/* Bloco AMEAÇA DE BOMBA dentro do formulário de Ocorrência */
-#bombaFormBlock { margin-top: 1.25rem; padding: 1rem; background: #fff8e1;
-    border: 1px solid #ffe082; border-left: 4px solid #e65100; border-radius: 6px; }
-#bombaFormBlock .bfb-title { font-size: 0.95rem; font-weight: 700; color: #e65100;
-    margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
-#bombaFormBlock .bfb-sub { font-size: 0.82rem; font-weight: 700; color: #5d4037;
-    margin: 1rem 0 0.5rem 0; padding-bottom: 0.25rem; border-bottom: 1px dashed #ffb300;
-    text-transform: uppercase; letter-spacing: 0.03em; }
-#bombaFormBlock .bfb-note { font-size: 0.8rem; color: #5d4037; margin-bottom: 0.75rem;
-    background: #fffef0; padding: 0.5rem 0.7rem; border-radius: 4px; }
-#bombaFormBlock .bfb-grid { display: grid; gap: 0.75rem; }
-#bombaFormBlock .bfb-grid-2 { grid-template-columns: 1fr 1fr; }
-#bombaFormBlock .bfb-grid-3 { grid-template-columns: 1fr 1fr 1fr; }
-#bombaFormBlock .bfb-grid-4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
-#bombaFormBlock label { font-size: 0.78rem; font-weight: 600; color: #333;
-    display: block; margin-bottom: 0.2rem; }
-#bombaFormBlock input[type=text], #bombaFormBlock input[type=time],
-#bombaFormBlock input[type=number], #bombaFormBlock textarea,
-#bombaFormBlock select { width: 100%; padding: 0.45rem 0.55rem; border: 1px solid #ccc;
-    border-radius: 4px; font-family: inherit; font-size: 0.85rem; background: #fff; }
-#bombaFormBlock textarea { resize: vertical; min-height: 2.2rem; }
-#bombaFormBlock .bfb-q { background: #ffffff; border: 1px solid #ffe082;
-    border-radius: 4px; padding: 0.5rem 0.65rem; margin-bottom: 0.45rem; }
-#bombaFormBlock .bfb-q-label { font-size: 0.82rem; font-weight: 700; color: #333;
-    margin-bottom: 0.25rem; }
-#bombaFormBlock .bfb-q-label .bfb-num { display: inline-block; min-width: 1.4rem;
-    color: #e65100; }
-#bombaFormBlock .bfb-chips { display: flex; flex-wrap: wrap; gap: 0.35rem;
-    margin-top: 0.2rem; }
-#bombaFormBlock .bfb-chip { display: inline-flex; align-items: center;
-    padding: 0.25rem 0.55rem; border: 1px solid #ccc; border-radius: 14px;
-    background: #fff; cursor: pointer; font-size: 0.72rem; user-select: none;
-    color: #555; }
-#bombaFormBlock .bfb-chip input { display: none; }
-#bombaFormBlock .bfb-chip.active { background: #e65100; color: #fff;
-    border-color: #e65100; }
-#bombaFormBlock .bfb-accordion { margin-top: 0.75rem; border: 1px solid #ffe082;
-    border-radius: 5px; overflow: hidden; background: #fffef5; }
-#bombaFormBlock .bfb-accordion-head { padding: 0.55rem 0.75rem; cursor: pointer;
-    font-weight: 700; font-size: 0.82rem; color: #5d4037;
-    display: flex; justify-content: space-between; align-items: center;
-    background: #fff3e0; }
-#bombaFormBlock .bfb-accordion-head .bfb-acc-arrow { transition: transform 0.2s; }
-#bombaFormBlock .bfb-accordion.open .bfb-accordion-head .bfb-acc-arrow { transform: rotate(90deg); }
-#bombaFormBlock .bfb-accordion-body { display: none; padding: 0.75rem; }
-#bombaFormBlock .bfb-accordion.open .bfb-accordion-body { display: block; }
-
-@media (max-width: 900px) {
-    #bombaFormBlock .bfb-grid-3, #bombaFormBlock .bfb-grid-4 { grid-template-columns: 1fr 1fr; }
-}
-@media (max-width: 600px) {
-    #bombaFormBlock .bfb-grid-2, #bombaFormBlock .bfb-grid-3,
-    #bombaFormBlock .bfb-grid-4 { grid-template-columns: 1fr; }
-}
-
-/* Esconder rows aeronáuticos quando em modo bomba */
-#realOccurrenceFields.mode-bomba .aero-row { display: none !important; }
-#realOccurrenceFields.mode-emergencia #bombaFormBlock { display: none !important; }
-</style>
+<!-- PLAN 2 CONSOLIDATION: original block 9 merged into block 1 above -->
 <script>
 (function() {
     'use strict';
