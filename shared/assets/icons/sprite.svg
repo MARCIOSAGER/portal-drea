@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+  <!--
+    Design System SGA — Icon Sprite
+    ==============================
+    Icons are referenced as <svg><use href="#icon-NAME"/></svg>.
+    All icons use viewBox="0 0 24 24" and stroke="currentColor" so colour
+    is inherited from the CSS context.
+
+    Base: Heroicons Outline v2 (MIT License)
+    https://heroicons.com/
+    Copyright (c) Refactoring UI Inc.
+
+    Plan 1 seeds this sprite with 3 icons to validate the pipeline.
+    Plan 2 will expand it to ~20 icons. Plan 3 may add domain icons.
+  -->
+
+  <symbol id="icon-sga-mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Placeholder mark — a stylised "chevron-up" until the real SGA SVG is extracted in Plan 3 -->
+    <title>SGA</title>
+    <path d="M12 3 L4 15 L20 15 Z" />
+    <path d="M8 20 L16 20" />
+  </symbol>
+
+  <symbol id="icon-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <title>Menu</title>
+    <path d="M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5" />
+  </symbol>
+
+  <symbol id="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <title>Fechar</title>
+    <path d="M6 18 18 6M6 6l12 12" />
+  </symbol>
+</svg>
