@@ -1,0 +1,68 @@
+/* =========================================================================
+ * Design System SGA — Component: uxp-savebadge (Plan 3 Task 11)
+ * =========================================================================
+ * Re-tokenised from COE block 1 (~lines 1863-1883). Every .uxp-savebadge*
+ * class name preserved VERBATIM — JavaScript depends on these selectors
+ * (document.querySelector('.uxp-savebadge')). DO NOT rename.
+ *
+ * Spec: §5.3 (Tier 3 feedback / overlays).
+ *
+ * Filename uses the legacy class naming 'uxp-savebadge' (NOT 'awm-save-badge')
+ * to match the real JS selectors already deployed in COE.
+ * ========================================================================= */
+
+.uxp-savebadge {
+    position: fixed;
+    top: 12px;
+    right: 12px;
+    z-index: 9998;
+    background: var(--ds-neutral-surface);
+    border: 1px solid #cfd8dc;
+    border-left: 4px solid var(--ds-brand-secondary-fill);
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.78rem;
+    color: var(--ds-neutral-fg);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 160px;
+    transition: opacity 0.35s ease, transform 0.35s ease;
+    opacity: 0;
+    transform: translateY(-8px);
+    pointer-events: none;
+}
+
+.uxp-savebadge.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.uxp-savebadge.saving { border-left-color: #ff9800; } /* TODO(ds): tokenise to amber ramp */
+.uxp-savebadge.saved  { border-left-color: var(--ds-status-success-border); }
+.uxp-savebadge.error  {
+    border-left-color: var(--ds-status-alert-border);
+    background: var(--ds-status-alert-bg);
+}
+
+.uxp-savebadge .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--ds-brand-secondary-fill);
+    flex: 0 0 auto;
+}
+
+.uxp-savebadge.saving .dot {
+    background: #ff9800;
+    animation: uxp-pulse 1s infinite;
+}
+
+.uxp-savebadge.saved .dot { background: var(--ds-status-success-border); }
+.uxp-savebadge.error .dot { background: var(--ds-status-alert-border); }
+
+@keyframes uxp-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.25; }
+}
