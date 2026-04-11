@@ -152,3 +152,29 @@ class TestCompileDesignSystemCss:
         result = dsh.compile_design_system_css(tmp_path, density="compact")
         assert "/* fonts */" not in result
         assert "/* primitive */" in result  # tokens still present
+
+
+class TestEncodeFontWoff2Base64:
+    def test_encodes_bytes_to_base64_string(self, tmp_path: Path):
+        woff2 = tmp_path / "Test.woff2"
+        woff2.write_bytes(b"fake-woff2-content")
+
+        result = dsh.encode_font_woff2_base64(woff2)
+
+        import base64 as b64
+        expected = b64.b64encode(b"fake-woff2-content").decode("ascii")
+        assert result == expected
+
+    def test_empty_file_returns_empty_string(self, tmp_path: Path):
+        woff2 = tmp_path / "Empty.woff2"
+        woff2.write_bytes(b"")
+
+        result = dsh.encode_font_woff2_base64(woff2)
+
+        assert result == ""
+
+    def test_raises_on_missing_file(self, tmp_path: Path):
+        missing = tmp_path / "nonexistent.woff2"
+        import pytest
+        with pytest.raises(FileNotFoundError):
+            dsh.encode_font_woff2_base64(missing)
