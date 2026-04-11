@@ -1,0 +1,18 @@
+{
+  "_meta": {
+    "comment": "Portal-level configuration for Portal COE. Per-portal identity, density, and feature flags. Read by build.py and injected via {{PORTAL.*}} placeholders. Overridable per-airport in config/airport-XXX.json under portals.portal-coe.",
+    "schema_version": "1.0",
+    "last_updated": "2026-04-11"
+  },
+  "id": "portal-coe",
+  "name": "Portal COE",
+  "name_short": "COE",
+  "tagline": "Centro de Operações de Emergência",
+  "role": "Coordenador do Centro de Operações de Emergência",
+  "density": "compact",
+  "ui": {
+    "show_utc_clock": true,
+    "show_emergency_stopwatch": true,
+    "show_occurrence_pill": true
+  }
+}

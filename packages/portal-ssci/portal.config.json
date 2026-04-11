@@ -1,0 +1,18 @@
+{
+  "_meta": {
+    "comment": "Portal-level configuration for Portal SSCI. Per-portal identity, density, and feature flags. Read by build.py and injected via {{PORTAL.*}} placeholders.",
+    "schema_version": "1.0",
+    "last_updated": "2026-04-11"
+  },
+  "id": "portal-ssci",
+  "name": "Portal SSCI",
+  "name_short": "SSCI",
+  "tagline": "Serviço de Salvamento e Combate a Incêndios",
+  "role": "Chefe SSCI / Bombeiros",
+  "density": "comfortable",
+  "ui": {
+    "show_utc_clock": true,
+    "show_emergency_stopwatch": false,
+    "show_occurrence_pill": false
+  }
+}
