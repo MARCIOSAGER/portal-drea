@@ -441,6 +441,27 @@
 }
 html { scroll-behavior: smooth; }
 .uxp-fv button:active { transform: scale(0.97); }
+
+
+        /* ===========================
+         * PLAN 2 CONSOLIDATION — block 7 (SSCI print safety net)
+         * =========================== */
+/* Rede de segurança para impressão — esconde elementos da camada UXP que nunca
+   devem aparecer em PDFs ou print. Aditivo: não toca nos @media print existentes
+   das fichas/cartões, apenas adiciona hides globais. */
+@media print {
+    .uxp-savebadge,
+    .uxp-toasts,
+    .uxp-toast,
+    .uxp-totop,
+    .uxp-skip,
+    .awm-modal-overlay,
+    #awm-section-announcer,
+    .no-print {
+        display: none !important;
+    }
+    body { background: #ffffff !important; }
+}
 </style>
 </head>
 <body>
@@ -4107,24 +4128,7 @@ if (document.readyState !== 'loading') setTimeout(stkRenderAll, 120);
 <!-- ===== /PATCH v4 — lsGet/lsSet wrapper + section change announcer / focus h2 (PSCI) ===== -->
 
 <!-- ===== PATCH v5 — Print safety rede (esconder UXP chrome + no-print global) ===== -->
-<style>
-/* Rede de segurança para impressão — esconde elementos da camada UXP que nunca
-   devem aparecer em PDFs ou print. Aditivo: não toca nos @media print existentes
-   das fichas/cartões, apenas adiciona hides globais. */
-@media print {
-    .uxp-savebadge,
-    .uxp-toasts,
-    .uxp-toast,
-    .uxp-totop,
-    .uxp-skip,
-    .awm-modal-overlay,
-    #awm-section-announcer,
-    .no-print {
-        display: none !important;
-    }
-    body { background: #ffffff !important; }
-}
-</style>
+<!-- PLAN 2 CONSOLIDATION: original block 7 merged into block 1 above -->
 <!-- ===== /PATCH v5 — Print safety rede ===== -->
 
 </body>
