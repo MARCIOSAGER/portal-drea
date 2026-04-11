@@ -63,3 +63,68 @@ def resolve_density(
 
     # Step 3: fallback
     return default
+
+
+_VALID_DENSITIES = ("compact", "comfortable")
+
+
+def compile_design_system_css(styles_root: Path, density: str) -> str:
+    """
+    Read the Design System CSS files under `styles_root` and concatenate them
+    in the deterministic cascade order defined in the spec (Section 6.2).
+
+    Current cascade (Plan 1 — Foundation Dormant):
+      1. tokens/primitive.css     (required)
+      2. tokens/semantic.css      (required)
+      3. tokens/density-<X>.css   (required, where X = density param)
+      4. base/fonts.css           (optional — OK if missing during Plan 1)
+
+    Plans 2-3 will extend this by adding base/reset.css, base/typography.css,
+    base/global.css, chrome/*.css, components/*.css, print/print.css.
+
+    Args:
+        styles_root: absolute Path to shared/styles/
+        density: "compact" or "comfortable"
+
+    Returns:
+        A single string containing the concatenated CSS. Files are separated
+        by a blank line and a banner comment indicating the source file.
+
+    Raises:
+        ValueError: if density is not "compact" or "comfortable"
+        FileNotFoundError: if any required file is missing
+    """
+    if density not in _VALID_DENSITIES:
+        raise ValueError(
+            f"Invalid density {density!r}; must be one of {_VALID_DENSITIES}"
+        )
+
+    styles_root = Path(styles_root)
+
+    # Build the ordered list of files to concatenate.
+    # Required files come first; optional files are skipped if missing.
+    required_files = [
+        styles_root / "tokens" / "primitive.css",
+        styles_root / "tokens" / "semantic.css",
+        styles_root / "tokens" / f"density-{density}.css",
+    ]
+    optional_files = [
+        styles_root / "base" / "fonts.css",
+    ]
+
+    # Verify all required files exist up-front
+    for f in required_files:
+        if not f.exists():
+            raise FileNotFoundError(f"Required DS CSS file not found: {f}")
+
+    pieces: list[str] = []
+    for f in required_files + optional_files:
+        if not f.exists():
+            continue  # optional file, skip
+        rel_path = f.relative_to(styles_root.parent).as_posix()
+        banner = f"/* ---------- {rel_path} ---------- */"
+        pieces.append(banner)
+        pieces.append(f.read_text(encoding="utf-8").rstrip())
+        pieces.append("")  # blank line separator
+
+    return "\n".join(pieces)

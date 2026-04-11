@@ -70,3 +70,85 @@ class TestResolveDensity:
 
         # Building portal-coe, so SSCI override does not apply
         assert dsh.resolve_density(airport, portal_config) == "compact"
+
+
+class TestCompileDesignSystemCss:
+    def _setup_fake_styles(self, root: Path) -> None:
+        """Build a minimal shared/styles/ tree for tests."""
+        (root / "tokens").mkdir(parents=True)
+        (root / "tokens" / "primitive.css").write_text(
+            "/* primitive */\n:root { --a: 1; }\n", encoding="utf-8"
+        )
+        (root / "tokens" / "semantic.css").write_text(
+            "/* semantic */\n:root { --b: var(--a); }\n", encoding="utf-8"
+        )
+        (root / "tokens" / "density-compact.css").write_text(
+            "/* compact */\n:root[data-density='compact'] { --c: 1; }\n", encoding="utf-8"
+        )
+        (root / "tokens" / "density-comfortable.css").write_text(
+            "/* comfortable */\n:root[data-density='comfortable'] { --c: 2; }\n", encoding="utf-8"
+        )
+        (root / "base").mkdir()
+        (root / "base" / "fonts.css").write_text(
+            "/* fonts */\n@font-face { font-family: 'Test'; }\n", encoding="utf-8"
+        )
+
+    def test_concatenates_tokens_in_cascade_order(self, tmp_path: Path):
+        self._setup_fake_styles(tmp_path)
+
+        result = dsh.compile_design_system_css(tmp_path, density="compact")
+
+        # All expected content present
+        assert "/* primitive */" in result
+        assert "/* semantic */" in result
+        assert "/* compact */" in result
+        assert "/* fonts */" in result
+
+        # Order: primitive → semantic → density → fonts
+        assert result.index("/* primitive */") < result.index("/* semantic */")
+        assert result.index("/* semantic */") < result.index("/* compact */")
+        assert result.index("/* compact */") < result.index("/* fonts */")
+
+    def test_compact_excludes_comfortable_tokens(self, tmp_path: Path):
+        self._setup_fake_styles(tmp_path)
+
+        result = dsh.compile_design_system_css(tmp_path, density="compact")
+
+        assert "/* compact */" in result
+        assert "/* comfortable */" not in result
+        assert "--c: 1" in result
+        assert "--c: 2" not in result
+
+    def test_comfortable_excludes_compact_tokens(self, tmp_path: Path):
+        self._setup_fake_styles(tmp_path)
+
+        result = dsh.compile_design_system_css(tmp_path, density="comfortable")
+
+        assert "/* comfortable */" in result
+        assert "/* compact */" not in result
+
+    def test_raises_on_invalid_density(self, tmp_path: Path):
+        self._setup_fake_styles(tmp_path)
+        import pytest
+
+        with pytest.raises(ValueError, match="density"):
+            dsh.compile_design_system_css(tmp_path, density="medium")
+
+    def test_raises_when_primitive_css_missing(self, tmp_path: Path):
+        (tmp_path / "tokens").mkdir()
+        # Do not create primitive.css
+        import pytest
+
+        with pytest.raises(FileNotFoundError):
+            dsh.compile_design_system_css(tmp_path, density="compact")
+
+    def test_handles_missing_base_fonts_css_gracefully_in_phase_1(self, tmp_path: Path):
+        """Phase 1 may or may not have base/fonts.css at first — compile must not
+        crash if it is missing (fonts are optional during dormant phase)."""
+        self._setup_fake_styles(tmp_path)
+        (tmp_path / "base" / "fonts.css").unlink()
+
+        # Should not raise; result omits the fonts section
+        result = dsh.compile_design_system_css(tmp_path, density="compact")
+        assert "/* fonts */" not in result
+        assert "/* primitive */" in result  # tokens still present
