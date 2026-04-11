@@ -106,13 +106,23 @@ Portal_DREA/
 │       └── dist/                  Output (gitignored)
 │           └── Portal_PSCI_AWM.html
 │
-├── shared/                        Código partilhado entre packages
+├── shared/                        Código partilhado entre packages (DS SGA)
 │   ├── README.md                  Governance do que vai para shared/
-│   ├── assets/
-│   │   ├── logo-sga.png
-│   │   └── logo-sga-white.png
-│   ├── styles/                    (futuro) awm-modal.css, awm-toast.css, etc.
-│   └── scripts/                   (futuro) awm-modal.js, awm-contacts.js, etc.
+│   ├── styles/                    Design System SGA CSS
+│   │   ├── README.md              Contributor guide (cascade, namespace, governance)
+│   │   ├── tokens/                primitive, semantic, density-{compact,comfortable}
+│   │   ├── base/                  reset, fonts, typography, global
+│   │   ├── chrome/                shell-bar, sidebar, page-grid, splash, footer
+│   │   ├── components/            button, card, form-group, table, awm-modal, ... (13 ficheiros)
+│   │   └── print/print.css        @media print + @page institucional
+│   ├── scripts/                   JavaScript partilhado
+│   │   ├── chrome/splash.js       splash lifecycle
+│   │   └── utilities/date-utc.js  UTC clock ticker
+│   └── assets/
+│       ├── fonts/                 Inter-VariableFont.woff2 + LICENSE + README
+│       ├── icons/                 sprite.svg (40+ ícones) + sources/
+│       ├── logo-sga-mark.svg      logo SGA para shell bar (inline SVG)
+│       └── logo-sga-full.svg      logo SGA + tagline para splash (inline SVG)
 │
 ├── config/                        Configuração por aeroporto (single-tenant)
 │   └── airport-fnmo.json          Config do FNMO (referência)
@@ -165,6 +175,58 @@ Portal_DREA/
 ```
 
 A **camada de dados abstracta** é o que permite trocar a persistência sem reescrever a lógica. Implementada nos PATCHes v9/v4 (`lsGet`/`lsSet`) e v14 (`window.awmContacts`) do portal COE. A migração paralela no SSCI está prevista para a Fase 1 Etapa 3.
+
+A camada **APRESENTAÇÃO** de ambos os portais consome o Design System SGA partilhado a partir de `shared/styles/` (ver secção seguinte).
+
+---
+
+## Design System SGA
+
+A partir da v2.1.0-alpha.1, os dois portais partilham uma fundação visual unificada — o Design System SGA. Todo o CSS estrutural (chrome, componentes, tipografia, cores), JS de chrome (splash, clock), e assets (fonts, ícones, logótipos) vivem em `shared/`.
+
+### Pitch
+
+Uma única fundação visual para todos os portais DREA — mesmo look-and-feel, mesmo vocabulário de componentes, mesma identidade SGA — com densidade configurável por portal (compact para COE, comfortable para SSCI).
+
+### Motivação
+
+Antes da v2.1.0, o Portal COE era dark-themed e o SSCI era claro. Cada portal tinha o seu próprio CSS duplicado (~8 KB de componentes copy-pasted), logótipos diferentes, e convenções divergentes. Adicionar um terceiro portal significaria triplicar o esforço de design. O DS SGA resolve isto:
+
+- **Zero** CSS duplicado entre portais
+- **Uma** fundação, muitos portais
+- **Rebrand** é edição de 1 linha em `semantic.css`
+
+### Localização
+
+- `shared/styles/` — tokens (3 camadas), base, chrome, components, print
+- `shared/scripts/` — splash lifecycle, UTC ticker
+- `shared/assets/fonts/` — Inter Variable woff2 (embebida em base64 pelo build)
+- `shared/assets/icons/` — sprite SVG com 40+ ícones Heroicons
+- `shared/assets/logo-sga-*.svg` — logótipos canónicos
+
+### Arquitectura em 3 camadas
+
+```
+components/*.css         ← consome apenas semantic
+     ↑
+tokens/semantic.css      ← aliases com significado (--brand-primary, --status-info-bg)
+     ↑
+tokens/primitive.css     ← valores crús (--blue-800, --gray-100, --text-md)
+```
+
+**Regra de ouro**: componentes nunca referenciam primitives directamente. Primitives são opacos.
+
+### Cascade order (determinística)
+
+O `scripts/ds_build_helpers.py::compile_design_system_css()` concatena em ordem estrita: tokens → base → chrome → components → print. A ordem está coberta por testes em `tests/test_ds_build_helpers.py`.
+
+### Densidade por portal
+
+Cada portal tem `portal.config.json::density` com `"compact"` ou `"comfortable"`. O build injecta o ficheiro apropriado de `tokens/density-*.css` na cascade. Aeroportos podem fazer override via `packages/portal-XXX/config/airport-YYYY.json::portals.XXX.density`.
+
+### Para detalhes
+
+Ver [`docs/design-system-guide.md`](design-system-guide.md) — ~500 linhas cobrindo tokens, componentes, chrome, ícones, tipografia, WCAG, e o template para adicionar um portal novo.
 
 ---
 
@@ -292,12 +354,13 @@ Internet Explorer **não é suportado**.
 
 ## Roadmap técnico
 
-### Fase 1 — Profissionalização (em curso)
+### Fase 1 — Profissionalização ✅ COMPLETA
 
 - [x] **Etapa 1**: Estrutura git, repositório GitHub, documentação inicial, logos extraídos
 - [x] **Etapa 2**: Build scripts passthrough funcionais (COE + SSCI + build-all)
-- [ ] **Etapa 3**: Extracção de config externa (`AWM_CONTACTS_DEFAULT` → `config/airport-fnmo.json`)
-- [ ] **Etapa 4**: Branding visível em runtime (footer com versão, página Sobre), manual de utilizador, checklist de validação
+- [x] **Etapa 3**: Extracção de config externa (`AWM_CONTACTS_DEFAULT` → `config/airport-fnmo.json`)
+- [x] **Etapa 4**: Branding visível em runtime (footer com versão), manual de utilizador
+- [x] **Etapa 5**: **Design System SGA** (v2.1.0-alpha.1) — tokens em `shared/styles/tokens/`, Inter Variable embebida, sprite SVG de 40+ ícones, chrome consolidado, componentes tokenizados, ambos os portais migrados para light theme com identidade visual unificada
 
 ### Fase 2 — Instalador desktop
 
@@ -340,6 +403,8 @@ Para aeroportos grandes com 10+ utilizadores COE simultâneos, instalação prem
 
 - **v1.0 — v1.19** (2025–2026 Q1) — Portais monolíticos single-file editados directamente. Cada sessão era um "patch" numerado injectado antes de `</body>`. Portal COE e Portal PSCI evoluíram em paralelo mas independentemente.
 - **v2.0.0-alpha.1** (2026-04-10) — Monorepo Portal DREA criado, packages separados, git + GitHub privado, build pipeline Python, documentação profissional.
-- **v2.0** (previsto) — Fase 1 completa: config externa por aeroporto, branding visível, manuais.
-- **v2.1** (futuro) — Fase 2: instaladores Tauri.
-- **v3.0** (futuro) — Fase 3: ferramentas de suporte à escala.
+- **v2.0.0-beta.1** (2026-04-11) — Fase 1 Etapas 1-4 completas: config externa por aeroporto, branding visível, manuais.
+- **v2.1.0-alpha.1** (2026-04-11) — **Design System SGA completo**: tokens em 3 camadas (primitive → semantic → density), Inter Variable embebida, sprite SVG, chrome consolidado (shell bar + sidebar + splash + footer), ~13 componentes tokenizados, ambos os portais migrados para light theme com identidade SGA unificada. Fase 1 concluída (Etapas 1-5).
+- **v2.2** (futuro) — extracção dos JS utilities restantes + global body typography switch.
+- **v3.0** (futuro) — Fase 2: instaladores Tauri.
+- **v4.0** (futuro) — Fase 3: LAN SQLite server opcional.
