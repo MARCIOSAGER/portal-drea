@@ -1,5 +1,15 @@
 # Design System SGA — Plan 3: COE Component Migration (Implementation Plan)
 
+> **Status:** ✅ **COMPLETED 2026-04-11** on branch `feat/ds-coe-components` (worktree `../Portal_DREA-ds-components`).
+> 12 atomic commits + Task 1 helper extension + final marker.
+> 38 pytest tests passing (33 from Plans 1+2 + 5 new for components/ handling).
+> 12 new CSS files in `shared/styles/components/`:
+> button, badge, form-group, card, table, tabs, dropdown, awm-modal, awm-toast, uxp-savebadge, skeleton, empty-state.
+> Legacy JS-load-bearing class names preserved verbatim (.awm-modal*, .awm-toast*, .uxp-savebadge*, .contact-card*, .alarm-card*, .cr-chip, .tab-content).
+> Invariant held: body font-family still legacy Segoe UI stack (Inter loaded but dormant), DS tokens resolve correctly, data-density attribute active.
+> File size deltas: COE +21,339 bytes, SSCI +36,112 bytes (DS component CSS propagated via compile_design_system_css to both portals).
+> Visual validation by user deferred to end-of-plan review.
+
 > **Status:** 📝 Draft ready for execution (Plan 3 of 6 in the DS SGA migration sequence).
 > **Prerequisite:** Plan 1 ✅ merged at `f81d6db` (Foundation Dormant) and Plan 2 ✅ merged at `9dcd9ef` (Style Block Consolidation). `main` must be clean and at `bc11d89` or later before starting.
 > **Next plan after this one:** Plan 4 — COE Chrome Migration (shell bar, sidebar, splash, print).
