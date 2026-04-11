@@ -10,6 +10,17 @@
         /* ===========================
          * PLAN 2 CONSOLIDATION — block 1 (SSCI legacy main)
          * =========================== */
+        /* ===== Plan 5 Tasks 2-7 — legacy component + chrome CSS removed =====
+         * Legacy component CSS migrated to shared/styles/components/*.css
+         *   (button, badge, form-group, card, table)
+         * Legacy chrome CSS (.header, .layout, .sidebar, .main, .section,
+         *   h1.page-title, .page-desc) deferred to Task 13 HTML surgery.
+         * Legacy :root tokens retained as the only survivor — domain CSS
+         *   (.result-toggle, #tr-occ-real-block, uxp-*) still depends on
+         *   them. Plan 6 namespace cleanup will remove.
+         * .separator stays inline with DS token reference — Plan 3 did
+         *   not extract shared/styles/components/divider.css.
+         */
         :root {
             --dark-blue: #004C7B;
             --medium-blue: #0094CF;
@@ -21,87 +32,8 @@
             --amber: #f39c12;
             --gray-light: #ecf0f1;
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--light-bg); color: #333; }
-        
-        /* Header */
-        .header { background: linear-gradient(135deg, var(--dark-blue), var(--medium-blue)); color: white; padding: 0.8rem 1.5rem; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 8px rgba(0,0,0,0.15); position: sticky; top: 0; z-index: 100; }
-        .header h1 { font-size: 1.1rem; font-weight: 600; }
-        .header-sub { font-size: 0.75rem; opacity: 0.8; }
-        .header-badge { background: rgba(255,255,255,0.15); padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.75rem; }
-        
-        /* Layout */
-        .layout { display: flex; min-height: calc(100vh - 60px); }
-        .sidebar { width: 240px; background: white; border-right: 1px solid #e0e0e0; padding: 1rem 0; flex-shrink: 0; overflow-y: auto; }
-        .sidebar h3 { padding: 0 1rem; color: var(--dark-blue); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem; margin-top: 1rem; }
-        .sidebar h3:first-child { margin-top: 0; }
-        .nav-item { display: block; padding: 0.5rem 1rem; cursor: pointer; font-size: 0.85rem; color: #555; border: none; background: none; width: 100%; text-align: left; transition: all 0.2s; border-left: 3px solid transparent; }
-        .nav-item:hover { background: #f0f8ff; color: var(--medium-blue); }
-        .nav-item.active { background: #e8f4fd; color: var(--dark-blue); font-weight: 600; border-left-color: var(--medium-blue); }
-        .nav-icon { margin-right: 0.5rem; }
-        
-        .main { flex: 1; padding: 1.5rem; overflow-y: auto; max-width: 900px; }
-        .section { display: none; }
-        .section.active { display: block; }
-        
-        /* Cards */
-        h1.page-title { color: var(--dark-blue); font-size: 1.3rem; margin-bottom: 0.3rem; }
-        .page-desc { color: #888; font-size: 0.85rem; margin-bottom: 1.5rem; }
-        .form-card { background: white; border: 1px solid #e0e0e0; border-radius: 10px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 1px 4px rgba(0,0,0,0.05); }
-        .form-card h3 { color: var(--dark-blue); font-size: 1rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
-        .form-card .badge { background: var(--medium-blue); color: white; font-size: 0.65rem; padding: 2px 8px; border-radius: 10px; font-weight: 600; }
-        
-        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-bottom: 0.8rem; }
-        .form-row.three { grid-template-columns: 1fr 1fr 1fr; }
-        .form-row.four { grid-template-columns: 1fr 1fr 1fr 1fr; }
-        .form-row.full { grid-template-columns: 1fr; }
-        .form-group { display: flex; flex-direction: column; }
-        .form-group label { font-size: 0.75rem; font-weight: 600; color: #555; margin-bottom: 0.2rem; }
-        .form-group input, .form-group select, .form-group textarea { padding: 0.4rem 0.6rem; border: 1px solid #ddd; border-radius: 4px; font-size: 0.85rem; font-family: inherit; }
-        .form-group textarea { resize: vertical; }
-        
-        /* Checklist */
-        .check-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
-        .check-table th { background: var(--dark-blue); color: white; padding: 0.5rem; text-align: center; font-size: 0.75rem; }
-        .check-table th:first-child { text-align: left; }
-        .check-table td { padding: 0.4rem 0.5rem; border-bottom: 1px solid #eee; }
-        .check-table tr:nth-child(even) { background: #fafafa; }
-        .check-table td:not(:first-child) { text-align: center; width: 50px; }
-        .check-table .obs-cell { width: 120px; }
-        .check-table .obs-cell input { width: 100%; font-size: 0.8rem; padding: 2px 4px; border: 1px solid #ddd; border-radius: 3px; }
-        .check-table input[type="checkbox"] { width: 16px; height: 16px; cursor: pointer; }
-        .check-table .section-header { background: #e8f4fd; font-weight: 700; color: var(--dark-blue); }
-        
-        /* Buttons */
-        .btn { padding: 0.5rem 1rem; border: none; border-radius: 6px; cursor: pointer; font-size: 0.8rem; font-weight: 600; transition: all 0.2s; }
-        .btn-primary { background: var(--medium-blue); color: white; }
-        .btn-primary:hover { background: var(--dark-blue); }
-        .btn-danger { background: var(--warning-red); color: white; }
-        .btn-success { background: var(--success-green); color: white; }
-        .btn-gray { background: #888; color: white; }
-        .btn-row { display: flex; gap: 0.5rem; justify-content: flex-end; margin-top: 1rem; flex-wrap: wrap; }
-        
-        .separator { border: none; border-top: 2px solid var(--medium-blue); margin: 1rem 0; }
-        
-        /* Dashboard */
-        .dash-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
-        .dash-card { background: white; border: 1px solid #e0e0e0; border-radius: 8px; padding: 1rem; text-align: center; border-top: 3px solid var(--medium-blue); }
-        .dash-card .dash-icon { font-size: 2rem; margin-bottom: 0.3rem; }
-        .dash-card .dash-title { font-size: 0.8rem; color: #888; }
-        .dash-card .dash-value { font-size: 1.5rem; font-weight: 700; color: var(--dark-blue); }
-        
-        /* Time display */
-        .time-display { font-size: 0.85rem; color: rgba(255,255,255,0.9); }
-        
-        @media (max-width: 768px) {
-            .layout { flex-direction: column; }
-            .sidebar { width: 100%; border-right: none; border-bottom: 1px solid #e0e0e0; display: flex; flex-wrap: wrap; padding: 0.5rem; }
-            .sidebar h3 { display: none; }
-            .nav-item { flex: 0 0 auto; border-left: none !important; border-bottom: 2px solid transparent; padding: 0.4rem 0.8rem; font-size: 0.78rem; }
-            .nav-item.active { border-bottom-color: var(--medium-blue); }
-            .form-row { grid-template-columns: 1fr; }
-            .form-row.three, .form-row.four { grid-template-columns: 1fr 1fr; }
-        }
+
+        .separator { border: none; border-top: 2px solid var(--ds-brand-secondary-fill); margin: 1rem 0; }
 
         /* ===== Result Toggle Buttons (OK / NOK) ===== */
         .result-toggle { display: inline-flex; gap: 4px; }
@@ -148,159 +80,15 @@
         /* Células da tabela de inspecção ficam centradas */
         .check-table td .result-toggle { justify-content: center; }
 
-        /* ===== Elegant Toast + Modal Alert System ===== */
-        #awmToastContainer {
-            position: fixed;
-            top: 16px;
-            right: 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            z-index: 100000;
-            pointer-events: none;
-            max-width: 380px;
-        }
-        .awm-toast {
-            pointer-events: auto;
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-            background: #fff;
-            border-radius: 8px;
-            padding: 12px 14px 12px 14px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.16), 0 2px 6px rgba(0,0,0,0.08);
-            border-left: 4px solid #0094CF;
-            font-family: -apple-system, Segoe UI, Roboto, sans-serif;
-            font-size: 0.88rem;
-            color: #263238;
-            min-width: 280px;
-            position: relative;
-            overflow: hidden;
-            animation: awmToastIn 0.35s cubic-bezier(.22,1.02,.58,1.08);
-        }
-        .awm-toast.awm-toast-out { animation: awmToastOut 0.3s ease forwards; }
-        .awm-toast-success { border-left-color: #2e7d32; }
-        .awm-toast-warning { border-left-color: #f57f17; }
-        .awm-toast-error { border-left-color: #d32f2f; }
-        .awm-toast-info { border-left-color: #0094CF; }
-        .awm-toast-icon { font-size: 1.3rem; line-height: 1; flex: 0 0 auto; }
-        .awm-toast-body { flex: 1 1 auto; min-width: 0; }
-        .awm-toast-title { font-weight: 700; color: #004C7B; font-size: 0.9rem; margin-bottom: 2px; }
-        .awm-toast-success .awm-toast-title { color: #1b5e20; }
-        .awm-toast-warning .awm-toast-title { color: #e65100; }
-        .awm-toast-error .awm-toast-title { color: #b71c1c; }
-        .awm-toast-msg { font-size: 0.82rem; color: #455a64; line-height: 1.4; white-space: pre-wrap; }
-        .awm-toast-close {
-            background: none; border: none; font-size: 1.4rem; line-height: 0.8;
-            color: #90a4ae; cursor: pointer; padding: 0 4px; flex: 0 0 auto;
-        }
-        .awm-toast-close:hover { color: #455a64; }
-        .awm-toast-progress {
-            position: absolute; bottom: 0; left: 0; height: 3px;
-            background: rgba(0,76,123,0.35);
-            animation-name: awmToastProgress;
-            animation-timing-function: linear;
-            animation-fill-mode: forwards;
-        }
-        .awm-toast-success .awm-toast-progress { background: rgba(46,125,50,0.45); }
-        .awm-toast-warning .awm-toast-progress { background: rgba(245,127,23,0.45); }
-        .awm-toast-error .awm-toast-progress { background: rgba(211,47,47,0.45); }
-
-        .awm-modal-overlay {
-            position: fixed; inset: 0;
-            background: rgba(0,30,55,0.55);
-            backdrop-filter: blur(3px);
-            display: flex; align-items: center; justify-content: center;
-            z-index: 100001;
-            animation: awmModalFade 0.2s ease;
-            padding: 1rem;
-        }
-        .awm-modal-overlay.awm-modal-closing { animation: awmModalFade 0.2s ease reverse; }
-        .awm-modal {
-            background: #fff; border-radius: 12px;
-            box-shadow: 0 30px 80px rgba(0,0,0,0.35);
-            max-width: 460px; width: 100%;
-            overflow: hidden;
-            font-family: -apple-system, Segoe UI, Roboto, sans-serif;
-            animation: awmModalPop 0.25s cubic-bezier(.2,.9,.3,1.2);
-        }
-        .awm-modal-header {
-            display: flex; align-items: center; gap: 12px;
-            padding: 18px 22px 12px 22px;
-            border-bottom: 1px solid #eceff1;
-        }
-        .awm-modal-icon {
-            font-size: 1.8rem; line-height: 1;
-            width: 44px; height: 44px;
-            display: flex; align-items: center; justify-content: center;
-            border-radius: 50%;
-            background: #e3f2fd;
-            flex: 0 0 auto;
-        }
-        .awm-modal-warning .awm-modal-icon { background: #fff3e0; }
-        .awm-modal-danger .awm-modal-icon { background: #ffebee; }
-        .awm-modal-title {
-            font-size: 1.1rem; font-weight: 700; color: #004C7B;
-        }
-        .awm-modal-warning .awm-modal-title { color: #e65100; }
-        .awm-modal-danger .awm-modal-title { color: #b71c1c; }
-        .awm-modal-body {
-            padding: 16px 22px 18px 22px;
-            font-size: 0.92rem; color: #37474f;
-            line-height: 1.55;
-            white-space: pre-wrap;
-        }
-        .awm-modal-footer {
-            padding: 12px 22px 18px 22px;
-            display: flex; gap: 10px; justify-content: flex-end;
-            background: #f5f7fa;
-            border-top: 1px solid #eceff1;
-        }
-        .awm-modal-btn {
-            padding: 9px 20px; border-radius: 6px; border: none;
-            font-size: 0.88rem; font-weight: 600; cursor: pointer;
-            transition: all 0.15s;
-            min-width: 100px;
-        }
-        .awm-modal-btn-cancel {
-            background: #fff; color: #546e7a; border: 1px solid #cfd8dc;
-        }
-        .awm-modal-btn-cancel:hover { background: #eceff1; }
-        .awm-modal-btn-primary {
-            background: #0094CF; color: #fff;
-        }
-        .awm-modal-btn-primary:hover { background: #007bb0; }
-        .awm-modal-btn-danger {
-            background: #d32f2f; color: #fff;
-        }
-        .awm-modal-btn-danger:hover { background: #b71c1c; }
-
-        @keyframes awmToastIn {
-            from { transform: translateX(120%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-        @keyframes awmToastOut {
-            from { transform: translateX(0); opacity: 1; }
-            to { transform: translateX(120%); opacity: 0; }
-        }
-        @keyframes awmToastProgress {
-            from { width: 100%; }
-            to { width: 0%; }
-        }
-        @keyframes awmModalFade {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        @keyframes awmModalPop {
-            from { transform: scale(0.85) translateY(10px); opacity: 0; }
-            to { transform: scale(1) translateY(0); opacity: 1; }
-        }
-        @media (max-width: 520px) {
-            #awmToastContainer { left: 8px; right: 8px; max-width: none; }
-            .awm-toast { min-width: 0; }
-            .awm-modal-footer { flex-direction: column-reverse; }
-            .awm-modal-btn { width: 100%; }
-        }
+        /* ===== Plan 5 Tasks 8+9 — awm-modal + awm-toast migrated =====
+         * The entire awm-toast + awm-modal CSS (including keyframes,
+         * responsive rules for mobile) now lives in:
+         *   shared/styles/components/awm-modal.css (Plan 3 Task 9)
+         *   shared/styles/components/awm-toast.css (Plan 3 Task 10)
+         * SSCI JS (window.notify, window.awmAlert) continues to work
+         * verbatim because class names are preserved identical in the
+         * shared files. No SSCI JS changes required.
+         */
     
 
         /* ===========================
@@ -362,25 +150,7 @@
     font-size: 0.9rem; transition: top 0.2s;
 }
 .uxp-skip:focus { top: 0; outline: 3px solid #38C7F4; }
-.uxp-savebadge {
-    position: fixed; top: 12px; right: 12px; z-index: 9998;
-    background: #fff; border: 1px solid #cfd8dc; border-left: 4px solid #0094CF;
-    padding: 6px 12px; border-radius: 6px; font-size: 0.78rem;
-    color: #263238; box-shadow: 0 4px 14px rgba(0,0,0,0.08);
-    display: flex; align-items: center; gap: 6px; min-width: 160px;
-    transition: opacity 0.35s ease, transform 0.35s ease;
-    opacity: 0; transform: translateY(-8px); pointer-events: none;
-}
-.uxp-savebadge.visible { opacity: 1; transform: translateY(0); }
-.uxp-savebadge.saving { border-left-color: #ff9800; }
-.uxp-savebadge.saved { border-left-color: #2e7d32; }
-.uxp-savebadge .dot {
-    width: 8px; height: 8px; border-radius: 50%;
-    background: #0094CF; flex: 0 0 auto;
-}
-.uxp-savebadge.saving .dot { background: #ff9800; animation: uxp-pulse 1s infinite; }
-.uxp-savebadge.saved .dot { background: #2e7d32; }
-@keyframes uxp-pulse { 0%,100%{opacity:1;}50%{opacity:0.25;} }
+/* Plan 5 Task 10 — .uxp-savebadge migrated to shared/styles/components/uxp-savebadge.css */
 .uxp-toasts {
     position: fixed; bottom: 18px; right: 18px; z-index: 99997;
     display: flex; flex-direction: column; gap: 8px; max-width: 340px;
