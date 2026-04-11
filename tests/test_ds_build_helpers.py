@@ -240,6 +240,73 @@ class TestCompileDesignSystemCss:
         assert "Do not include me" not in result
         assert "/* backup */" not in result
 
+    # ---- Plan 4: full cascade (base/chrome/components/print) ----
+
+    def _setup_plan4_styles(self, root: Path) -> None:
+        self._setup_fake_styles(root)  # tokens + base/fonts.css
+        (root / "base" / "reset.css").write_text("/* reset */\n", encoding="utf-8")
+        (root / "base" / "typography.css").write_text("/* typography */\n", encoding="utf-8")
+        (root / "base" / "global.css").write_text("/* global */\n", encoding="utf-8")
+        (root / "chrome").mkdir()
+        (root / "chrome" / "shell-bar.css").write_text("/* shell-bar */\n", encoding="utf-8")
+        (root / "chrome" / "sidebar.css").write_text("/* sidebar */\n", encoding="utf-8")
+        (root / "chrome" / "page-grid.css").write_text("/* page-grid */\n", encoding="utf-8")
+        (root / "chrome" / "splash.css").write_text("/* splash */\n", encoding="utf-8")
+        (root / "chrome" / "footer.css").write_text("/* footer */\n", encoding="utf-8")
+        (root / "components").mkdir()
+        (root / "components" / "button.css").write_text("/* button */\n", encoding="utf-8")
+        (root / "print").mkdir()
+        (root / "print" / "print.css").write_text("/* print */\n", encoding="utf-8")
+
+    def test_plan4_full_cascade_order(self, tmp_path: Path):
+        """tokens → base/ (alpha) → chrome/ (alpha) → components/ → print/"""
+        self._setup_plan4_styles(tmp_path)
+        r = dsh.compile_design_system_css(tmp_path, density="compact")
+        # tokens first
+        assert r.index("/* primitive */") < r.index("/* semantic */") < r.index("/* compact */")
+        # base/ alphabetical: fonts, global, reset, typography
+        assert r.index("/* compact */") < r.index("/* fonts */")
+        assert r.index("/* fonts */") < r.index("/* global */")
+        assert r.index("/* global */") < r.index("/* reset */")
+        assert r.index("/* reset */") < r.index("/* typography */")
+        # chrome/ alphabetical: footer, page-grid, shell-bar, sidebar, splash
+        assert r.index("/* typography */") < r.index("/* footer */")
+        assert r.index("/* footer */") < r.index("/* page-grid */")
+        assert r.index("/* page-grid */") < r.index("/* shell-bar */")
+        assert r.index("/* shell-bar */") < r.index("/* sidebar */")
+        assert r.index("/* sidebar */") < r.index("/* splash */")
+        # components/ next
+        assert r.index("/* splash */") < r.index("/* button */")
+        # print last
+        assert r.index("/* button */") < r.index("/* print */")
+
+    def test_plan4_missing_base_dir_is_ok(self, tmp_path: Path):
+        (tmp_path / "tokens").mkdir()
+        (tmp_path / "tokens" / "primitive.css").write_text("/* primitive */\n", encoding="utf-8")
+        (tmp_path / "tokens" / "semantic.css").write_text("/* semantic */\n", encoding="utf-8")
+        (tmp_path / "tokens" / "density-compact.css").write_text("/* compact */\n", encoding="utf-8")
+        r = dsh.compile_design_system_css(tmp_path, density="compact")
+        assert "/* primitive */" in r
+        assert "/* reset */" not in r
+
+    def test_plan4_empty_chrome_dir_is_ok(self, tmp_path: Path):
+        self._setup_fake_styles(tmp_path)
+        (tmp_path / "chrome").mkdir()
+        r = dsh.compile_design_system_css(tmp_path, density="compact")
+        assert "/* primitive */" in r
+
+    def test_plan4_print_css_is_always_last(self, tmp_path: Path):
+        self._setup_plan4_styles(tmp_path)
+        (tmp_path / "chrome" / "zzz.css").write_text("/* zzz */\n", encoding="utf-8")
+        r = dsh.compile_design_system_css(tmp_path, density="compact")
+        assert r.index("/* zzz */") < r.index("/* print */")
+
+    def test_plan4_components_between_chrome_and_print(self, tmp_path: Path):
+        self._setup_plan4_styles(tmp_path)
+        r = dsh.compile_design_system_css(tmp_path, density="compact")
+        assert r.index("/* sidebar */") < r.index("/* button */")
+        assert r.index("/* button */") < r.index("/* print */")
+
 
 class TestEncodeFontWoff2Base64:
     def test_encodes_bytes_to_base64_string(self, tmp_path: Path):
