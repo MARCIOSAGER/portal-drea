@@ -246,61 +246,113 @@ html { scroll-behavior: smooth; }
 <!-- ELEGANT TOAST CONTAINER -->
 <div id="awmToastContainer" aria-live="polite" aria-atomic="true"></div>
 
-<!-- HEADER -->
-<div class="header">
-    <div>
-        <h1>🚒 Portal PSCI — SSCI</h1>
-        <div class="header-sub">{{AIRPORT.NAME}} — {{AIRPORT.OACI}} — {{AIRPORT.LOCATION}}</div>
+<!-- Splash screen (Plan 5 Task 13) — fade-out via splash.js after 1500ms. Bypass: ?nosplash=1 -->
+<div class="ds-splash" id="dsSplash" data-state="in" role="status" aria-live="polite">
+    <div class="ds-splash__logo">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><use href="#icon-sga-mark"/></svg>
     </div>
-    <div style="text-align:right;">
-        <div class="time-display" id="psci-clock"></div>
-        <div class="header-badge" id="psci-turno">Turno: —</div>
-    </div>
+    <h1 class="ds-splash__portal-name">Portal SSCI</h1>
+    <p class="ds-splash__tagline">DREA · Direcção de Resposta a Emergências Aeroportuárias</p>
+    <p class="ds-splash__airport">{{AIRPORT.OACI}} · {{AIRPORT.NAME}}</p>
+    <p class="ds-splash__version">v{{VERSION}} · {{BUILD_DATE_SHORT}}</p>
 </div>
 
-<!-- LAYOUT -->
-<div class="layout">
-    <!-- SIDEBAR -->
-    <nav class="sidebar">
-        <h3>Painel</h3>
-        <button class="nav-item active" onclick="openSection('dashboard')"><span class="nav-icon">📊</span>Dashboard</button>
-        <button class="nav-item" onclick="openSection('mapas')"><span class="nav-icon">🗺</span>Mapas Quadrícula</button>
-        
-        <h3>Formulários Diários</h3>
-        <button class="nav-item" onclick="openSection('reg-servico')"><span class="nav-icon">📋</span>Registo de Serviço</button>
-        <button class="nav-item" onclick="openSection('insp-w01')"><span class="nav-icon">🚒</span>Inspecção Whisky 01</button>
-        <button class="nav-item" onclick="openSection('insp-w02')"><span class="nav-icon">🚒</span>Inspecção Whisky 02</button>
-        <button class="nav-item" onclick="openSection('insp-resgate-w01')"><span class="nav-icon">🧰</span>Eqp. Resgate W01</button>
-        <button class="nav-item" onclick="openSection('insp-resgate-w02')"><span class="nav-icon">🧰</span>Eqp. Resgate W02</button>
-        <button class="nav-item" onclick="openSection('teste-comms')"><span class="nav-icon">📡</span>Teste Comunicações</button>
-        
-        <h3>Formulários Operacionais</h3>
-        <button class="nav-item" onclick="openSection('avaria')"><span class="nav-icon">⚠</span>Avaria Equipamento</button>
-        <button class="nav-item" onclick="openSection('combustivel')"><span class="nav-icon">⛽</span>Abastecimento VCI</button>
-        <button class="nav-item" onclick="openSection('tempo-resp')"><span class="nav-icon">⏱</span>Tempo Resposta</button>
-        <button class="nav-item" onclick="openSection('presenca')"><span class="nav-icon">✅</span>Lista Presença</button>
+<!-- DS Shell Bar (replaces legacy .header) — Plan 5 Task 13 -->
+<header class="ds-shell-bar" role="banner">
+    <div class="ds-shell-bar__brand">
+        <span class="ds-shell-bar__logo" aria-hidden="true">
+            <svg viewBox="0 0 32 32"><use href="#icon-sga-mark"/></svg>
+        </span>
+        <span class="ds-shell-bar__portal-name">Portal SSCI</span>
+        <span class="ds-shell-bar__separator" aria-hidden="true"></span>
+        <span class="ds-shell-bar__oaci">{{AIRPORT.OACI}}</span>
+    </div>
 
-        <h3>Recursos</h3>
-        <button class="nav-item" onclick="openSection('stock')"><span class="nav-icon">📦</span>Controlo de Estoque</button>
+    <div class="ds-shell-bar__breadcrumb" aria-label="Navigation breadcrumb">
+        <span class="ds-shell-bar__breadcrumb-item" id="dsBreadcrumbCurrent">Dashboard</span>
+    </div>
 
-        <h3>Checklists Mensais</h3>
-        <button class="nav-item" onclick="openSection('checklist-coe')"><span class="nav-icon">📝</span>CheckList COE</button>
-        <button class="nav-item" onclick="openSection('checklist-pcm')"><span class="nav-icon">📝</span>CheckList PCM</button>
+    <div class="ds-shell-bar__meta">
+        <!-- Emergency pill + stopwatch intentionally OMITTED for SSCI per
+             portal.config.json: ui.show_occurrence_pill=false,
+             ui.show_emergency_stopwatch=false. -->
 
-        <h3>Sistema</h3>
-        <button class="nav-item" onclick="openSection('ajuda')"><span class="nav-icon">❓</span>Guia Rápido</button>
-        <button class="nav-item" onclick="openSection('configuracoes')"><span class="nav-icon">⚙</span>Configurações</button>
-
-        <!-- Footer de versão (injectado via build — Fase 1 Etapa 4) -->
-        <div class="sidebar-version-footer" style="margin-top:2rem;padding:0.8rem 0.6rem 0.3rem;border-top:1px solid #e0e0e0;font-size:0.68rem;line-height:1.4;color:#888;text-align:center;">
-            <div style="font-weight:600;letter-spacing:0.3px;color:#555;">Portal SSCI</div>
-            <div>v{{VERSION}} · {{BUILD_DATE_SHORT}}</div>
-            <div style="margin-top:0.15rem;">{{AIRPORT.OACI}} · {{AIRPORT.OPERATOR_SHORT}}</div>
+        <div class="ds-shell-bar__clocks">
+            <div class="ds-shell-bar__utc" id="headerUTC">UTC 00:00:00</div>
+            <div class="ds-shell-bar__local" id="clockDisplay">00:00:00</div>
+            <div class="ds-shell-bar__local" id="headerDate" style="display:none;"></div>
+            <!-- Legacy psci-clock ID preserved (hidden) for any old JS paths -->
+            <div class="time-display" id="psci-clock" style="display:none;"></div>
         </div>
-    </nav>
-    
-    <!-- MAIN CONTENT -->
-    <div class="main">
+
+        <div class="ds-shell-bar__operator" id="psci-turno" data-logged-in="true" style="display:inline-flex;">Turno: —</div>
+    </div>
+</header>
+
+<!-- DS Sidebar (replaces legacy <nav class="sidebar">) — Plan 5 Task 13 -->
+<aside class="ds-sidebar" role="navigation" aria-label="Navegação principal">
+    <div class="ds-sidebar__section">
+        <h3 class="ds-sidebar__section-title">Painel</h3>
+        <ul class="ds-sidebar__list">
+            <li><a href="#" onclick="openSection('dashboard', event)" class="nav-btn active">📊 Dashboard</a></li>
+            <li><a href="#" onclick="openSection('mapas', event)" class="nav-btn">🗺 Mapas Quadrícula</a></li>
+        </ul>
+    </div>
+
+    <div class="ds-sidebar__section">
+        <h3 class="ds-sidebar__section-title">Formulários Diários</h3>
+        <ul class="ds-sidebar__list">
+            <li><a href="#" onclick="openSection('reg-servico', event)" class="nav-btn">📝 Registo de Serviço</a></li>
+            <li><a href="#" onclick="openSection('insp-w01', event)" class="nav-btn">🚒 Inspecção Whisky 01</a></li>
+            <li><a href="#" onclick="openSection('insp-w02', event)" class="nav-btn">🚒 Inspecção Whisky 02</a></li>
+            <li><a href="#" onclick="openSection('insp-resgate-w01', event)" class="nav-btn">🧰 Eqp. Resgate W01</a></li>
+            <li><a href="#" onclick="openSection('insp-resgate-w02', event)" class="nav-btn">🧰 Eqp. Resgate W02</a></li>
+            <li><a href="#" onclick="openSection('teste-comms', event)" class="nav-btn">📡 Teste Comunicações</a></li>
+        </ul>
+    </div>
+
+    <div class="ds-sidebar__section">
+        <h3 class="ds-sidebar__section-title">Formulários Operacionais</h3>
+        <ul class="ds-sidebar__list">
+            <li><a href="#" onclick="openSection('avaria', event)" class="nav-btn">⚠️ Avaria Equipamento</a></li>
+            <li><a href="#" onclick="openSection('combustivel', event)" class="nav-btn">⛽ Abastecimento VCI</a></li>
+            <li><a href="#" onclick="openSection('tempo-resp', event)" class="nav-btn">⏱ Tempo Resposta</a></li>
+            <li><a href="#" onclick="openSection('presenca', event)" class="nav-btn">👥 Lista Presença</a></li>
+        </ul>
+    </div>
+
+    <div class="ds-sidebar__section">
+        <h3 class="ds-sidebar__section-title">Recursos</h3>
+        <ul class="ds-sidebar__list">
+            <li><a href="#" onclick="openSection('stock', event)" class="nav-btn">📦 Controlo de Estoque</a></li>
+        </ul>
+    </div>
+
+    <div class="ds-sidebar__section">
+        <h3 class="ds-sidebar__section-title">Checklists Mensais</h3>
+        <ul class="ds-sidebar__list">
+            <li><a href="#" onclick="openSection('checklist-coe', event)" class="nav-btn">✅ CheckList COE</a></li>
+            <li><a href="#" onclick="openSection('checklist-pcm', event)" class="nav-btn">✅ CheckList PCM</a></li>
+        </ul>
+    </div>
+
+    <div class="ds-sidebar__section">
+        <h3 class="ds-sidebar__section-title">Sistema</h3>
+        <ul class="ds-sidebar__list">
+            <li><a href="#" onclick="openSection('ajuda', event)" class="nav-btn">❓ Guia Rápido</a></li>
+            <li><a href="#" onclick="openSection('configuracoes', event)" class="nav-btn">⚙ Configurações</a></li>
+        </ul>
+    </div>
+
+    <div class="ds-sidebar__footer">
+        <div style="font-weight:600;color:var(--ds-neutral-fg);">Portal SSCI</div>
+        <div>v{{VERSION}} · {{BUILD_DATE_SHORT}}</div>
+        <div>{{AIRPORT.OACI}} · {{AIRPORT.OPERATOR_SHORT}}</div>
+    </div>
+</aside>
+
+<main class="ds-page-grid" id="dsPageGrid" role="main">
+    <div class="ds-page-grid__inner">
 
         <!-- DASHBOARD -->
         <div id="dashboard" class="section active">
@@ -1908,8 +1960,18 @@ html { scroll-behavior: smooth; }
             </div>
         </div>
 
-    </div><!-- end main -->
-</div><!-- end layout -->
+        </div><!-- /.ds-page-grid__inner -->
+
+        <footer class="ds-footer">
+            SGA — Sociedade de Gestão Aeroportuária
+            <span class="ds-footer__sep"></span>
+            Portal SSCI v{{VERSION}}
+            <span class="ds-footer__sep"></span>
+            {{AIRPORT.OACI}}
+            <span class="ds-footer__sep"></span>
+            {{BUILD_DATE_SHORT}}
+        </footer>
+    </main><!-- /.ds-page-grid -->
 
 <script>
 // === NAVIGATION ===
