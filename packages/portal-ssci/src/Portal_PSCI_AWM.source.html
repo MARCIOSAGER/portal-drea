@@ -301,7 +301,45 @@
             .awm-modal-footer { flex-direction: column-reverse; }
             .awm-modal-btn { width: 100%; }
         }
-    </style>
+    
+
+        /* ===========================
+         * PLAN 2 CONSOLIDATION — block 5 (SSCI tr-occ-real-block — dynamic occurrence)
+         * =========================== */
+#tr-occ-real-block { margin-top: 1rem; padding: 1rem; background: #fff5f5;
+    border: 1px solid #ffcdd2; border-left: 4px solid #d32f2f; border-radius: 6px; }
+#tr-occ-real-block .tr-title { font-size: 0.95rem; font-weight: 700; color: #c62828;
+    margin-bottom: 0.75rem; }
+#tr-occ-real-block .tr-sub { font-size: 0.8rem; font-weight: 700; color: #5d4037;
+    margin: 0.85rem 0 0.45rem 0; padding-bottom: 0.2rem; border-bottom: 1px dashed #ef9a9a;
+    text-transform: uppercase; letter-spacing: 0.03em; }
+#tr-occ-real-block .tr-grid { display: grid; gap: 0.7rem; }
+#tr-occ-real-block .tr-grid-2 { grid-template-columns: 1fr 1fr; }
+#tr-occ-real-block .tr-grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+#tr-occ-real-block .tr-grid-4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
+#tr-occ-real-block label { font-size: 0.78rem; font-weight: 600; color: #333;
+    display: block; margin-bottom: 0.2rem; }
+#tr-occ-real-block input[type=text], #tr-occ-real-block input[type=time],
+#tr-occ-real-block input[type=number], #tr-occ-real-block textarea,
+#tr-occ-real-block select { width: 100%; padding: 0.45rem 0.55rem; border: 1px solid #ccc;
+    border-radius: 4px; font-family: inherit; font-size: 0.85rem; background: #fff; }
+#tr-occ-real-block textarea { resize: vertical; min-height: 2.2rem; }
+#tr-occ-real-block .tr-chips { display: flex; flex-wrap: wrap; gap: 0.35rem;
+    margin-top: 0.2rem; }
+#tr-occ-real-block .tr-chip { display: inline-flex; align-items: center;
+    padding: 0.25rem 0.55rem; border: 1px solid #ccc; border-radius: 14px;
+    background: #fff; cursor: pointer; font-size: 0.72rem; user-select: none;
+    color: #555; }
+#tr-occ-real-block .tr-chip input { display: none; }
+#tr-occ-real-block .tr-chip.active { background: #c62828; color: #fff; border-color: #c62828; }
+@media (max-width: 900px) {
+    #tr-occ-real-block .tr-grid-3, #tr-occ-real-block .tr-grid-4 { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 600px) {
+    #tr-occ-real-block .tr-grid-2, #tr-occ-real-block .tr-grid-3,
+    #tr-occ-real-block .tr-grid-4 { grid-template-columns: 1fr; }
+}
+</style>
 </head>
 <body>
 <!-- Design System SGA — icon sprite (hidden, referenced via <use href="#icon-X"/>) -->
@@ -3285,41 +3323,7 @@ if (document.readyState !== 'loading') setTimeout(stkRenderAll, 120);
 
 
 <!-- ===== TEMPO RESPOSTA — EXPANSÃO DE OCORRÊNCIA REAL — PATCH v1 ===== -->
-<style>
-#tr-occ-real-block { margin-top: 1rem; padding: 1rem; background: #fff5f5;
-    border: 1px solid #ffcdd2; border-left: 4px solid #d32f2f; border-radius: 6px; }
-#tr-occ-real-block .tr-title { font-size: 0.95rem; font-weight: 700; color: #c62828;
-    margin-bottom: 0.75rem; }
-#tr-occ-real-block .tr-sub { font-size: 0.8rem; font-weight: 700; color: #5d4037;
-    margin: 0.85rem 0 0.45rem 0; padding-bottom: 0.2rem; border-bottom: 1px dashed #ef9a9a;
-    text-transform: uppercase; letter-spacing: 0.03em; }
-#tr-occ-real-block .tr-grid { display: grid; gap: 0.7rem; }
-#tr-occ-real-block .tr-grid-2 { grid-template-columns: 1fr 1fr; }
-#tr-occ-real-block .tr-grid-3 { grid-template-columns: 1fr 1fr 1fr; }
-#tr-occ-real-block .tr-grid-4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
-#tr-occ-real-block label { font-size: 0.78rem; font-weight: 600; color: #333;
-    display: block; margin-bottom: 0.2rem; }
-#tr-occ-real-block input[type=text], #tr-occ-real-block input[type=time],
-#tr-occ-real-block input[type=number], #tr-occ-real-block textarea,
-#tr-occ-real-block select { width: 100%; padding: 0.45rem 0.55rem; border: 1px solid #ccc;
-    border-radius: 4px; font-family: inherit; font-size: 0.85rem; background: #fff; }
-#tr-occ-real-block textarea { resize: vertical; min-height: 2.2rem; }
-#tr-occ-real-block .tr-chips { display: flex; flex-wrap: wrap; gap: 0.35rem;
-    margin-top: 0.2rem; }
-#tr-occ-real-block .tr-chip { display: inline-flex; align-items: center;
-    padding: 0.25rem 0.55rem; border: 1px solid #ccc; border-radius: 14px;
-    background: #fff; cursor: pointer; font-size: 0.72rem; user-select: none;
-    color: #555; }
-#tr-occ-real-block .tr-chip input { display: none; }
-#tr-occ-real-block .tr-chip.active { background: #c62828; color: #fff; border-color: #c62828; }
-@media (max-width: 900px) {
-    #tr-occ-real-block .tr-grid-3, #tr-occ-real-block .tr-grid-4 { grid-template-columns: 1fr 1fr; }
-}
-@media (max-width: 600px) {
-    #tr-occ-real-block .tr-grid-2, #tr-occ-real-block .tr-grid-3,
-    #tr-occ-real-block .tr-grid-4 { grid-template-columns: 1fr; }
-}
-</style>
+<!-- PLAN 2 CONSOLIDATION: original block 5 merged into block 1 above -->
 <script>
 (function() {
     'use strict';
