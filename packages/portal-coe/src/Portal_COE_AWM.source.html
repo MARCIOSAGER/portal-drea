@@ -10,9 +10,6 @@
     <!-- Design System SGA — dormant foundation (Plan 1 of DS migration) -->
     <style>{{DS_CSS}}</style>
     <style>
-        /* ===========================
-         * PLAN 2 CONSOLIDATION — block 1 (COE legacy main: :root, body, header, sidebar, forms, tabs, cards, chronometer, modal, toast, contacts)
-         * =========================== */
         :root {
             --dark-blue: #004C7B;
             --medium-blue: #0094CF;
@@ -1268,9 +1265,6 @@
         /* .awm-modal* migrated to shared/styles/components/awm-modal.css (Plan 3 Task 9) */
     
 
-        /* ===========================
-         * PLAN 2 CONSOLIDATION — block 5 (COE fichas-seg PATCH v2 base)
-         * =========================== */
 /* Hide original horizontal tab strip */
 #seg-sub-tabs { display: none !important; }
 
@@ -1492,9 +1486,6 @@
 }
 
 
-        /* ===========================
-         * PLAN 2 CONSOLIDATION — block 6 (COE fichas-seg PATCH v2 single-column override)
-         * =========================== */
 /* Override first block: hide sidebar, use single column */
 #fichas-seg .fichas-sidebar { display: none !important; }
 #fichas-seg .fichas-layout { grid-template-columns: 1fr !important; gap: 0 !important; }
@@ -1643,9 +1634,6 @@
 }
 
 
-        /* ===========================
-         * PLAN 2 CONSOLIDATION — block 7 (COE fichas-seg PATCH v2 hide unified v2 form)
-         * =========================== */
 /* Esconder definitivamente o formulário unificado da v2 (não faz sentido neste portal) */
 #fichas-seg .ficha-unified-wrap { display: none !important; }
 
@@ -1693,9 +1681,6 @@
 /* .btn-print-single, .btn-print-pack migrated to shared/styles/components/button.css (Plan 3 Task 2) */
 
 
-        /* ===========================
-         * PLAN 2 CONSOLIDATION — block 9 (COE bombaFormBlock — bomb threat form block)
-         * =========================== */
 /* Bloco AMEAÇA DE BOMBA dentro do formulário de Ocorrência */
 #bombaFormBlock { margin-top: 1.25rem; padding: 1rem; background: #fff8e1;
     border: 1px solid #ffe082; border-left: 4px solid #e65100; border-radius: 6px; }
@@ -1756,9 +1741,6 @@
 #realOccurrenceFields.mode-emergencia #bombaFormBlock { display: none !important; }
 
 
-        /* ===========================
-         * PLAN 2 CONSOLIDATION — block 11 (COE emgFormBlock — EFB PATCH v5)
-         * =========================== */
 #emgFormBlock { margin-top: 1.25rem; padding: 1rem; background: #fff5f5;
     border: 1px solid #ffcdd2; border-left: 4px solid #d32f2f; border-radius: 6px; }
 #emgFormBlock .efb-title { font-size: 0.95rem; font-weight: 700; color: #c62828;
@@ -1835,9 +1817,6 @@
 #realOccurrenceFields.mode-bomba #emgFormBlock { display: none !important; }
 
 
-        /* ===========================
-         * PLAN 2 CONSOLIDATION — block 12 (COE UXP layer — PATCH v6+ focus, shortcuts, skip link, body override)
-         * =========================== */
 /* --- Focus visibility (teclado) --- */
 .uxp-fv :focus-visible,
 .uxp-fv button:focus-visible,
@@ -1952,9 +1931,6 @@ html { scroll-behavior: smooth; }
 .uxp-fv button:active { transform: scale(0.97); }
 
 
-        /* ===========================
-         * PLAN 2 CONSOLIDATION — block 13 (COE verif-contactos PATCH v7)
-         * =========================== */
 /* ---- Secção verif-contactos ---- */
 #verif-contactos .vc-header-bar { display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:1rem; margin-bottom:1rem; padding:1rem 1.25rem; background:linear-gradient(135deg,#004C7B,#0094CF); color:#fff; border-radius:8px; box-shadow:0 2px 6px rgba(0,76,123,0.2); }
 #verif-contactos .vc-header-bar h1 { margin:0; color:#fff; font-size:1.35rem; }
@@ -2035,9 +2011,6 @@ html { scroll-behavior: smooth; }
 }
 
 
-        /* ===========================
-         * PLAN 2 CONSOLIDATION — block 15 (COE print safety PATCH v11)
-         * =========================== */
 /* Rede de segurança para impressão — esconde elementos da camada UXP que nunca
    devem aparecer em PDFs ou print. Aditivo: não toca nos @media print existentes
    das fichas/cartões, apenas adiciona hides globais. */
@@ -2056,9 +2029,6 @@ html { scroll-behavior: smooth; }
 }
 
 
-        /* ===========================
-         * PLAN 2 CONSOLIDATION — block 16 (COE simulacros sidebar PATCH v12)
-         * =========================== */
 /* Scoped ao grupo .sidebar-section-simulacros para não afectar os outros 3 grupos
    da sidebar (Principal / Documentação / Sistema). */
 
@@ -2149,9 +2119,6 @@ html { scroll-behavior: smooth; }
 }
 
 
-        /* ===========================
-         * PLAN 2 CONSOLIDATION — block 17 (COE occ-* cards PATCH v13)
-         * =========================== */
 /* ========== Cartão de Acção Imediata ========== */
 .occ-action-card {
     border: 2px solid;
@@ -2652,11 +2619,6 @@ html { scroll-behavior: smooth; }
     .occ-dash-hist-btn { display: none !important; }
     .occ-phase[open] { break-inside: avoid; }
 }
-        /* ===========================
-         * PLAN 2 CONSOLIDATION — end of consolidated legacy block
-         * All subsequent <style> blocks in this file are JavaScript-embedded
-         * PDF export CSS and do NOT participate in the main cascade.
-         * =========================== */
 </style>
 </head>
 <body>
@@ -10836,7 +10798,6 @@ if (document.readyState !== 'loading') {
     </main><!-- /.ds-page-grid -->
 
 <!-- ===== FICHAS DE SEGURANÇA — REDESIGN (sidebar + flow + accordion) ===== -->
-<!-- PLAN 2 CONSOLIDATION: original block 5 merged into block 1 above -->
 <script>
 (function() {
     'use strict';
@@ -11132,7 +11093,6 @@ if (document.readyState !== 'loading') {
 <!-- ===== /FICHAS DE SEGURANÇA — REDESIGN ===== -->
 
 <!-- ===== FICHAS DE SEGURANÇA — PATCH v2 (chip nav + unified form) ===== -->
-<!-- PLAN 2 CONSOLIDATION: original block 6 merged into block 1 above -->
 <script>
 (function() {
     'use strict';
@@ -11401,7 +11361,6 @@ if (document.readyState !== 'loading') {
 <!-- ===== /FICHAS DE SEGURANÇA — PATCH v2 ===== -->
 
 <!-- ===== FICHAS DE SEGURANÇA — PATCH v3 (consulta + impressão briefing) ===== -->
-<!-- PLAN 2 CONSOLIDATION: original block 7 merged into block 1 above -->
 <script>
 (function() {
     'use strict';
@@ -11647,7 +11606,6 @@ if (document.readyState !== 'loading') {
 
 
 <!-- ===== OCORRÊNCIA — FORMULÁRIO DINÂMICO POR TIPO — PATCH v4 ===== -->
-<!-- PLAN 2 CONSOLIDATION: original block 9 merged into block 1 above -->
 <script>
 (function() {
     'use strict';
@@ -12030,7 +11988,6 @@ if (document.readyState !== 'loading') {
 
 
 <!-- ===== EMERGÊNCIA AERONÁUTICA — EXPANSÃO DINÂMICA — PATCH v5 ===== -->
-<!-- PLAN 2 CONSOLIDATION: original block 11 merged into block 1 above -->
 <script>
 (function() {
     'use strict';
@@ -12457,7 +12414,6 @@ if (document.readyState !== 'loading') {
 <!-- ===== /EMERGÊNCIA AERONÁUTICA — PATCH v5 ===== -->
 
 <!-- ===== UX / UI / A11Y / FLUIDEZ — PATCH v6 ===== -->
-<!-- PLAN 2 CONSOLIDATION: original block 12 merged into block 1 above -->
 <script>
 (function() {
     'use strict';
@@ -12761,7 +12717,6 @@ if (document.readyState !== 'loading') {
 <!-- ===== /UX / UI / A11Y / FLUIDEZ — PATCH v6 ===== -->
 
 <!-- ===== VERIFICAÇÃO MENSAL DE CONTACTOS — PATCH v7 ===== -->
-<!-- PLAN 2 CONSOLIDATION: original block 13 merged into block 1 above -->
 
 <script>
 (function(){
@@ -13550,15 +13505,12 @@ if (document.readyState !== 'loading') {
 <!-- ===== /PATCH v10 — PDF base64 data ===== -->
 
 <!-- ===== PATCH v11 — Print safety rede (esconder UXP chrome + no-print global) ===== -->
-<!-- PLAN 2 CONSOLIDATION: original block 15 merged into block 1 above -->
 <!-- ===== /PATCH v11 — Print safety rede ===== -->
 
 <!-- ===== PATCH v12 — Redesign do grupo SIMULACROS na sidebar (tracks Emergência/Segurança) ===== -->
-<!-- PLAN 2 CONSOLIDATION: original block 16 merged into block 1 above -->
 <!-- ===== /PATCH v12 — Redesign do grupo SIMULACROS na sidebar ===== -->
 
 <!-- ===== PATCH v13 — OCORRÊNCIAS (guia-emg / guia-seg / fichas-emg dashboard) ===== -->
-<!-- PLAN 2 CONSOLIDATION: original block 17 merged into block 1 above -->
 
 <script>
 (function() {

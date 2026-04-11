@@ -7,9 +7,6 @@
     <!-- Design System SGA — dormant foundation (Plan 1 of DS migration) -->
     <style>{{DS_CSS}}</style>
     <style>
-        /* ===========================
-         * PLAN 2 CONSOLIDATION — block 1 (SSCI legacy main)
-         * =========================== */
         /* ===== Plan 5 Tasks 2-7 — legacy component + chrome CSS removed =====
          * Legacy component CSS migrated to shared/styles/components/*.css
          *   (button, badge, form-group, card, table)
@@ -91,9 +88,6 @@
          */
     
 
-        /* ===========================
-         * PLAN 2 CONSOLIDATION — block 5 (SSCI tr-occ-real-block — dynamic occurrence)
-         * =========================== */
 #tr-occ-real-block { margin-top: 1rem; padding: 1rem; background: #fff5f5;
     border: 1px solid #ffcdd2; border-left: 4px solid #d32f2f; border-radius: 6px; }
 #tr-occ-real-block .tr-title { font-size: 0.95rem; font-weight: 700; color: #c62828;
@@ -129,9 +123,6 @@
 }
 
 
-        /* ===========================
-         * PLAN 2 CONSOLIDATION — block 6 (SSCI UXP layer — focus, shortcuts, body override)
-         * =========================== */
 .uxp-fv :focus-visible,
 .uxp-fv button:focus-visible,
 .uxp-fv a:focus-visible,
@@ -213,9 +204,6 @@ html { scroll-behavior: smooth; }
 .uxp-fv button:active { transform: scale(0.97); }
 
 
-        /* ===========================
-         * PLAN 2 CONSOLIDATION — block 7 (SSCI print safety net)
-         * =========================== */
 /* Rede de segurança para impressão — esconde elementos da camada UXP que nunca
    devem aparecer em PDFs ou print. Aditivo: não toca nos @media print existentes
    das fichas/cartões, apenas adiciona hides globais. */
@@ -232,11 +220,6 @@ html { scroll-behavior: smooth; }
     }
     body { background: #ffffff !important; }
 }
-        /* ===========================
-         * PLAN 2 CONSOLIDATION — end of consolidated legacy block
-         * All subsequent <style> blocks in this file are JavaScript-embedded
-         * PDF export CSS and do NOT participate in the main cascade.
-         * =========================== */
 </style>
 </head>
 <body>
@@ -3298,7 +3281,6 @@ if (document.readyState !== 'loading') setTimeout(stkRenderAll, 120);
 
 
 <!-- ===== TEMPO RESPOSTA — EXPANSÃO DE OCORRÊNCIA REAL — PATCH v1 ===== -->
-<!-- PLAN 2 CONSOLIDATION: original block 5 merged into block 1 above -->
 <script>
 (function() {
     'use strict';
@@ -3455,7 +3437,6 @@ if (document.readyState !== 'loading') setTimeout(stkRenderAll, 120);
 <!-- ===== /TEMPO RESPOSTA — OCORRÊNCIA REAL — PATCH v1 ===== -->
 
 <!-- ===== UX / UI / A11Y / FLUIDEZ — PATCH v2 (PSCI) ===== -->
-<!-- PLAN 2 CONSOLIDATION: original block 6 merged into block 1 above -->
 <script>
 (function() {
     'use strict';
@@ -3980,7 +3961,6 @@ if (document.readyState !== 'loading') setTimeout(stkRenderAll, 120);
 <!-- ===== /PATCH v4 — lsGet/lsSet wrapper + section change announcer / focus h2 (PSCI) ===== -->
 
 <!-- ===== PATCH v5 — Print safety rede (esconder UXP chrome + no-print global) ===== -->
-<!-- PLAN 2 CONSOLIDATION: original block 7 merged into block 1 above -->
 <!-- ===== /PATCH v5 — Print safety rede ===== -->
 
 <!-- Plan 5 Task 14 — Design System splash lifecycle (inlined from shared/scripts/chrome/splash.js) -->
