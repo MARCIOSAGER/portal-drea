@@ -34,6 +34,9 @@ def load_portal_config(path: Path) -> dict:
     return json.loads(Path(path).read_text(encoding="utf-8"))
 
 
+_VALID_DENSITIES = ("compact", "comfortable")
+
+
 def resolve_density(
     airport: dict,
     portal_config: dict,
@@ -48,6 +51,10 @@ def resolve_density(
       3. default parameter                   — fallback (defaults to "compact")
 
     Returns one of "compact" | "comfortable".
+
+    Raises:
+        ValueError: if the resolved value is not in _VALID_DENSITIES
+            (e.g., airport override or portal config contains a typo like "medium")
     """
     portal_id = portal_config.get("id", "")
 
@@ -55,17 +62,19 @@ def resolve_density(
     airport_portals = airport.get("portals", {}) or {}
     override = airport_portals.get(portal_id, {}) or {}
     if "density" in override:
-        return override["density"]
-
+        resolved = override["density"]
     # Step 2: portal default
-    if "density" in portal_config:
-        return portal_config["density"]
-
+    elif "density" in portal_config:
+        resolved = portal_config["density"]
     # Step 3: fallback
-    return default
+    else:
+        resolved = default
 
-
-_VALID_DENSITIES = ("compact", "comfortable")
+    if resolved not in _VALID_DENSITIES:
+        raise ValueError(
+            f"Invalid density {resolved!r}; must be one of {_VALID_DENSITIES}"
+        )
+    return resolved
 
 
 def compile_design_system_css(styles_root: Path, density: str) -> str:

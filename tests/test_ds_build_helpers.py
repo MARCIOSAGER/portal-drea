@@ -1,5 +1,8 @@
+"""Unit tests for scripts/ds_build_helpers.py — helpers used by both portal build.py scripts."""
 import sys
 from pathlib import Path
+
+import pytest
 
 # Make scripts/ importable for tests
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -29,7 +32,6 @@ class TestLoadPortalConfig:
 
     def test_raises_on_missing_file(self, tmp_path: Path):
         missing = tmp_path / "nonexistent.json"
-        import pytest
         with pytest.raises(FileNotFoundError):
             dsh.load_portal_config(missing)
 
@@ -70,6 +72,22 @@ class TestResolveDensity:
 
         # Building portal-coe, so SSCI override does not apply
         assert dsh.resolve_density(airport, portal_config) == "compact"
+
+    def test_raises_on_invalid_density_from_airport_override(self):
+        airport = {
+            "portals": {"portal-coe": {"density": "medium"}},  # typo
+        }
+        portal_config = {"id": "portal-coe", "density": "compact"}
+
+        with pytest.raises(ValueError, match="density"):
+            dsh.resolve_density(airport, portal_config)
+
+    def test_raises_on_invalid_density_from_portal_config(self):
+        airport = {}
+        portal_config = {"id": "portal-coe", "density": "roomy"}  # typo
+
+        with pytest.raises(ValueError, match="density"):
+            dsh.resolve_density(airport, portal_config)
 
 
 class TestCompileDesignSystemCss:
@@ -129,7 +147,6 @@ class TestCompileDesignSystemCss:
 
     def test_raises_on_invalid_density(self, tmp_path: Path):
         self._setup_fake_styles(tmp_path)
-        import pytest
 
         with pytest.raises(ValueError, match="density"):
             dsh.compile_design_system_css(tmp_path, density="medium")
@@ -137,10 +154,18 @@ class TestCompileDesignSystemCss:
     def test_raises_when_primitive_css_missing(self, tmp_path: Path):
         (tmp_path / "tokens").mkdir()
         # Do not create primitive.css
-        import pytest
 
         with pytest.raises(FileNotFoundError):
             dsh.compile_design_system_css(tmp_path, density="compact")
+
+    def test_raises_when_requested_density_file_missing(self, tmp_path: Path):
+        """If density=comfortable requested but only density-compact.css exists,
+        must raise FileNotFoundError (not silently fall back)."""
+        self._setup_fake_styles(tmp_path)
+        (tmp_path / "tokens" / "density-comfortable.css").unlink()
+
+        with pytest.raises(FileNotFoundError):
+            dsh.compile_design_system_css(tmp_path, density="comfortable")
 
     def test_handles_missing_base_fonts_css_gracefully_in_phase_1(self, tmp_path: Path):
         """Phase 1 may or may not have base/fonts.css at first — compile must not
@@ -175,6 +200,5 @@ class TestEncodeFontWoff2Base64:
 
     def test_raises_on_missing_file(self, tmp_path: Path):
         missing = tmp_path / "nonexistent.woff2"
-        import pytest
         with pytest.raises(FileNotFoundError):
             dsh.encode_font_woff2_base64(missing)
