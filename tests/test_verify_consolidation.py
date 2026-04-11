@@ -104,6 +104,21 @@ class TestStripConsolidationBanners:
             "            }\n"
         )
 
+    def test_closing_banner_is_also_removed(self):
+        """The closing banner used in Task 14 does not have 'block N' text,
+        but BANNER_PATTERN is generic enough to match any PLAN 2
+        CONSOLIDATION comment."""
+        css = (
+            "body { color: red; }\n"
+            "        /* ===========================\n"
+            "         * PLAN 2 CONSOLIDATION — end of consolidated legacy block\n"
+            "         * Subsequent <style> blocks are JS-embedded PDF CSS.\n"
+            "         * =========================== */\n"
+        )
+        stripped = vc.strip_consolidation_banners(css)
+        assert stripped.count("PLAN 2") == 0
+        assert stripped == "body { color: red; }\n"
+
 
 class TestBuildExpectedConsolidated:
     def test_single_index_returns_that_block(self):
