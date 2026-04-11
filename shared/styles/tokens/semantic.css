@@ -1,0 +1,77 @@
+/* =========================================================================
+ * Design System SGA — Layer 2: Semantic tokens
+ * =========================================================================
+ * Meaningful aliases over primitives. These are the ONLY tokens that
+ * components should reference. Primitives are opaque.
+ * ========================================================================= */
+
+:root {
+  /* ---------- Neutrals / chrome ---------- */
+  --ds-neutral-canvas:    var(--ds-gray-50);
+  --ds-neutral-surface:   var(--ds-white);
+  --ds-neutral-subtle:    var(--ds-gray-100);
+  --ds-neutral-muted:     var(--ds-gray-200);
+  --ds-neutral-strong:    var(--ds-gray-300);
+  --ds-neutral-fg:        var(--ds-gray-800);
+  --ds-neutral-fg-muted:  var(--ds-gray-500);
+  --ds-neutral-fg-subtle: var(--ds-gray-400);
+
+  /* ---------- Brand SGA ---------- */
+  --ds-brand-primary:        var(--ds-blue-800);  /* 9.1:1 AAA */
+  --ds-brand-primary-hover:  var(--ds-blue-900);  /* 11.8:1 AAA */
+  --ds-brand-secondary-fill: var(--ds-blue-600);  /* 3.5:1 — FILL ONLY, never text */
+  --ds-brand-secondary-text: var(--ds-blue-700);  /* 4.9:1 AA — safe as text */
+  --ds-brand-accent:         var(--ds-blue-500);
+
+  /* ---------- Status — info ---------- */
+  --ds-status-info-bg:            var(--ds-blue-100);
+  --ds-status-info-border:        var(--ds-blue-700);
+  --ds-status-info-fg:            var(--ds-blue-900);  /* 11.2:1 AAA */
+  --ds-status-info-emphasis:      var(--ds-blue-700);
+  --ds-status-info-on-emphasis:   var(--ds-white);
+
+  /* ---------- Status — success ---------- */
+  --ds-status-success-bg:          var(--ds-green-100);
+  --ds-status-success-border:      var(--ds-green-800);
+  --ds-status-success-fg:          var(--ds-green-900);  /* 9.7:1 AAA */
+  --ds-status-success-emphasis:    var(--ds-green-800);
+  --ds-status-success-on-emphasis: var(--ds-white);
+
+  /* ---------- Status — warning ---------- */
+  --ds-status-warning-bg:          var(--ds-amber-100);
+  --ds-status-warning-border:      var(--ds-amber-500);
+  --ds-status-warning-fg:          var(--ds-amber-900);  /* 6.3:1 AA */
+  --ds-status-warning-emphasis:    var(--ds-amber-500);
+  --ds-status-warning-on-emphasis: var(--ds-amber-on);   /* #1a1200 — MUST be dark */
+
+  /* ---------- Status — alert ---------- */
+  --ds-status-alert-bg:            var(--ds-red-100);
+  --ds-status-alert-border:        var(--ds-red-700);
+  --ds-status-alert-fg:            var(--ds-red-800);    /* 6.8:1 AA */
+  --ds-status-alert-emphasis:      var(--ds-red-700);
+  --ds-status-alert-on-emphasis:   var(--ds-white);
+
+  /* ---------- Status — emergency ---------- */
+  --ds-status-emergency-bg:          var(--ds-red-50);
+  --ds-status-emergency-border:      var(--ds-red-900);
+  --ds-status-emergency-fg:          var(--ds-red-900);  /* 9.3:1 AAA */
+  --ds-status-emergency-emphasis:    var(--ds-red-900);
+  --ds-status-emergency-on-emphasis: var(--ds-white);
+
+  /* ---------- Category — branding of contact taxonomy ---------- */
+  --ds-cat-avsec-bombeiros: var(--ds-red-700);
+  --ds-cat-sga-interna:     var(--ds-blue-800);
+  --ds-cat-enna-navegacao:  var(--ds-blue-600);
+  --ds-cat-seg-ordem:       var(--ds-brown-700);
+  --ds-cat-externa-emg:     var(--ds-purple-800);
+  --ds-cat-operadores:      var(--ds-slate-600);
+
+  /* ---------- Elevation aliases ---------- */
+  --ds-elevation-card:    var(--ds-shadow-1);
+  --ds-elevation-hover:   var(--ds-shadow-2);
+  --ds-elevation-overlay: var(--ds-shadow-3);
+  --ds-elevation-modal:   var(--ds-shadow-4);
+
+  /* ---------- Focus ring ---------- */
+  --ds-focus-ring-color: var(--ds-blue-700);
+}

@@ -1,0 +1,23 @@
+/* =========================================================================
+ * Density — Comfortable (SSCI default, futuro DIRECÇÃO)
+ * =========================================================================
+ * Scoped to :root[data-density="comfortable"].
+ * ========================================================================= */
+
+:root[data-density="comfortable"] {
+  --ds-space-1: 4px;
+  --ds-space-2: 6px;
+  --ds-space-3: 8px;
+  --ds-space-4: 12px;   /* default stack gap */
+  --ds-space-5: 16px;
+  --ds-space-6: 24px;   /* card padding */
+  --ds-space-7: 32px;
+  --ds-space-8: 48px;
+
+  --ds-row-height:      40px;
+  --ds-input-height:    40px;
+  --ds-nav-item-height: 44px;
+
+  --ds-text-base: 16px;
+  --ds-line-base: 24px;
+}

@@ -1,0 +1,96 @@
+/* =========================================================================
+ * Design System SGA — Layer 1: Primitives
+ * =========================================================================
+ * Raw values with no semantic meaning. These are NEVER referenced directly
+ * by components — only by semantic.css which gives them names.
+ *
+ * During the v2.1.0 migration these are prefixed --ds-* to avoid collision
+ * with legacy --dark-blue, --medium-blue variables still in the portal
+ * source HTMLs. The prefix is removed in Plan 5 when legacy is cleaned up.
+ * ========================================================================= */
+
+:root {
+  /* ---------- Neutrals (chrome) ---------- */
+  --ds-gray-50:  #f6f8fa;  /* body canvas */
+  --ds-gray-100: #eef2f7;  /* hover, divider fundo */
+  --ds-gray-200: #e1e5eb;  /* borders default */
+  --ds-gray-300: #d1d7e0;  /* borders strong */
+  --ds-gray-400: #8b95a1;  /* fg-subtle (large text only) */
+  --ds-gray-500: #57606a;  /* fg-muted (secondary text) */
+  --ds-gray-600: #4a5560;
+  --ds-gray-700: #32383f;
+  --ds-gray-800: #24292f;  /* fg-default (primary text) */
+  --ds-gray-900: #0d1117;  /* nearly-black */
+  --ds-white:    #ffffff;  /* surface */
+
+  /* ---------- Brand SGA — Blues ---------- */
+  --ds-blue-900: #003a5e;  /* brand-primary-hover */
+  --ds-blue-800: #004C7B;  /* brand-primary (official SGA dark blue) */
+  --ds-blue-700: #0073a0;  /* brand-secondary-text / focus ring */
+  --ds-blue-600: #0094CF;  /* brand-secondary-fill (official SGA medium blue) */
+  --ds-blue-500: #38C7F4;  /* brand-accent (official SGA light cyan) */
+  --ds-blue-100: #e6f4fb;  /* info bg subtle */
+
+  /* ---------- Greens (NEW — success, not in original SGA palette) ---------- */
+  --ds-green-900: #1b5e20;
+  --ds-green-800: #2e7d32;
+  --ds-green-100: #e8f5e9;
+
+  /* ---------- Ambers (warning semantic + original SGA AVSEC) ---------- */
+  --ds-amber-900: #8a5a00;  /* warning fg (dark text on bg subtle) */
+  --ds-amber-700: #e67e22;
+  --ds-amber-500: #f39c12;  /* warning border + emphasis (official SGA amber) */
+  --ds-amber-100: #fef5e7;  /* warning bg subtle */
+  --ds-amber-on:  #1a1200;  /* text on amber emphasis — MUST be dark, not white */
+
+  /* ---------- Reds (alert/emergency + AVSEC branding in new scheme) ---------- */
+  --ds-red-900: #8b0000;    /* emergency border + fg */
+  --ds-red-800: #b71c1c;    /* alert fg */
+  --ds-red-700: #c62828;    /* alert border/emphasis + cat-avsec-bombeiros */
+  --ds-red-100: #fdecea;    /* alert bg subtle */
+  --ds-red-50:  #ffcdd2;    /* emergency bg subtle */
+
+  /* ---------- Category accents ---------- */
+  --ds-brown-700:  #5d4037;  /* cat-seg-ordem */
+  --ds-purple-800: #6a1b9a;  /* cat-externa-emg */
+  --ds-slate-600:  #455a64;  /* cat-operadores */
+
+  /* ---------- Shadows (light-theme-appropriate, cribbed from Atlassian/Primer) ---------- */
+  --ds-shadow-1: 0 1px 2px rgba(9,30,66,0.08);
+  --ds-shadow-2: 0 2px 8px rgba(9,30,66,0.12);
+  --ds-shadow-3: 0 8px 24px rgba(9,30,66,0.15);
+  --ds-shadow-4: 0 24px 48px rgba(9,30,66,0.20);
+
+  /* ---------- Border radii ---------- */
+  --ds-radius-sm:   3px;
+  --ds-radius-md:   6px;
+  --ds-radius-lg:   8px;
+  --ds-radius-pill: 9999px;
+
+  /* ---------- Motion ---------- */
+  --ds-transition-fast: 120ms cubic-bezier(.2, 0, 0, 1);
+  --ds-transition-base: 200ms cubic-bezier(.2, 0, 0, 1);
+  --ds-transition-slow: 320ms cubic-bezier(.2, 0, 0, 1);
+
+  /* ---------- Type scale (Major Third 1.250) ---------- */
+  --ds-text-xs:    11px;
+  --ds-text-sm:    13px;
+  /* --ds-text-base is overridden by density files (14px compact, 16px comfortable) */
+  --ds-text-md:    16px;
+  --ds-text-lg:    20px;
+  --ds-text-xl:    25px;
+  --ds-text-2xl:   31px;
+  --ds-text-3xl:   39px;
+
+  --ds-line-xs:    15px;
+  --ds-line-sm:    18px;
+  --ds-line-md:    24px;
+  --ds-line-lg:    26px;
+  --ds-line-xl:    30px;
+  --ds-line-2xl:   38px;
+  --ds-line-3xl:   46px;
+
+  /* ---------- Focus ring ---------- */
+  --ds-focus-ring-width:  2px;
+  --ds-focus-ring-offset: 2px;
+}
