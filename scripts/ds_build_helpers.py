@@ -82,21 +82,14 @@ def compile_design_system_css(styles_root: Path, density: str) -> str:
     Read the Design System CSS files under `styles_root` and concatenate them
     in the deterministic cascade order defined in the spec (Section 6.2).
 
-    Current cascade (Plan 1 — Foundation Dormant):
+    Current cascade (Plan 4 — Foundation + Base + Chrome + Components + Print):
       1. tokens/primitive.css     (required)
       2. tokens/semantic.css      (required)
       3. tokens/density-<X>.css   (required, where X = density param)
-      4. base/fonts.css           (optional — OK if missing during Plan 1)
-
-    Current cascade (Plan 3 — Foundation + Components):
-      1. tokens/primitive.css     (required)
-      2. tokens/semantic.css      (required)
-      3. tokens/density-<X>.css   (required, where X = density param)
-      4. base/fonts.css           (optional — OK if missing)
-      5. components/*.css         (optional, alphabetical filename order)
-
-    Plans 4+ will extend this by adding base/reset.css, base/typography.css,
-    base/global.css, chrome/*.css, print/print.css.
+      4. base/*.css               (optional, alphabetical filename order)
+      5. chrome/*.css             (optional, alphabetical filename order)
+      6. components/*.css         (optional, alphabetical filename order)
+      7. print/print.css          (optional, ALWAYS LAST)
 
     Args:
         styles_root: absolute Path to shared/styles/
@@ -117,43 +110,52 @@ def compile_design_system_css(styles_root: Path, density: str) -> str:
 
     styles_root = Path(styles_root)
 
-    # Build the ordered list of files to concatenate.
-    # Required files come first; optional files are skipped if missing.
+    # Required token files
     required_files = [
         styles_root / "tokens" / "primitive.css",
         styles_root / "tokens" / "semantic.css",
         styles_root / "tokens" / f"density-{density}.css",
     ]
-    optional_files = [
-        styles_root / "base" / "fonts.css",
-    ]
-
-    # Verify all required files exist up-front
     for f in required_files:
         if not f.exists():
             raise FileNotFoundError(f"Required DS CSS file not found: {f}")
 
-    # Plan 3: discover components/*.css in alphabetical filename order.
-    # Non-CSS files and subdirectories are ignored. Missing/empty
-    # components/ directory is a valid no-op (backwards compatible with
-    # Plans 1 and 2).
-    components_dir = styles_root / "components"
-    component_files: list[Path] = []
-    if components_dir.is_dir():
-        component_files = sorted(
-            p for p in components_dir.iterdir()
-            if p.is_file() and p.suffix == ".css"
-        )
+    # Optional directories, in cascade order. Each entry has *.css files
+    # picked up in alphabetical order. `print/` is the exception — it's
+    # a single file treated as the final block.
+    optional_dirs_alpha = [
+        styles_root / "base",
+        styles_root / "chrome",
+        styles_root / "components",
+    ]
+    print_file = styles_root / "print" / "print.css"
+
+    def _collect_alpha(directory: Path) -> list[Path]:
+        if not directory.exists():
+            return []
+        return sorted(p for p in directory.glob("*.css") if p.is_file())
 
     pieces: list[str] = []
-    for f in required_files + optional_files + component_files:
-        if not f.exists():
-            continue  # optional file, skip
+
+    def _append_file(f: Path) -> None:
         rel_path = f.relative_to(styles_root.parent).as_posix()
         banner = f"/* ---------- {rel_path} ---------- */"
         pieces.append(banner)
         pieces.append(f.read_text(encoding="utf-8").rstrip())
         pieces.append("")  # blank line separator
+
+    # 1-3: required tokens
+    for f in required_files:
+        _append_file(f)
+
+    # 4-6: optional directories, alphabetical within each
+    for d in optional_dirs_alpha:
+        for f in _collect_alpha(d):
+            _append_file(f)
+
+    # 7: print file is always last
+    if print_file.exists():
+        _append_file(print_file)
 
     return "\n".join(pieces)
 
