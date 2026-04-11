@@ -32,3 +32,41 @@ class TestLoadPortalConfig:
         import pytest
         with pytest.raises(FileNotFoundError):
             dsh.load_portal_config(missing)
+
+
+class TestResolveDensity:
+    def test_airport_override_wins_over_portal_config(self):
+        airport = {
+            "airport": {"name": "Test"},
+            "portals": {"portal-coe": {"density": "comfortable"}},
+        }
+        portal_config = {"id": "portal-coe", "density": "compact"}
+
+        assert dsh.resolve_density(airport, portal_config) == "comfortable"
+
+    def test_portal_config_wins_when_no_airport_override(self):
+        airport = {"airport": {"name": "Test"}}
+        portal_config = {"id": "portal-coe", "density": "compact"}
+
+        assert dsh.resolve_density(airport, portal_config) == "compact"
+
+    def test_default_when_neither_specifies(self):
+        airport = {"airport": {"name": "Test"}}
+        portal_config = {"id": "portal-coe"}
+
+        assert dsh.resolve_density(airport, portal_config) == "compact"
+
+    def test_custom_default_respected(self):
+        airport = {}
+        portal_config = {"id": "portal-ssci"}
+
+        assert dsh.resolve_density(airport, portal_config, default="comfortable") == "comfortable"
+
+    def test_airport_override_for_different_portal_ignored(self):
+        airport = {
+            "portals": {"portal-ssci": {"density": "comfortable"}},  # override for SSCI only
+        }
+        portal_config = {"id": "portal-coe", "density": "compact"}
+
+        # Building portal-coe, so SSCI override does not apply
+        assert dsh.resolve_density(airport, portal_config) == "compact"
