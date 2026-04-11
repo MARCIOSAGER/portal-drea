@@ -7,6 +7,25 @@ Versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
 
 ---
 
+## [Unreleased] — em main (pós v2.1.0-alpha.1)
+
+### Added
+- **Real SGA institutional logo** (`shared/assets/logo-sga.png`, 512×207, 7.6 KB) substitui o stub SVG usado nos Plans 1-6. Embebida em base64 via novo helper `encode_image_base64()` em `ds_build_helpers.py` e placeholder `{{LOGO_SGA_PNG_BASE64}}`.
+- **Splash screen**: agora mostra o logo SGA real (horizontal lockup com wordmark "SGA" + graphic + tagline "SOCIEDADE GESTORA DE AEROPORTOS, S.A.") em vez do stub triangle+line.
+- **Print header** (`shared/styles/print/print.css`): novo `.print-header` hidden on screen, visível no @media print com o logo SGA real centrado + metadata "Portal X · OACI · Aeroporto". Aparece no topo da primeira página de qualquer impressão/PDF.
+- `scripts/ds_build_helpers.py::encode_image_base64()` helper genérico para embebber imagens (PNG/JPG/SVG) em base64, reusa o padrão do `encode_font_woff2_base64`.
+- Build pipeline em ambos os portais aceita markers com contagem ≥1 (não só exactly-1) para permitir placeholders que aparecem em múltiplos lugares (splash + print-header).
+
+### Removed
+- `shared/assets/logo-sga-mark.svg` (stub 32×32, nunca referenciado)
+- `shared/assets/logo-sga-full.svg` (stub 240×120, nunca referenciado)
+
+### Não-alterado
+- Shell bar icon continua a usar `icon-sga-mark` do sprite SVG (é 32×32 — o PNG full ficaria ilegível a esse tamanho). Futuro: extrair só o graphic do PNG num SVG mark-only.
+- Todos os 45 tests continuam a passar.
+
+---
+
 ## [Unreleased] — Fase 2 (futura)
 
 ### Previsto

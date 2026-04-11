@@ -177,3 +177,22 @@ def encode_font_woff2_base64(woff2_path: Path) -> str:
     """
     data = Path(woff2_path).read_bytes()
     return base64.b64encode(data).decode("ascii")
+
+
+def encode_image_base64(image_path: Path) -> str:
+    """
+    Read an image file (PNG/JPG/WebP/SVG) and return its base64-encoded content
+    as an ASCII string suitable for embedding in an HTML `<img src="data:image/X;base64,...">`
+    attribute or CSS `background-image: url('data:image/X;base64,...')` rule.
+
+    Args:
+        image_path: absolute Path to the image file
+
+    Returns:
+        base64-encoded ASCII string (no data: prefix, no line wraps)
+
+    Raises:
+        FileNotFoundError: if the file does not exist
+    """
+    data = Path(image_path).read_bytes()
+    return base64.b64encode(data).decode("ascii")

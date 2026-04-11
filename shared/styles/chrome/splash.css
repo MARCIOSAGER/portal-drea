@@ -33,12 +33,16 @@
 }
 
 .ds-splash__logo {
-  width: 120px;
-  height: 120px;
+  /* Real SGA lockup image — horizontal aspect 2.47:1, intrinsic 512x207 */
+  max-width: 340px;
+  width: min(340px, 70vw);
+  height: auto;
   color: var(--brand-primary);
+  user-select: none;
 }
 
 .ds-splash__logo svg {
+  /* Fallback path when splash uses the sprite stub instead of the real PNG */
   width: 100%;
   height: 100%;
 }

@@ -291,6 +291,14 @@ def build(
         return 1
     icon_sprite = sprite_path.read_text(encoding="utf-8")
 
+    # (5b) Encode the real SGA logo PNG (horizontal lockup with wordmark + graphic + tagline)
+    logo_sga_path = SHARED_DIR / "assets" / "logo-sga.png"
+    if not logo_sga_path.exists():
+        print(f"  [error] logo-sga.png não encontrado em {logo_sga_path}")
+        return 1
+    logo_sga_b64 = dsh.encode_image_base64(logo_sga_path)
+    print(f"  [ds] encoded logo-sga.png ({len(logo_sga_b64):,} base64 chars)")
+
     # (6) Inject DS blobs into source_html via direct string replacement.
     # This is done BEFORE the existing substitute_placeholders call, using
     # the same manual-replace pattern as {{CONTACTS_JSON}} inside
@@ -305,11 +313,12 @@ def build(
     # point — it only appears AFTER {{DS_CSS}} is replaced (it lives inside
     # fonts.css which is part of ds_css). The two-phase replacement below
     # handles the ordering correctly.
-    _ds_markers_in_source = [
+    # Markers with expected count — single-occurrence invariants
+    _ds_markers_single = [
         ("{{DS_CSS}}", ds_css),
         ("{{ICON_SPRITE}}", icon_sprite),
     ]
-    for marker, value in _ds_markers_in_source:
+    for marker, value in _ds_markers_single:
         count = source_html.count(marker)
         if count != 1:
             print(f"  [error] Expected exactly 1 occurrence of {marker!r} in source HTML, found {count}")
@@ -318,6 +327,21 @@ def build(
         if marker in source_html:
             print(f"  [error] {marker!r} still present after replacement")
             return 1
+
+    # Markers allowed to appear multiple times (splash image + print header + etc)
+    _ds_markers_multi = [
+        ("{{LOGO_SGA_PNG_BASE64}}", logo_sga_b64),
+    ]
+    for marker, value in _ds_markers_multi:
+        count = source_html.count(marker)
+        if count < 1:
+            print(f"  [error] Expected at least 1 occurrence of {marker!r} in source HTML, found 0")
+            return 1
+        source_html = source_html.replace(marker, value)
+        if marker in source_html:
+            print(f"  [error] {marker!r} still present after replacement")
+            return 1
+        print(f"  [ds] replaced {marker} in {count} location(s)")
 
     # Now source_html contains ds_css expanded, which itself contains
     # {{DS_INTER_WOFF2_BASE64}} inside the fonts.css @font-face src: url() line.

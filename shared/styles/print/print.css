@@ -6,6 +6,13 @@
  * + timestamp. Uses counter(page) for pagination.
  * ========================================================================= */
 
+/* Print-only header element — hidden on screen, shown only on printed pages.
+   Contains the real SGA institutional logo. Displayed on the first page of
+   each print job. Repeated text metadata lives in @page top-left/top-right. */
+.print-header {
+  display: none;
+}
+
 @media print {
   .ds-shell-bar,
   .ds-sidebar,
@@ -16,6 +23,29 @@
   .main-container > header              /* legacy fallback */
   {
     display: none !important;
+  }
+
+  .print-header {
+    display: block !important;
+    text-align: center;
+    padding: 0 0 12pt 0;
+    margin: 0 0 12pt 0;
+    border-bottom: 2pt solid #004C7B;
+    break-after: avoid-page;
+  }
+
+  .print-header__logo {
+    max-width: 220pt;
+    height: auto;
+  }
+
+  .print-header__meta {
+    font-family: "Inter", "Segoe UI", sans-serif;
+    font-size: 8pt;
+    color: #57606a;
+    margin: 4pt 0 0 0;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
   }
 
   html, body {

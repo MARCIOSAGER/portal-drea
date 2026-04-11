@@ -226,14 +226,18 @@ html { scroll-behavior: smooth; }
 <!-- Design System SGA — icon sprite (hidden, referenced via <use href="#icon-X"/>) -->
 {{ICON_SPRITE}}
 
+<!-- Print-only institutional header with real SGA logo (hidden on screen) -->
+<div class="print-header" aria-hidden="true">
+    <img class="print-header__logo" src="data:image/png;base64,{{LOGO_SGA_PNG_BASE64}}" alt="SGA — Sociedade Gestora de Aeroportos, S.A.">
+    <p class="print-header__meta">Portal SSCI · {{AIRPORT.OACI}} · {{AIRPORT.NAME}}</p>
+</div>
+
 <!-- ELEGANT TOAST CONTAINER -->
 <div id="awmToastContainer" aria-live="polite" aria-atomic="true"></div>
 
 <!-- Splash screen (Plan 5 Task 13) — fade-out via splash.js after 1500ms. Bypass: ?nosplash=1 -->
 <div class="ds-splash" id="dsSplash" data-state="in" role="status" aria-live="polite">
-    <div class="ds-splash__logo">
-        <svg viewBox="0 0 32 32" aria-hidden="true"><use href="#icon-sga-mark"/></svg>
-    </div>
+    <img class="ds-splash__logo" src="data:image/png;base64,{{LOGO_SGA_PNG_BASE64}}" alt="SGA — Sociedade Gestora de Aeroportos, S.A.">
     <h1 class="ds-splash__portal-name">Portal SSCI</h1>
     <p class="ds-splash__tagline">DREA · Direcção de Resposta a Emergências Aeroportuárias</p>
     <p class="ds-splash__airport">{{AIRPORT.OACI}} · {{AIRPORT.NAME}}</p>
