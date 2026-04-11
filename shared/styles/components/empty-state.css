@@ -1,0 +1,52 @@
+/* =========================================================================
+ * Design System SGA — Component: Empty state (Plan 3 Task 12)
+ * =========================================================================
+ * New scaffolding — no legacy CSS in COE block 1. Provides .ds-empty-state
+ * container with icon slot, title, description, and optional CTA button
+ * per spec §5.3.
+ *
+ * Usage:
+ *   <div class="ds-empty-state">
+ *     <svg class="ds-empty-state__icon"><use href="#icon-document"/></svg>
+ *     <h3 class="ds-empty-state__title">Sem ocorrências</h3>
+ *     <p class="ds-empty-state__desc">Nenhuma ocorrência registada neste período.</p>
+ *     <button class="btn btn--primary ds-empty-state__cta">Registar primeira</button>
+ *   </div>
+ * ========================================================================= */
+
+.ds-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: var(--ds-space-8) var(--ds-space-6);
+    text-align: center;
+    color: var(--ds-neutral-fg-muted);
+    gap: var(--ds-space-4);
+}
+
+.ds-empty-state__icon {
+    width: 64px;
+    height: 64px;
+    color: var(--ds-neutral-fg-subtle);
+    margin-bottom: var(--ds-space-2);
+}
+
+.ds-empty-state__title {
+    margin: 0;
+    font-size: var(--ds-text-lg);
+    font-weight: 600;
+    color: var(--ds-neutral-fg);
+}
+
+.ds-empty-state__desc {
+    margin: 0;
+    max-width: 360px;
+    font-size: var(--ds-text-base);
+    line-height: 1.5;
+    color: var(--ds-neutral-fg-muted);
+}
+
+.ds-empty-state__cta {
+    margin-top: var(--ds-space-4);
+}
