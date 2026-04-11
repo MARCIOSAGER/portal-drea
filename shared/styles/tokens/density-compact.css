@@ -1,0 +1,24 @@
+/* =========================================================================
+ * Density — Compact (COE default, futuros SOA e AVSEC)
+ * =========================================================================
+ * Scoped to :root[data-density="compact"] so only portals with
+ * data-density="compact" on <html> pick up these values.
+ * ========================================================================= */
+
+:root[data-density="compact"] {
+  --ds-space-1: 2px;
+  --ds-space-2: 4px;
+  --ds-space-3: 6px;
+  --ds-space-4: 8px;    /* default stack gap */
+  --ds-space-5: 12px;
+  --ds-space-6: 16px;   /* card padding */
+  --ds-space-7: 24px;
+  --ds-space-8: 32px;
+
+  --ds-row-height:      32px;  /* table row */
+  --ds-input-height:    32px;  /* form input */
+  --ds-nav-item-height: 36px;  /* sidebar nav item */
+
+  --ds-text-base: 14px;
+  --ds-line-base: 21px;
+}
