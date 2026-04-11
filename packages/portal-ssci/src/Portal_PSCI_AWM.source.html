@@ -1988,16 +1988,31 @@ function openSection(id) {
     });
 }
 
-// === CLOCK ===
+// === CLOCK (Plan 5 Task 14 — 1s tick, writes to new DS shell bar IDs) ===
 function updateClock() {
     var now = new Date();
     var h = String(now.getHours()).padStart(2,'0');
     var m = String(now.getMinutes()).padStart(2,'0');
-    var el = document.getElementById('psci-clock');
-    if (el) el.textContent = h + ':' + m + ' — ' + now.toLocaleDateString('pt-PT');
+    var s = String(now.getSeconds()).padStart(2,'0');
+    var date = now.toLocaleDateString('pt-PT');
+    // Legacy hidden element (kept for any old callers, Plan 6 may remove)
+    var pEl = document.getElementById('psci-clock');
+    if (pEl) pEl.textContent = h + ':' + m + ' — ' + date;
+    // New DS shell bar elements (Plan 4 naming)
+    var localEl = document.getElementById('clockDisplay');
+    if (localEl) localEl.textContent = h + ':' + m + ':' + s;
+    var utcEl = document.getElementById('headerUTC');
+    if (utcEl) {
+        var uh = String(now.getUTCHours()).padStart(2,'0');
+        var um = String(now.getUTCMinutes()).padStart(2,'0');
+        var us = String(now.getUTCSeconds()).padStart(2,'0');
+        utcEl.textContent = 'UTC ' + uh + ':' + um + ':' + us;
+    }
+    var dateEl = document.getElementById('headerDate');
+    if (dateEl) dateEl.textContent = date;
 }
 updateClock();
-setInterval(updateClock, 30000);
+setInterval(updateClock, 1000);
 
 // === PRESENCA ===
 var presencaCount = 0;
@@ -3967,6 +3982,11 @@ if (document.readyState !== 'loading') setTimeout(stkRenderAll, 120);
 <!-- ===== PATCH v5 — Print safety rede (esconder UXP chrome + no-print global) ===== -->
 <!-- PLAN 2 CONSOLIDATION: original block 7 merged into block 1 above -->
 <!-- ===== /PATCH v5 — Print safety rede ===== -->
+
+<!-- Plan 5 Task 14 — Design System splash lifecycle (inlined from shared/scripts/chrome/splash.js) -->
+<script>
+(function(){'use strict';function dismiss(s){s.setAttribute('data-state','done');}function init(){var s=document.getElementById('dsSplash');if(!s)return;try{var p=new URLSearchParams(window.location.search);if(p.get('nosplash')==='1'){dismiss(s);return;}}catch(e){}setTimeout(function(){s.setAttribute('data-state','out');},1500);setTimeout(function(){dismiss(s);},1900);}if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',init);}else{init();}})();
+</script>
 
 </body>
 </html>
