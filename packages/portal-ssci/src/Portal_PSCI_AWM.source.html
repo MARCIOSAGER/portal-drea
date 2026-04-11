@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html lang="pt-PT">
+<html lang="pt-PT" data-density="{{PORTAL.DENSITY}}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portal PSCI — SSCI {{AIRPORT.NAME}}</title>
+    <!-- Design System SGA — dormant foundation (Plan 1 of DS migration) -->
+    <style>{{DS_CSS}}</style>
     <style>
         :root {
             --dark-blue: #004C7B;
@@ -299,6 +301,8 @@
     </style>
 </head>
 <body>
+<!-- Design System SGA — icon sprite (hidden, referenced via <use href="#icon-X"/>) -->
+{{ICON_SPRITE}}
 
 <!-- ELEGANT TOAST CONTAINER -->
 <div id="awmToastContainer" aria-live="polite" aria-atomic="true"></div>
