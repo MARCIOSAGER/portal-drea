@@ -1,0 +1,29 @@
+/* =========================================================================
+ * Design System SGA — Base: Fonts
+ * =========================================================================
+ * Inter Variable font declared via @font-face with the woff2 data embedded
+ * as base64. The {{DS_INTER_WOFF2_BASE64}} placeholder is resolved at build
+ * time by scripts/ds_build_helpers.py::encode_font_woff2_base64() via the
+ * normal substitute_placeholders pipeline.
+ *
+ * NOTE (Plan 1 — Dormant): this declaration makes the Inter font AVAILABLE
+ * to the browser, but nothing applies it yet. Legacy CSS in the portal
+ * sources still declares `font-family: 'Segoe UI', ...` so the visible text
+ * remains unchanged. Plan 2 will introduce `body { font-family: 'Inter',
+ * system-ui, ...; }` once the typography.css is activated.
+ *
+ * Inter Variable is a single variable font file covering weights 100-900.
+ * Glyph caching note: font-display: swap means legacy fallback text renders
+ * first, then re-renders with Inter once loaded — but since nothing uses
+ * Inter in Plan 1, there is no perceptible swap.
+ * ========================================================================= */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('data:font/woff2;base64,{{DS_INTER_WOFF2_BASE64}}') format('woff2-variations'),
+       url('data:font/woff2;base64,{{DS_INTER_WOFF2_BASE64}}') format('woff2');
+  font-named-instance: 'Regular';
+}
