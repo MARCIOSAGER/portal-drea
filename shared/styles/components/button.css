@@ -1,0 +1,185 @@
+/* =========================================================================
+ * Design System SGA — Component: Button (Plan 3 Task 2)
+ * =========================================================================
+ * Introduces .btn base class + semantic modifier variants (new in Plan 3)
+ * AND re-tokenises every legacy .btn-* variant class that existed in the
+ * COE consolidated block 1 (Plan 2). Legacy selector names are preserved
+ * verbatim so existing HTML markup continues to work without modification.
+ *
+ * Spec: §5.1 (Tier 1 core primitives), §3 (Foundation tokens).
+ * ========================================================================= */
+
+/* ---------- Base .btn class (new in Plan 3) ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ds-space-2);
+  min-height: var(--ds-input-height);
+  padding: var(--ds-space-3) var(--ds-space-5);
+  border: 1px solid transparent;
+  border-radius: var(--ds-radius-md);
+  background: var(--ds-neutral-surface);
+  color: var(--ds-neutral-fg);
+  font-family: inherit;
+  font-size: var(--ds-text-base);
+  font-weight: 500;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color var(--ds-transition-fast),
+              border-color var(--ds-transition-fast),
+              color var(--ds-transition-fast);
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--ds-brand-secondary-text);
+  outline-offset: 2px;
+}
+
+.btn:disabled,
+.btn[aria-disabled="true"] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ---------- Semantic modifier variants ---------- */
+.btn--primary {
+  background: var(--ds-brand-primary);
+  color: var(--ds-neutral-surface);
+  border-color: var(--ds-brand-primary);
+}
+.btn--primary:hover:not(:disabled) {
+  background: var(--ds-brand-primary-hover);
+  border-color: var(--ds-brand-primary-hover);
+}
+
+.btn--secondary {
+  background: var(--ds-brand-secondary-fill);
+  color: var(--ds-neutral-surface);
+  border-color: var(--ds-brand-secondary-fill);
+}
+.btn--secondary:hover:not(:disabled) {
+  background: var(--ds-brand-primary);
+  border-color: var(--ds-brand-primary);
+}
+
+.btn--danger {
+  background: var(--ds-status-alert-emphasis);
+  color: var(--ds-status-alert-on-emphasis);
+  border-color: var(--ds-status-alert-emphasis);
+}
+.btn--danger:hover:not(:disabled) {
+  background: var(--ds-status-emergency-emphasis);
+}
+
+.btn--success {
+  background: var(--ds-status-success-emphasis);
+  color: var(--ds-status-success-on-emphasis);
+  border-color: var(--ds-status-success-emphasis);
+}
+.btn--success:hover:not(:disabled) {
+  filter: brightness(0.92);
+}
+
+.btn--ghost {
+  background: transparent;
+  color: var(--ds-brand-primary);
+  border-color: transparent;
+}
+.btn--ghost:hover:not(:disabled) {
+  background: var(--ds-neutral-subtle);
+}
+
+/* =========================================================================
+ * Legacy variant classes — re-tokenised verbatim from COE block 1
+ * (positions ~567-691, 2091-2093, 2152-2153 in the pre-Plan-3 source).
+ * ========================================================================= */
+
+.btn-print-card {
+    background-color: var(--ds-brand-secondary-fill);
+    color: white;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.3s;
+}
+
+.btn-print-card:hover {
+    background-color: var(--ds-brand-primary);
+}
+
+.btn-export {
+    background-color: var(--ds-status-success-emphasis);
+    color: white;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.3s;
+}
+
+.btn-export:hover {
+    background-color: var(--ds-status-success-fg);
+}
+
+.btn-clear {
+    background-color: var(--ds-neutral-fg-subtle);
+    color: white;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.3s;
+}
+
+.btn-clear:hover {
+    background-color: var(--ds-neutral-fg-muted);
+}
+
+.btn-export-all {
+    background-color: var(--ds-brand-primary);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-top: 1.5rem;
+    transition: background-color 0.3s;
+}
+
+.btn-export-all:hover {
+    background-color: var(--ds-brand-secondary-fill);
+}
+
+/* Timeline / Cronómetro buttons */
+.btn-timeline {
+    padding: 0.7rem 1.3rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.btn-start { background-color: var(--ds-status-success-emphasis); color: white; }
+.btn-start:hover { background-color: var(--ds-status-success-fg); }
+.btn-stop { background-color: var(--ds-status-alert-emphasis); color: white; }
+.btn-stop:hover { background-color: var(--ds-status-alert-fg); }
+.btn-reset { background-color: var(--ds-neutral-fg-subtle); color: white; }
+.btn-reset:hover { background-color: var(--ds-neutral-fg-muted); }
+
+/* Ficha unified actions (PATCH v2 fichas-seg) */
+.btn-uf-print { background: var(--ds-brand-secondary-fill); color: #ffffff; }
+.btn-uf-export { background: var(--ds-status-success-emphasis); color: #ffffff; }
+.btn-uf-clear { background: #95a5a6; color: #ffffff; } /* TODO(ds): tokenise to --ds-neutral-fg-subtle family */
+
+/* Ficha print bar */
+.btn-print-single { background: var(--ds-brand-secondary-fill); color: #ffffff; }
+.btn-print-pack { background: var(--ds-brand-primary); color: #ffffff; }

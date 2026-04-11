@@ -564,67 +564,7 @@
     flex-wrap: wrap;
 }
 
-.btn-print-card {
-    background-color: var(--medium-blue);
-    color: white;
-    border: none;
-    padding: 0.6rem 1.2rem;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    transition: background-color 0.3s;
-}
-
-.btn-print-card:hover {
-    background-color: var(--dark-blue);
-}
-
-.btn-export {
-    background-color: var(--success-green);
-    color: white;
-    border: none;
-    padding: 0.6rem 1.2rem;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    transition: background-color 0.3s;
-}
-
-.btn-export:hover {
-    background-color: #1b5e20;
-}
-
-.btn-clear {
-    background-color: #999;
-    color: white;
-    border: none;
-    padding: 0.6rem 1.2rem;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    transition: background-color 0.3s;
-}
-
-.btn-clear:hover {
-    background-color: #666;
-}
-
-.btn-export-all {
-    background-color: var(--dark-blue);
-    color: white;
-    border: none;
-    padding: 0.8rem 1.5rem;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 1rem;
-    font-weight: 600;
-    margin-top: 1.5rem;
-    transition: background-color 0.3s;
-}
-
-.btn-export-all:hover {
-    background-color: var(--medium-blue);
-}
+/* ---------- Button component migrated to shared/styles/components/button.css (Plan 3 Task 2) ---------- */
 
 @media print {
     .form-actions { display: none; }
@@ -673,22 +613,7 @@
     flex-wrap: wrap;
 }
 
-.btn-timeline {
-    padding: 0.7rem 1.3rem;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 0.95rem;
-    font-weight: 600;
-    transition: all 0.3s;
-}
-
-.btn-start { background-color: var(--success-green); color: white; }
-.btn-start:hover { background-color: #1b5e20; }
-.btn-stop { background-color: var(--warning-red); color: white; }
-.btn-stop:hover { background-color: #b71c1c; }
-.btn-reset { background-color: #999; color: white; }
-.btn-reset:hover { background-color: #666; }
+/* .btn-timeline, .btn-start, .btn-stop, .btn-reset migrated to shared/styles/components/button.css (Plan 3 Task 2) */
 
 .timeline-type-selector {
     display: flex;
@@ -2088,9 +2013,7 @@
     transition: filter 0.15s;
 }
 .ficha-unified-actions button:hover { filter: brightness(1.1); }
-.btn-uf-print { background: #0094CF; color: #ffffff; }
-.btn-uf-export { background: #27ae60; color: #ffffff; }
-.btn-uf-clear { background: #95a5a6; color: #ffffff; }
+/* .btn-uf-* migrated to shared/styles/components/button.css (Plan 3 Task 2) */
 
 @media (max-width: 700px) {
     .ficha-unified-form .uf-row { grid-template-columns: 1fr; }
@@ -2149,8 +2072,7 @@
 }
 .fichas-print-bar button:hover { filter: brightness(1.08); transform: translateY(-1px); }
 .fichas-print-bar button:active { transform: translateY(0); }
-.btn-print-single { background: #0094CF; color: #ffffff; }
-.btn-print-pack { background: #004C7B; color: #ffffff; }
+/* .btn-print-single, .btn-print-pack migrated to shared/styles/components/button.css (Plan 3 Task 2) */
 
 
         /* ===========================
