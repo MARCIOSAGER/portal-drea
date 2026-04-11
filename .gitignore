@@ -57,3 +57,4 @@ config/**/*.secret.json
 # ---- OneDrive / Dropbox artifacts ----
 .~lock.*
 ~$*
+.superpowers/
