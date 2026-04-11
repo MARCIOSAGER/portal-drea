@@ -1,0 +1,140 @@
+/* =========================================================================
+ * Design System SGA — chrome/sidebar.css
+ * =========================================================================
+ * Left navigation: 240px compact / 256px comfortable, light canvas,
+ * no logo, section groups with uppercase headings, nav items with
+ * border-left 3px brand-primary when active.
+ *
+ * IMPORTANT: nav items keep the legacy class `.nav-btn` so that the
+ * openSection() JS handler in Portal_COE_AWM.source.html continues to
+ * find them. The new visual rules are scoped to `.ds-sidebar .nav-btn`
+ * so specificity wins over the legacy block 1 `.nav-btn { ... }` rules.
+ * ========================================================================= */
+
+.ds-sidebar {
+  position: fixed;
+  left: 0;
+  top: 60px;                             /* 56px shell bar + 4px stripe */
+  bottom: 0;
+  width: 240px;
+  background: var(--ds-neutral-canvas);
+  border-right: 1px solid var(--ds-neutral-muted);
+  overflow-y: auto;
+  padding-block: var(--ds-space-5, 12px);
+  z-index: 90;
+}
+
+:root[data-density="comfortable"] .ds-sidebar {
+  width: 256px;
+  top: 68px;  /* 64px shell bar + 4px stripe */
+}
+
+/* Section group */
+.ds-sidebar__section {
+  padding: 0 var(--ds-space-4, 8px);
+  margin-bottom: var(--ds-space-6, 16px);
+}
+
+.ds-sidebar__section-title {
+  margin: 0 0 var(--ds-space-2, 4px) var(--ds-space-4, 8px);
+  font-size: var(--ds-text-xs, 11px);
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--ds-neutral-fg-muted);
+}
+
+.ds-sidebar__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* Nav item — the legacy class `.nav-btn` is kept for JS contract,
+   DS visual lives on `.ds-sidebar .nav-btn` with higher specificity. */
+.ds-sidebar .nav-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-3, 6px);
+  height: var(--ds-nav-item-height, 36px);
+  padding: 0 var(--ds-space-4, 8px);
+  border-left: 3px solid transparent;
+  border-radius: var(--ds-radius-sm, 3px);
+  font-size: var(--ds-text-sm, 13px);
+  font-weight: 500;
+  color: var(--ds-neutral-fg-muted);
+  text-decoration: none;
+  transition: background var(--ds-transition-fast, 120ms),
+              color var(--ds-transition-fast, 120ms);
+  white-space: nowrap;
+}
+
+.ds-sidebar .nav-btn:hover {
+  background: var(--ds-neutral-subtle);
+  color: var(--ds-brand-primary);
+}
+
+.ds-sidebar .nav-btn.active {
+  background: var(--ds-neutral-surface);
+  color: var(--ds-brand-primary);
+  font-weight: 600;
+  border-left-color: var(--ds-brand-primary);
+  box-shadow: var(--ds-shadow-1, 0 1px 2px rgba(9,30,66,0.08));
+}
+
+/* Icon slot for future sprite integration */
+.ds-sidebar .nav-btn__icon {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 18px;
+  color: currentColor;
+}
+
+/* Occurrence group — preserve the visual affordance from the legacy
+   sidebar-section-simulacros without the dark blue context */
+.ds-sidebar__section--occurrences .nav-btn {
+  display: grid;
+  grid-template-columns: 20px 1fr;
+  align-items: center;
+  gap: var(--ds-space-3, 6px);
+  height: auto;
+  padding-block: var(--ds-space-3, 6px);
+}
+
+.ds-sidebar__section--occurrences .sim-label {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.ds-sidebar__section--occurrences .sim-label-main {
+  font-size: var(--ds-text-sm, 13px);
+  font-weight: 600;
+}
+
+.ds-sidebar__section--occurrences .sim-label-sub {
+  font-size: var(--ds-text-xs, 11px);
+  color: var(--ds-neutral-fg-muted);
+}
+
+.ds-sidebar__section--occurrences .sim-track-emg .nav-btn.active {
+  border-left-color: var(--ds-status-alert-emphasis);
+}
+
+.ds-sidebar__section--occurrences .sim-track-seg .nav-btn.active {
+  border-left-color: var(--ds-cat-seg-ordem);
+}
+
+/* Sidebar footer (version) */
+.ds-sidebar__footer {
+  margin-top: auto;
+  padding: var(--ds-space-5, 12px) var(--ds-space-4, 8px);
+  border-top: 1px solid var(--ds-neutral-muted);
+  font-size: var(--ds-text-xs, 11px);
+  line-height: 1.4;
+  color: var(--ds-neutral-fg-subtle);
+  text-align: center;
+}
