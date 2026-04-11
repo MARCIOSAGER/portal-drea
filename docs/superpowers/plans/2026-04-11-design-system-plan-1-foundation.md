@@ -1,5 +1,8 @@
 # Design System SGA — Plan 1: Foundation Dormant (Implementation Plan)
 
+> **Status:** ✅ **COMPLETED 2026-04-11** on branch `feat/design-system` (worktree `../Portal_DREA-ds`).
+> 15 atomic commits (`3d94b6b..cd72f17`), 20 pytest tests passing, both portal builds OK, dormant invariant preserved (legacy body font-family still Segoe UI, DS tokens namespaced `--ds-*`). File size deltas: COE +482,762 bytes, SSCI +482,633 bytes (both ~+471 KB from Inter Variable woff2 base64 + DS CSS tokens + SVG sprite). Ready for Plan 2 (COE component migration).
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Populate `shared/` with the Design System SGA foundation (tokens, Inter font, minimal SVG sprite), extend both `build.py` scripts to consume these inputs, and produce `dist/` HTMLs that render **visually identical** to the current `v2.0.0-beta.1` output while carrying the dormant design system payload.
