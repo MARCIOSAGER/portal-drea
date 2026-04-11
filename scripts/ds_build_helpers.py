@@ -128,3 +128,22 @@ def compile_design_system_css(styles_root: Path, density: str) -> str:
         pieces.append("")  # blank line separator
 
     return "\n".join(pieces)
+
+
+def encode_font_woff2_base64(woff2_path: Path) -> str:
+    """
+    Read a .woff2 font file and return its base64-encoded content as an ASCII
+    string suitable for embedding in a CSS `src: url('data:font/woff2;base64,...')`
+    rule.
+
+    Args:
+        woff2_path: absolute Path to the .woff2 file
+
+    Returns:
+        base64-encoded ASCII string (no data: prefix, no line wraps)
+
+    Raises:
+        FileNotFoundError: if the file does not exist
+    """
+    data = Path(woff2_path).read_bytes()
+    return base64.b64encode(data).decode("ascii")
