@@ -2,7 +2,7 @@
 
 > **Direcção de Resposta a Emergências Aeroportuárias** — Plataforma operacional para aeroportos SGA
 
-**Versão da plataforma:** `v2.0.0-beta.1` · **Aeroporto de referência:** FNMO (Namibe) · **Operador:** SGA — Sociedade de Gestão Aeroportuária
+**Versão da plataforma:** `v2.1.0-alpha.1` · **Aeroporto de referência:** FNMO (Namibe) · **Operador:** SGA — Sociedade de Gestão Aeroportuária
 
 ---
 
@@ -52,10 +52,10 @@ Portal_DREA/
 │       └── dist/                       Output (gitignored)
 │           └── Portal_PSCI_AWM.html
 │
-├── shared/                             Código partilhado entre packages
-│   ├── assets/                         Logotipos SGA, ícones institucionais
-│   ├── styles/                         CSS partilhado (modal, toast, etc.)
-│   └── scripts/                        JS partilhado (awmContacts, awmModal, etc.)
+├── shared/                             Design System SGA (partilhado)
+│   ├── styles/                         tokens, base, chrome, components, print
+│   ├── scripts/                        chrome/splash.js, utilities/date-utc.js
+│   └── assets/                         fonts/Inter, icons/sprite.svg, logo-sga-*.svg
 │
 ├── config/                             Configuração por aeroporto
 │   └── airport-fnmo.json               Config do FNMO (referência)
@@ -89,6 +89,8 @@ Abrir o ficheiro HTML do portal relevante num browser moderno (Chrome, Edge, Fir
 Consultar [docs/manual-utilizador.md](docs/manual-utilizador.md) para o fluxo operacional completo.
 
 ### Para o desenvolvedor / consultor
+
+Para trabalhar no Design System SGA, ver [`docs/design-system-guide.md`](docs/design-system-guide.md) (consumer guide) e os READMEs de [`shared/styles/`](shared/styles/README.md) + [`shared/scripts/`](shared/scripts/README.md) (contributor guides).
 
 **Pré-requisitos**: Python 3.8+ e Node.js 18+ (para validação sintáctica).
 
@@ -130,10 +132,12 @@ Ver [docs/manual-instalacao.md](docs/manual-instalacao.md) (em preparação na E
 - [x] Script master `build-all.py` orquestra todos os packages
 - [x] Repositório git + GitHub privado
 - [x] Documentação base (README, ARCHITECTURE, CHANGELOG)
-- [x] Logotipos SGA extraídos para `shared/assets/`
-- [x] **Etapa 3.1** — Extracção de strings de identidade do aeroporto (placeholders `{{AIRPORT.*}}`)
-- [x] **Etapa 3.2** — Extracção de `AWM_CONTACTS_DEFAULT` para `config/airport-fnmo.json` (`{{CONTACTS_JSON}}`)
-- [x] **Etapa 4** — Footer de versão visível em runtime, manual de utilizador, manual de instalação, checklist de validação
+- [x] **Etapa 3.1** — Extracção de strings de identidade do aeroporto
+- [x] **Etapa 3.2** — Extracção de `AWM_CONTACTS_DEFAULT` para config externa
+- [x] **Etapa 4** — Footer de versão, manual de utilizador, checklist de validação
+- [x] **Etapa 5** — **Design System SGA** (v2.1.0-alpha.1): tokens em 3 camadas, Inter Variable embebida, sprite SVG de 40+ ícones, chrome consolidado (shell bar, sidebar, splash, footer), 13 componentes partilhados, ambos os portais migrados para light theme unificado
+
+Ver [`docs/design-system-guide.md`](docs/design-system-guide.md) para o guia completo do Design System.
 
 **Próxima fase**: Fase 2 — Empacotamento como instaladores Windows (Tauri).
 
@@ -163,15 +167,18 @@ python scripts/build-all.py --config config/airport-lad.json
 
 ## Identidade visual
 
-Cores institucionais SGA (aplicadas a ambos os portais):
+Cores institucionais SGA (aplicadas a ambos os portais via Design System SGA):
 
-| Uso | Cor | Hex |
-|---|---|---|
-| Dark blue | Header, sidebar | `#004C7B` |
-| Medium blue | Botões primários, hover | `#0094CF` |
-| Light cyan | Destaques | `#38C7F4` |
-| Warning red | Alertas, emergência aeronáutica | `#c62828` |
-| AVSEC amber | Segurança, bombeiros | `#f39c12` |
+| Uso | Token semantic              | Hex       |
+|---|--------------------------------|-----------|
+| Brand primary (shell bar stripe, badges principais) | `var(--brand-primary)` → `--blue-800` | `#004C7B` |
+| Brand secondary fill (fill only, não texto) | `var(--brand-secondary-fill)` → `--blue-600` | `#0094CF` |
+| Brand secondary text (AA safe) | `var(--brand-secondary-text)` → `--blue-700` | `#0073a0` |
+| Brand accent | `var(--brand-accent)` → `--blue-500` | `#38C7F4` |
+| Status alert (emergência aeronáutica) | `var(--status-alert-emphasis)` → `--red-700` | `#c62828` |
+| Status warning (AVSEC amber) | `var(--status-warning-emphasis)` → `--amber-500` | `#f39c12` |
+
+Para o catálogo completo (primitives, semantic, densidade compact vs comfortable), ver [`docs/design-system-guide.md`](docs/design-system-guide.md).
 
 ---
 
