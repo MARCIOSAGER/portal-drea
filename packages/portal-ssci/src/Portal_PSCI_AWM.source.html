@@ -2101,17 +2101,20 @@ for (var i = 0; i < 13; i++) addPresencaRow();
             var okText = opts.okText || 'OK';
             var cancelText = opts.cancelText || 'Cancelar';
             var isConfirm = opts.confirm === true;
+            var okClass = variant === 'danger' ? 'awm-modal-btn danger' : 'awm-modal-btn primary';
             ov.innerHTML = '<div class="awm-modal ' + variant + '" role="dialog" aria-modal="true">'
+                + '<div class="awm-modal-header">'
                 + '<div class="awm-modal-icon">' + iconFor(variant) + '</div>'
                 + '<h3 class="awm-modal-title">' + String(opts.title || '').replace(/</g,'&lt;') + '</h3>'
-                + '<div class="awm-modal-message">' + String(opts.message || '').replace(/</g,'&lt;') + '</div>'
-                + '<div class="awm-modal-actions">'
-                + (isConfirm ? '<button class="awm-btn-cancel">' + cancelText + '</button>' : '')
-                + '<button class="awm-btn-ok awm-variant-' + variant + '">' + okText + '</button>'
+                + '</div>'
+                + '<div class="awm-modal-body">' + String(opts.message || '').replace(/</g,'&lt;') + '</div>'
+                + '<div class="awm-modal-footer">'
+                + (isConfirm ? '<button class="awm-modal-btn cancel">' + cancelText + '</button>' : '')
+                + '<button class="' + okClass + '">' + okText + '</button>'
                 + '</div></div>';
             document.body.appendChild(ov);
-            var okBtn = ov.querySelector('.awm-btn-ok');
-            var cancelBtn = ov.querySelector('.awm-btn-cancel');
+            var okBtn = ov.querySelector('.awm-modal-btn.primary, .awm-modal-btn.danger');
+            var cancelBtn = ov.querySelector('.awm-modal-btn.cancel');
             function done(v) {
                 ov.classList.add('leaving');
                 setTimeout(function(){ if (ov.parentNode) ov.parentNode.removeChild(ov); }, 200);
