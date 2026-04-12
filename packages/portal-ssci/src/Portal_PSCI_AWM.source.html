@@ -101,6 +101,37 @@
         .map-toggle-btn.active { background: var(--brand-primary-fill, #004C7B); color: #fff; }
         /* Zebra-striping for check-tables (replaces inline background:#fafafa) */
         .check-table tbody tr:not(.section-header):nth-child(even) { background: #fafafa; }
+        /* Inspection table section headers */
+        .check-table .section-header td {
+            background: linear-gradient(135deg, var(--brand-primary-fill, #004C7B) 0%, #005a8f 100%);
+            color: #fff;
+            font-weight: 700;
+            font-size: 0.82rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            padding: 0.6rem 1rem;
+            border: none;
+            position: relative;
+        }
+        .check-table .section-header td::before {
+            content: '';
+            display: inline-block;
+            width: 3px;
+            height: 14px;
+            background: var(--brand-accent, #38C7F4);
+            border-radius: 2px;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+        /* Form card headings */
+        .form-card > h3 {
+            color: var(--brand-primary-fill, #004C7B);
+            font-size: 0.95rem;
+            font-weight: 700;
+            padding-bottom: 0.5rem;
+            margin-bottom: 0.8rem;
+            border-bottom: 2px solid var(--brand-accent, #38C7F4);
+        }
 
         /* ===== Plan 5 Tasks 8+9 — awm-modal + awm-toast migrated =====
          * The entire awm-toast + awm-modal CSS (including keyframes,
