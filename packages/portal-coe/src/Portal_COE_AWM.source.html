@@ -12450,6 +12450,89 @@ if (document.readyState !== 'loading') {
 </script>
 <!-- ===== /EMERGÊNCIA AERONÁUTICA — PATCH v5 ===== -->
 
+<!-- ===== CHRONOMETER + BINDINGS — Plan 7 Task 15 ===== -->
+<script>
+(function() {
+  'use strict';
+
+  var CLOCK_EL = null;
+  var ACTIVE_EL = null;
+  var occNotificationTime = null;
+
+  function formatElapsed(ms) {
+    if (ms < 0) return '00:00';
+    var total = Math.floor(ms / 1000);
+    var mm = Math.floor(total / 60);
+    var ss = total % 60;
+    return String(mm).padStart(2, '0') + ':' + String(ss).padStart(2, '0');
+  }
+
+  function updateChronometer() {
+    if (!CLOCK_EL) CLOCK_EL = document.getElementById('occ-chronometer');
+    if (!CLOCK_EL) return;
+    if (occNotificationTime) {
+      var elapsed = Date.now() - occNotificationTime;
+      CLOCK_EL.textContent = formatElapsed(elapsed);
+      if (!ACTIVE_EL) ACTIVE_EL = document.getElementById('occ-active');
+      if (ACTIVE_EL) ACTIVE_EL.style.display = '';
+    }
+  }
+
+  function bindSummary() {
+    var map = [
+      ['efb-occnum', 'occ-id-ref'],
+      ['efb-occtime', 'occ-notif-ref'],
+      ['efb-flightnum', 'occ-voo-ref'],
+      ['efb-actype', 'occ-aircraft-ref']
+    ];
+    map.forEach(function(pair) {
+      var src = document.getElementById(pair[0]);
+      var dst = document.getElementById(pair[1]);
+      if (src && dst) {
+        src.addEventListener('input', function() {
+          dst.textContent = src.value || '\u2014';
+          if (pair[0] === 'efb-occtime' && src.value) {
+            occNotificationTime = Date.now();
+          }
+        });
+      }
+    });
+  }
+
+  function initOccAutosave() {
+    var saveEl = document.getElementById('occ-autosave');
+    if (!saveEl) return;
+    var inputs = document.querySelectorAll('#emgFormBlock input, #emgFormBlock textarea, #emgFormBlock select');
+    inputs.forEach(function(inp) {
+      inp.addEventListener('input', function() {
+        saveEl.textContent = 'a guardar\u2026';
+        setTimeout(function() { saveEl.textContent = 'guardado \u00B7 agora'; }, 300);
+      });
+    });
+  }
+
+  // applyStatState — ported to COE (mirror of SSCI Task 13)
+  window.applyStatState = window.applyStatState || function(el, state) {
+    if (!el) return;
+    el.setAttribute('data-state', state);
+    if (state === 'critical') {
+      el.setAttribute('role', 'alert');
+      el.setAttribute('aria-live', 'assertive');
+    } else {
+      el.removeAttribute('role');
+      el.setAttribute('aria-live', 'polite');
+    }
+  };
+
+  document.addEventListener('DOMContentLoaded', function() {
+    bindSummary();
+    initOccAutosave();
+    setInterval(updateChronometer, 1000);
+  });
+})();
+</script>
+<!-- ===== /CHRONOMETER + BINDINGS — Plan 7 Task 15 ===== -->
+
 <!-- ===== UX / UI / A11Y / FLUIDEZ — PATCH v6 ===== -->
 <script>
 (function() {
