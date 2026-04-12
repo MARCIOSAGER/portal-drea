@@ -2606,6 +2606,15 @@ html { scroll-behavior: smooth; }
     .occ-dash-hist-btn { display: none !important; }
     .occ-phase[open] { break-inside: avoid; }
 }
+/* Tab buttons — Config tabs */
+.portal-tab-bar { display: flex; gap: 0.3rem; border-bottom: 2px solid #e0e0e0; margin-bottom: 1.2rem; flex-wrap: wrap; }
+.portal-tab-btn {
+    padding: 0.7rem 1.2rem; border: none; background: #e9ecef; color: #333;
+    cursor: pointer; font-weight: 600; border-radius: 6px 6px 0 0;
+    font-size: 0.88rem; font-family: inherit; transition: background 0.15s, color 0.15s;
+}
+.portal-tab-btn:hover { background: #dee2e6; }
+.portal-tab-btn.active { background: var(--brand-primary-fill, #004C7B); color: #fff; }
 </style>
 </head>
 <body>
@@ -9369,11 +9378,11 @@ async function clearContacts() {
                 </div>
 
                 <!-- Sub-tabs (PATCH v19 — tabs Internos/Externos removidos, Contactos agora é default) -->
-                <div style="display:flex; gap:0.3rem; border-bottom:2px solid #e0e0e0; margin-bottom:1.2rem; flex-wrap:wrap;">
-                    <button class="cfg-tab-btn active" onclick="cfgOpenTab('unified', this)" style="padding:0.7rem 1.2rem;border:none;background:#004C7B;color:white;cursor:pointer;font-weight:600;border-radius:6px 6px 0 0;">📇 Contactos</button>
-                    <button class="cfg-tab-btn" onclick="cfgOpenTab('aeroporto', this)" style="padding:0.7rem 1.2rem;border:none;background:#e9ecef;color:#333;cursor:pointer;font-weight:600;border-radius:6px 6px 0 0;">🏢 Dados Aeroporto</button>
-                    <button class="cfg-tab-btn" onclick="cfgOpenTab('ops', this)" style="padding:0.7rem 1.2rem;border:none;background:#e9ecef;color:#333;cursor:pointer;font-weight:600;border-radius:6px 6px 0 0;">👤 Operadores COE</button>
-                    <button class="cfg-tab-btn" onclick="cfgOpenTab('param', this)" style="padding:0.7rem 1.2rem;border:none;background:#e9ecef;color:#333;cursor:pointer;font-weight:600;border-radius:6px 6px 0 0;">⚙ Parâmetros</button>
+                <div class="portal-tab-bar">
+                    <button class="portal-tab-btn cfg-tab-btn active" onclick="cfgOpenTab('unified', this)">📇 Contactos</button>
+                    <button class="portal-tab-btn cfg-tab-btn" onclick="cfgOpenTab('aeroporto', this)">🏢 Dados Aeroporto</button>
+                    <button class="portal-tab-btn cfg-tab-btn" onclick="cfgOpenTab('ops', this)">👤 Operadores COE</button>
+                    <button class="portal-tab-btn cfg-tab-btn" onclick="cfgOpenTab('param', this)">⚙ Parâmetros</button>
                 </div>
 
                 <!-- TAB: DADOS AEROPORTO -->
@@ -10575,8 +10584,8 @@ function cfgOpenTab(tab, btn) {
     document.querySelectorAll('.cfg-tab-content').forEach(function(el) { el.style.display = 'none'; });
     var target = document.getElementById('cfg-tab-' + tab);
     if (target) target.style.display = 'block';
-    document.querySelectorAll('.cfg-tab-btn').forEach(function(b) { b.style.background = '#e9ecef'; b.style.color = '#333'; });
-    if (btn) { btn.style.background = '#004C7B'; btn.style.color = 'white'; }
+    document.querySelectorAll('.cfg-tab-btn').forEach(function(b) { b.classList.remove('active'); });
+    if (btn) { btn.classList.add('active'); }
 }
 
 function cfgSaveAll() {
@@ -12614,6 +12623,7 @@ if (document.readyState !== 'loading') {
         installShortcutsModal();
         fixButtonTypes();
         linkLabelsToInputs();
+        hideNavEmojis();
         installSwitchTabSafety();
         installKeyboardShortcuts();
         hookSaveObserver();
@@ -12754,6 +12764,21 @@ if (document.readyState !== 'loading') {
     function toggleShortcuts() {
         var bg = document.getElementById('uxpShortcutsBg');
         if (bg) bg.classList.toggle('open');
+    }
+
+    // ---------- G2. Wrap leading emojis in nav buttons with aria-hidden ----------
+    function hideNavEmojis() {
+        document.querySelectorAll('.nav-btn').forEach(function(btn) {
+            var text = btn.textContent;
+            var m = text.match(/^([\u{1F300}-\u{1FAD6}\u{2600}-\u{27BF}\u{FE00}-\u{FE0F}\u{200D}\u{20E3}\u{E0020}-\u{E007F}\u2705\u2611\u26BD\u26A0\u2328\u23F0-\u23FA\u2764]+\s*)/u);
+            if (m) {
+                var span = document.createElement('span');
+                span.setAttribute('aria-hidden', 'true');
+                span.textContent = m[1];
+                btn.textContent = text.slice(m[1].length);
+                btn.insertBefore(span, btn.firstChild);
+            }
+        });
     }
 
     // ---------- G. Fix button types (form-submit safety) ----------

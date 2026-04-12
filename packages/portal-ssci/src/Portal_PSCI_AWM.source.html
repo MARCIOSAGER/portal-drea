@@ -77,6 +77,9 @@
         }
         .portal-tab-btn:hover { background: #dee2e6; }
         .portal-tab-btn.active { background: var(--brand-primary-fill, #004C7B); color: #fff; }
+        /* Section headings */
+        .section-heading { color: var(--brand-primary-fill, #004C7B); margin: 0; }
+        h2.section-heading { margin-bottom: 0.3rem; }
         /* Map toggle buttons */
         .map-toggle { display: flex; gap: 0; margin-bottom: 1rem; border-radius: 8px; overflow: hidden; border: 2px solid var(--brand-primary-fill, #004C7B); }
         .map-toggle-btn {
@@ -1843,7 +1846,7 @@
 
         <!-- CONFIGURAÇÕES -->
         <div id="configuracoes" class="section">
-            <h2 style="color:var(--brand-primary-fill, #004C7B);margin-bottom:0.3rem;">⚙ CONFIGURAÇÕES — SSCI</h2>
+            <h2 class="section-heading">⚙ CONFIGURAÇÕES — SSCI</h2>
             <p style="color:#666;margin-bottom:1rem;">Editar dados do SSCI: efectivo, viaturas, equipamento, contactos de emergência e parâmetros operacionais.</p>
 
             <div style="background:#fff3cd;border-left:4px solid #ffc107;padding:0.8rem 1rem;border-radius:6px;margin-bottom:1.2rem;font-size:0.88rem;">
@@ -1876,7 +1879,7 @@
                         <button class="portal-tab-btn psci-turno-btn" data-turno="CHARLIE" onclick="psciCfgTurno('CHARLIE', this)">Turno CHARLIE</button>
                     </div>
                     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.8rem;flex-wrap:wrap;gap:0.5rem;">
-                        <h3 style="color:var(--brand-primary-fill, #004C7B);margin:0;">Pessoal — Turno <span id="psci-turno-label">ALPHA</span></h3>
+                        <h3 class="section-heading">Pessoal — Turno <span id="psci-turno-label">ALPHA</span></h3>
                         <button class="btn btn-success" onclick="psciCfgAddEfectivo()">+ Adicionar Bombeiro</button>
                     </div>
                     <div style="overflow-x:auto;">
@@ -1899,7 +1902,7 @@
             <div id="psci-cfg-viaturas" class="psci-cfg-content" style="display:none;">
                 <div class="form-card">
                     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.8rem;flex-wrap:wrap;gap:0.5rem;">
-                        <h3 style="color:var(--brand-primary-fill, #004C7B);margin:0;">Viaturas e Meios SSCI</h3>
+                        <h3 class="section-heading">Viaturas e Meios SSCI</h3>
                         <button class="btn btn-success" onclick="psciCfgAddViatura()">+ Adicionar Viatura</button>
                     </div>
                     <div style="overflow-x:auto;">
@@ -1925,7 +1928,7 @@
             <div id="psci-cfg-equip" class="psci-cfg-content" style="display:none;">
                 <div class="form-card">
                     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.8rem;flex-wrap:wrap;gap:0.5rem;">
-                        <h3 style="color:var(--brand-primary-fill, #004C7B);margin:0;">Equipamento de Protecção e Resgate</h3>
+                        <h3 class="section-heading">Equipamento de Protecção e Resgate</h3>
                         <button class="btn btn-success" onclick="psciCfgAddEquip()">+ Adicionar Item</button>
                     </div>
                     <p style="font-size:0.85rem;color:#666;">Esta lista alimenta as checklists de inspecção de equipamento de resgate (W01, W02).</p>
@@ -1949,7 +1952,7 @@
             <div id="psci-cfg-contactos" class="psci-cfg-content" style="display:none;">
                 <div class="form-card">
                     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.8rem;flex-wrap:wrap;gap:0.5rem;">
-                        <h3 style="color:var(--brand-primary-fill, #004C7B);margin:0;">Contactos de Emergência SSCI</h3>
+                        <h3 class="section-heading">Contactos de Emergência SSCI</h3>
                         <button class="btn btn-success" onclick="psciCfgAddContacto()">+ Adicionar Contacto</button>
                     </div>
                     <div style="overflow-x:auto;">
@@ -1971,7 +1974,7 @@
             <!-- PARÂMETROS -->
             <div id="psci-cfg-param" class="psci-cfg-content" style="display:none;">
                 <div class="form-card">
-                    <h3 style="color:var(--brand-primary-fill, #004C7B);margin-top:0;">Parâmetros Operacionais</h3>
+                    <h3 class="section-heading">Parâmetros Operacionais</h3>
                     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem;">
                         <div><label style="display:block;font-size:0.85rem;font-weight:600;margin-bottom:0.3rem;">Categoria SCI do Aeroporto</label><select id="psci-par-catsci" style="width:100%;padding:0.55rem;border:1px solid #ccc;border-radius:5px;"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select></div>
                         <div><label style="display:block;font-size:0.85rem;font-weight:600;margin-bottom:0.3rem;">Tempo Resposta Máximo (segundos — ICAO)</label><input type="number" id="psci-par-tempomax" style="width:100%;padding:0.55rem;border:1px solid #ccc;border-radius:5px;" value="180"></div>
@@ -1984,7 +1987,7 @@
                     </div>
                 </div>
                 <div class="form-card" style="margin-top:1rem;">
-                    <h3 style="color:var(--brand-primary-fill, #004C7B);margin-top:0;">Sobre o Portal PSCI</h3>
+                    <h3 class="section-heading">Sobre o Portal PSCI</h3>
                     <p style="font-size:0.88rem;color:#666;">Portal PSCI {{AIRPORT.NAME_SHORT}} — Versão {{VERSION}} ({{BUILD_DATE_SHORT}})<br>Desenvolvido para o Serviço de Salvamento e Combate a Incêndios do {{AIRPORT.NAME}} ({{AIRPORT.OACI}}).<br>Dados armazenados em <code>localStorage</code> (chave: <code>psci_awm_config</code>).</p>
                 </div>
             </div>
@@ -3418,9 +3421,10 @@ function stkImportJSON(ev) {
     var file = ev.target.files && ev.target.files[0];
     if (!file) return;
     var reader = new FileReader();
-    reader.onload = function(e) {
+    reader.onload = async function(e) {
         try {
             var d = JSON.parse(e.target.result);
+            if (!(await window.awmConfirm('Substituir todos os dados de estoque actuais?', { title: 'Importar Estoque', variant: 'warning', okText: 'Substituir' }))) { ev.target.value = ''; return; }
             STK_DATA = {
                 agentes:      Array.isArray(d.agentes)      ? d.agentes      : STK_DEFAULT.agentes,
                 epi:          Array.isArray(d.epi)          ? d.epi          : STK_DEFAULT.epi,

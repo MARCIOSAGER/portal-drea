@@ -2,7 +2,7 @@
 
 > **Direcção de Resposta a Emergências Aeroportuárias** — Plataforma operacional para aeroportos SGA
 
-**Versão da plataforma:** `v2.2.0-alpha.1` · **Aeroporto de referência:** FNMO (Namibe) · **Operador:** SGA — Sociedade de Gestão Aeroportuária
+**Versão da plataforma:** `v2.3.0` · **Aeroporto de referência:** FNMO (Namibe) · **Operador:** SGA — Sociedade de Gestão Aeroportuária
 
 ---
 
@@ -137,6 +137,19 @@ Ver [docs/manual-instalacao.md](docs/manual-instalacao.md) (em preparação na E
 - [x] **Etapa 4** — Footer de versão, manual de utilizador, checklist de validação
 - [x] **Etapa 5** — **Design System SGA** (v2.1.0-alpha.1): tokens em 3 camadas, Inter Variable embebida, sprite SVG de 40+ ícones, chrome consolidado (shell bar, sidebar, splash, footer), 13 componentes partilhados, ambos os portais migrados para light theme unificado
 - [x] **Etapa 6** — **Visual Polish** (v2.2.0-alpha.1): DS aplicado aos conteudos operacionais — SSCI dashboard com 6 KPIs em stat-card-gauge + progress bars, COE form com two-col layout + sticky chronometer, sidebar com nav-btn--pill, JetBrains Mono para numericos, 6 novos componentes CSS, 53 novos tokens, logo SGA real integrada
+- [x] **Etapa 7** — **Qualidade e Consistencia** (v2.3.0):
+  - Dashboard CAT SCI reflecte estoque actual (era sempre nominal)
+  - Controlo de Estoque redesenhado com cards KPI stat-card-gauge
+  - Tela de identificacao do operador no Portal SSCI (como o COE)
+  - Checkboxes OK/NOK convertidos para toggle buttons
+  - Modais alinhados com design system awm-modal (sem confirm/alert nativos)
+  - Tabs (Estoque, Config, Turno, Mapas) com CSS classes em vez de inline styles
+  - Tokens legados removidos de ambos os portais (migrados para DS)
+  - PDFs: cores OP/NO correctas, operador no rodape, print CSS unificado
+  - Import JSON com aviso de sobrescrita
+  - Lista Presenca pre-popula do efectivo configurado
+  - Acessibilidade: aria-current nav, emojis aria-hidden, zebra-striping CSS
+  - Service Worker auto-versioning por deploy (VERSION + git SHA)
 
 Ver [`docs/design-system-guide.md`](docs/design-system-guide.md) para o guia completo do Design System.
 
