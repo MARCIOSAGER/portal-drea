@@ -2346,6 +2346,90 @@ function psciBuildPrintableHTML(section) {
     return clone.innerHTML;
 }
 
+// === SGA PRINT TEMPLATE (standard for all reports) ===
+/**
+ * Opens a print-ready window with the standard SGA report template.
+ * All report generators should use this instead of building their own HTML.
+ *
+ * @param {Object} opts
+ * @param {string} opts.title      — document <title> and page heading
+ * @param {string} opts.subtitle   — line below the title (optional)
+ * @param {string} opts.bodyHtml   — the report content (tables, forms, etc.)
+ * @param {string} opts.footerLeft — left footer text (default: "Portal PSCI — AWM")
+ * @param {Array}  opts.signatures — array of signature box labels (optional)
+ * @param {string} opts.extraCss   — additional CSS rules (optional)
+ */
+window.sgaPrintReport = function(opts) {
+    var now = new Date();
+    var stamp = now.toLocaleString('pt-PT');
+    var title = opts.title || 'Relatório';
+    var subtitle = opts.subtitle || '';
+    var footerLeft = opts.footerLeft || 'Portal PSCI — AWM';
+    var sigs = opts.signatures || [];
+
+    var html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>' + title + '</title>';
+    html += '<style>';
+    html += '@page{size:A4;margin:12mm;}';
+    html += 'body{font-family:Arial,Helvetica,sans-serif;padding:0;margin:0;font-size:11px;color:#222;}';
+    html += '.hdr{text-align:center;border-bottom:3px solid #004C7B;padding-bottom:8px;margin-bottom:12px;}';
+    html += '.hdr img{max-width:200px;height:auto;margin-bottom:6px;}';
+    html += '.hdr h1{color:#004C7B;font-size:15px;margin:6px 0 2px;}';
+    html += '.hdr .sub{color:#555;font-size:10px;}';
+    html += '.page-title{color:#004C7B;font-size:14px;border-bottom:2px solid #0094CF;padding-bottom:4px;margin:10px 0 8px;}';
+    html += '.page-desc{color:#666;font-size:10px;margin-bottom:10px;}';
+    html += '.form-card{margin-bottom:10px;border:1px solid #ccc;padding:8px 10px;border-radius:4px;}';
+    html += '.form-card h3{color:#004C7B;font-size:12px;margin:0 0 6px;border-bottom:1px solid #e0e0e0;padding-bottom:3px;}';
+    html += '.form-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:4px;}';
+    html += '.form-group{flex:1;min-width:160px;}';
+    html += '.form-group label{font-size:9px;color:#555;display:block;font-weight:bold;text-transform:uppercase;}';
+    html += 'table{width:100%;border-collapse:collapse;margin:4px 0;font-size:10px;page-break-inside:auto;}';
+    html += 'th,td{border:1px solid #bbb;padding:4px 5px;text-align:left;vertical-align:top;}';
+    html += 'th{background:#004C7B;color:white;font-size:10px;}';
+    html += 'tr{page-break-inside:avoid;page-break-after:auto;}';
+    html += 'thead{display:table-header-group;}';
+    html += '.footer{margin-top:15px;padding-top:8px;border-top:1px solid #ccc;font-size:9px;color:#666;display:flex;justify-content:space-between;}';
+    html += '.sign-row{margin-top:20px;display:flex;gap:30px;}';
+    html += '.sign-box{flex:1;border-top:1px solid #333;padding-top:3px;text-align:center;font-size:9px;}';
+    html += '@media print{.no-print{display:none!important;}}';
+    html += '.no-print{position:fixed;top:8px;right:8px;background:#004C7B;color:#fff;padding:8px 14px;border:none;border-radius:4px;cursor:pointer;font-weight:bold;box-shadow:0 2px 6px rgba(0,0,0,0.2);}';
+    if (opts.extraCss) html += opts.extraCss;
+    html += '</style></head><body>';
+    html += '<button class="no-print" onclick="window.print()">🖨️ Imprimir / Guardar PDF</button>';
+    html += '<div class="hdr"><img src="data:image/png;base64,{{LOGO_SGA_PNG_BASE64}}" alt="SGA">';
+    html += '<h1>{{AIRPORT.OPERATOR_SHORT}} — {{AIRPORT.NAME}} ({{AIRPORT.OACI}})</h1>';
+    if (subtitle) html += '<div class="sub">' + subtitle + '</div>';
+    html += '</div>';
+    html += opts.bodyHtml || '';
+    if (sigs.length) {
+        html += '<div class="sign-row">';
+        sigs.forEach(function(s) { html += '<div class="sign-box">' + s + '</div>'; });
+        html += '</div>';
+    }
+    html += '<div class="footer"><span>Gerado em: ' + stamp + '</span><span>' + footerLeft + '</span></div>';
+    html += '</body></html>';
+
+    // Open print window with fallback
+    var w = null;
+    try { w = window.open('', '_blank'); } catch(e) {}
+    if (w && w.document) {
+        w.document.open();
+        w.document.write(html);
+        w.document.close();
+        setTimeout(function(){ try { w.focus(); w.print(); } catch(e) {} }, 600);
+    } else {
+        try {
+            var blob = new Blob([html], { type: 'text/html' });
+            var url = URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = url; a.target = '_blank'; a.rel = 'noopener'; a.click();
+            setTimeout(function(){ URL.revokeObjectURL(url); }, 10000);
+            if (window.notify) window.notify('PDF aberto em novo separador. Use Ctrl+P para imprimir/guardar.', 'info');
+        } catch(e2) {
+            if (window.notify) window.notify('Não foi possível abrir nova janela.', 'error');
+        }
+    }
+};
+
 // === EXPORT FORM TO PDF ===
 function exportForm(sectionId) {
     var section = document.getElementById(sectionId);
@@ -2375,68 +2459,15 @@ function exportForm(sectionId) {
     try { bodyHtml = psciBuildPrintableHTML(section); }
     catch(e) { bodyHtml = section.innerHTML; }
 
-    var html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>' + titleText + '</title>';
-    html += '<style>';
-    html += '@page{size:A4;margin:12mm;}';
-    html += 'body{font-family:Arial,Helvetica,sans-serif;padding:0;margin:0;font-size:11px;color:#222;}';
-    html += '.hdr{text-align:center;border-bottom:3px solid #004C7B;padding-bottom:8px;margin-bottom:12px;}';
-    html += '.hdr img{max-width:200px;height:auto;margin-bottom:6px;}';
-    html += '.hdr h1{color:#004C7B;font-size:15px;margin:6px 0 2px;}';
-    html += '.hdr .sub{color:#555;font-size:10px;}';
-    html += '.page-title{color:#004C7B;font-size:14px;border-bottom:2px solid #0094CF;padding-bottom:4px;margin:10px 0 8px;}';
-    html += '.page-desc{color:#666;font-size:10px;margin-bottom:10px;}';
-    html += '.form-card{margin-bottom:10px;border:1px solid #ccc;padding:8px 10px;border-radius:4px;}';
-    html += 'table{page-break-inside:auto;}';
-    html += 'tr{page-break-inside:avoid;page-break-after:auto;}';
-    html += '.form-card h3{color:#004C7B;font-size:12px;margin:0 0 6px;border-bottom:1px solid #e0e0e0;padding-bottom:3px;}';
-    html += '.form-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:4px;}';
-    html += '.form-group{flex:1;min-width:160px;}';
-    html += '.form-group label{font-size:9px;color:#555;display:block;font-weight:bold;text-transform:uppercase;}';
-    html += 'table{width:100%;border-collapse:collapse;margin:4px 0;font-size:10px;}';
-    html += 'th,td{border:1px solid #bbb;padding:4px 5px;text-align:left;vertical-align:top;}';
-    html += 'th{background:#004C7B;color:white;font-size:10px;}';
-    html += '.footer{margin-top:15px;padding-top:8px;border-top:1px solid #ccc;font-size:9px;color:#666;display:flex;justify-content:space-between;}';
-    html += '.sign-row{margin-top:20px;display:flex;gap:30px;}';
-    html += '.sign-box{flex:1;border-top:1px solid #333;padding-top:3px;text-align:center;font-size:9px;}';
-    html += '@media print{.no-print{display:none!important;}}';
-    html += '.no-print{position:fixed;top:8px;right:8px;background:#004C7B;color:#fff;padding:8px 14px;border:none;border-radius:4px;cursor:pointer;font-weight:bold;box-shadow:0 2px 6px rgba(0,0,0,0.2);}';
-    html += '</style></head><body>';
-    html += '<button class="no-print" onclick="window.print()">🖨️ Imprimir / Guardar PDF</button>';
-    html += '<div class="hdr"><img src="data:image/png;base64,{{LOGO_SGA_PNG_BASE64}}" alt="SGA">';
-    html += '<h1>{{AIRPORT.OPERATOR_SHORT}} — {{AIRPORT.NAME}} ({{AIRPORT.OACI}})</h1>';
-    html += '<div class="sub">Serviço de Salvamento e Combate a Incêndio — {{AIRPORT.LOCATION}}</div></div>';
-    html += bodyHtml;
-    html += '<div class="sign-row"><div class="sign-box">Bombeiro Responsável</div><div class="sign-box">Chefe de Turno</div><div class="sign-box">SGSO</div></div>';
-    html += '<div class="footer"><span>Gerado em: ' + stamp + '</span><span>Portal PSCI — AWM</span></div>';
-    html += '</body></html>';
-
-    // 3) ABRIR NOVA JANELA; SE BLOQUEADA, FALLBACK PARA DATA URL NO MESMO SEPARADOR
-    var w = null;
-    try { w = window.open('', '_blank'); } catch(e) {}
-    if (w && w.document) {
-        w.document.open();
-        w.document.write(html);
-        w.document.close();
-        setTimeout(function(){ try { w.focus(); w.print(); } catch(e) {} }, 600);
-        if (window.notify) window.notify('PDF gerado e guardado no histórico', 'success');
-    } else {
-        // Fallback: blob URL
-        try {
-            var blob = new Blob([html], { type: 'text/html' });
-            var url = URL.createObjectURL(blob);
-            var a = document.createElement('a');
-            a.href = url;
-            a.target = '_blank';
-            a.rel = 'noopener';
-            a.click();
-            setTimeout(function(){ URL.revokeObjectURL(url); }, 10000);
-            if (window.notify) window.notify('PDF aberto em novo separador. Use Ctrl+P para imprimir/guardar.', 'info');
-            else alert('PDF aberto em novo separador. Use Ctrl+P para imprimir/guardar.');
-        } catch(e2) {
-            if (window.notify) window.notify('Não foi possível abrir nova janela. Verifique o bloqueador de pop-ups.', 'error');
-            else alert('Não foi possível abrir nova janela. Verifique o bloqueador de pop-ups.');
-        }
-    }
+    // 3) USAR TEMPLATE PADRÃO SGA
+    window.sgaPrintReport({
+        title: titleText,
+        subtitle: 'Serviço de Salvamento e Combate a Incêndio — {{AIRPORT.LOCATION}}',
+        bodyHtml: bodyHtml,
+        signatures: ['Bombeiro Responsável', 'Chefe de Turno', 'SGSO'],
+        footerLeft: 'Portal PSCI — AWM'
+    });
+    if (window.notify) window.notify('PDF gerado e guardado no histórico', 'success');
 }
 
 // === HISTÓRICO: ABRIR VISUALIZADOR ===
@@ -2509,24 +2540,12 @@ function printFormHistory(id) {
     // Não salva novo histórico ao exportar (bypass)
     try {
         var bodyHtml = psciBuildPrintableHTML(section);
-        var html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>' + entry.title + '</title>';
-        html += '<style>@page{size:A4;margin:12mm;}body{font-family:Arial,sans-serif;font-size:11px;}';
-        html += '.hdr{text-align:center;border-bottom:3px solid #004C7B;padding-bottom:8px;margin-bottom:12px;}';
-        html += '.hdr h1{color:#004C7B;font-size:15px;margin:6px 0 2px;}';
-        html += '.form-card{margin-bottom:10px;border:1px solid #ccc;padding:8px 10px;border-radius:4px;page-break-inside:avoid;}';
-        html += '.form-card h3{color:#004C7B;font-size:12px;border-bottom:1px solid #e0e0e0;padding-bottom:3px;}';
-        html += 'table{width:100%;border-collapse:collapse;font-size:10px;}th,td{border:1px solid #bbb;padding:4px;}';
-        html += 'th{background:#004C7B;color:#fff;}.no-print{position:fixed;top:8px;right:8px;background:#004C7B;color:#fff;padding:8px 14px;border:none;border-radius:4px;cursor:pointer;}';
-        html += '@media print{.no-print{display:none!important;}}</style></head><body>';
-        html += '<button class="no-print" onclick="window.print()">🖨️ Imprimir</button>';
-        html += '<div class="hdr"><h1>{{AIRPORT.OPERATOR_SHORT}} — {{AIRPORT.NAME}} ({{AIRPORT.OACI}})</h1>';
-        html += '<div style="font-size:10px;color:#888;">Registo histórico — ' + entry.stamp + '</div></div>';
-        html += bodyHtml + '</body></html>';
-        var w = window.open('', '_blank');
-        if (w && w.document) {
-            w.document.open(); w.document.write(html); w.document.close();
-            setTimeout(function(){ try { w.focus(); w.print(); } catch(e) {} }, 600);
-        }
+        window.sgaPrintReport({
+            title: entry.title,
+            subtitle: 'Registo histórico — ' + entry.stamp,
+            bodyHtml: bodyHtml,
+            footerLeft: 'Portal PSCI — AWM'
+        });
     } catch(e) { console.error(e); }
     // Restaura estado original
     psciRestoreForm(section, snapshot);
