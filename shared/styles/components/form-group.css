@@ -102,3 +102,13 @@
     outline: 2px solid var(--brand-secondary-text);
     outline-offset: 2px;
 }
+
+/* =========================================================================
+ * Plan 7 — Numeric modifier for form fields
+ * ========================================================================= */
+.form-group--numeric input,
+.form-group--numeric select,
+.form-group--numeric textarea {
+  font-family: var(--font-numeric);
+  font-feature-settings: var(--font-mono-features);
+}
