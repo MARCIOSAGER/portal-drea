@@ -157,8 +157,9 @@ jobs:
 
       - name: Create service worker
         run: |
-          cat > _site/sw.js << 'SW'
-          const CACHE_NAME = 'portal-drea-v2.2.0';
+          CACHE_VER="portal-drea-$(cat VERSION)-$(git rev-parse --short HEAD)"
+          cat > _site/sw.js << SW
+          const CACHE_NAME = '${CACHE_VER}';
           const URLS_TO_CACHE = ['./', './coe/', './ssci/'];
 
           self.addEventListener('install', e => {
@@ -186,7 +187,7 @@ jobs:
                     caches.open(CACHE_NAME).then(cache => cache.put(e.request, clone));
                   }
                   return response;
-                }).catch(() => cached);
+                }).catch(function() { return cached; });
                 return cached || fetchPromise;
               })
             );

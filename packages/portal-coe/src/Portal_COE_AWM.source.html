@@ -10,19 +10,6 @@
     <!-- Design System SGA — dormant foundation (Plan 1 of DS migration) -->
     <style>{{DS_CSS}}</style>
     <style>
-        :root {
-            --dark-blue: #004C7B;
-            --medium-blue: #0094CF;
-            --light-blue: #38C7F4;
-            --light-bg: #E8F4FD;
-            --white: #ffffff;
-            --gray-light: #f5f5f5;
-            --gray-dark: #333333;
-            --warning-red: #d32f2f;
-            --success-green: #2e7d32;
-            --alert-yellow: #f57f17;
-        }
-
         * {
             margin: 0;
             padding: 0;
@@ -31,15 +18,15 @@
 
         body {
             font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
-            color: var(--gray-dark);
+            color: var(--neutral-fg, #333333);
             background-color: #f9f9f9;
             line-height: 1.6;
         }
 
         /* Header */
         header {
-            background-color: var(--dark-blue);
-            color: var(--white);
+            background-color: var(--brand-primary-fill, #004C7B);
+            color: var(--neutral-surface, #ffffff);
             padding: 1rem 2rem;
             display: flex;
             align-items: center;
@@ -64,8 +51,8 @@
         }
 
         .print-btn {
-            background-color: var(--medium-blue);
-            color: var(--white);
+            background-color: var(--brand-secondary-fill, #0094CF);
+            color: var(--neutral-surface, #ffffff);
             border: none;
             padding: 0.6rem 1.2rem;
             border-radius: 4px;
@@ -75,7 +62,7 @@
         }
 
         .print-btn:hover {
-            background-color: var(--light-blue);
+            background-color: var(--brand-accent, #38C7F4);
         }
 
         @media print {
@@ -87,7 +74,7 @@
 
         /* Content Area */
         .content-wrapper {
-            background-color: var(--white);
+            background-color: var(--neutral-surface, #ffffff);
             min-height: calc(100vh - 200px);
             padding: 2rem;
             max-width: 1400px;
@@ -109,8 +96,8 @@
 
         /* Role Card Styling */
         .role-card {
-            border-left: 4px solid var(--medium-blue);
-            background: linear-gradient(135deg, var(--light-bg) 0%, var(--white) 100%);
+            border-left: 4px solid var(--brand-secondary-fill, #0094CF);
+            background: linear-gradient(135deg, var(--neutral-canvas, #E8F4FD) 0%, var(--neutral-surface, #ffffff) 100%);
             padding: 2rem;
             margin-bottom: 2rem;
             border-radius: 4px;
@@ -118,8 +105,8 @@
         }
 
         .role-header {
-            background-color: var(--dark-blue);
-            color: var(--white);
+            background-color: var(--brand-primary-fill, #004C7B);
+            color: var(--neutral-surface, #ffffff);
             padding: 1rem;
             margin: -2rem -2rem 1.5rem -2rem;
             border-radius: 4px 4px 0 0;
@@ -130,7 +117,7 @@
             font-weight: bold;
             display: inline-block;
             margin-right: 1rem;
-            background-color: var(--medium-blue);
+            background-color: var(--brand-secondary-fill, #0094CF);
             padding: 0.3rem 0.6rem;
             border-radius: 3px;
         }
@@ -142,8 +129,8 @@
 
         .avsec-badge {
             display: inline-block;
-            background-color: var(--warning-red);
-            color: var(--white);
+            background-color: var(--status-alert-emphasis, #d32f2f);
+            color: var(--neutral-surface, #ffffff);
             padding: 0.4rem 0.8rem;
             border-radius: 3px;
             font-size: 0.75rem;
@@ -152,8 +139,8 @@
         }
 
         .mission-box {
-            background-color: var(--light-blue);
-            color: var(--white);
+            background-color: var(--brand-accent, #38C7F4);
+            color: var(--neutral-surface, #ffffff);
             padding: 1rem;
             border-radius: 4px;
             margin-bottom: 1.5rem;
@@ -165,19 +152,19 @@
             grid-template-columns: 1fr 1fr;
             gap: 1rem;
             margin-bottom: 1.5rem;
-            background-color: var(--light-bg);
+            background-color: var(--neutral-canvas, #E8F4FD);
             padding: 1rem;
             border-radius: 4px;
         }
 
         .info-item {
-            border-left: 3px solid var(--medium-blue);
+            border-left: 3px solid var(--brand-secondary-fill, #0094CF);
             padding-left: 1rem;
         }
 
         .info-label {
             font-weight: bold;
-            color: var(--dark-blue);
+            color: var(--brand-primary-fill, #004C7B);
             font-size: 0.9rem;
         }
 
@@ -188,8 +175,8 @@
         .section-title {
             font-size: 1.1rem;
             font-weight: bold;
-            color: var(--dark-blue);
-            border-bottom: 2px solid var(--medium-blue);
+            color: var(--brand-primary-fill, #004C7B);
+            border-bottom: 2px solid var(--brand-secondary-fill, #0094CF);
             padding-bottom: 0.5rem;
             margin-top: 1.5rem;
             margin-bottom: 1rem;
@@ -203,8 +190,8 @@
         .procedures-list li {
             padding: 0.8rem;
             margin-bottom: 0.5rem;
-            background-color: var(--gray-light);
-            border-left: 3px solid var(--medium-blue);
+            background-color: var(--neutral-muted, #f5f5f5);
+            border-left: 3px solid var(--brand-secondary-fill, #0094CF);
             padding-left: 1rem;
             counter-increment: item-counter;
         }
@@ -216,31 +203,31 @@
         .procedures-list li::before {
             content: counter(item-counter) ". ";
             font-weight: bold;
-            color: var(--medium-blue);
+            color: var(--brand-secondary-fill, #0094CF);
         }
 
         .warning-box {
             background-color: #ffe8e8;
-            border-left: 4px solid var(--warning-red);
+            border-left: 4px solid var(--status-alert-emphasis, #d32f2f);
             padding: 1rem;
             margin-bottom: 1rem;
             border-radius: 4px;
         }
 
         .warning-box strong {
-            color: var(--warning-red);
+            color: var(--status-alert-emphasis, #d32f2f);
         }
 
         .comms-box {
             background-color: #f0f8ff;
-            border-left: 4px solid var(--medium-blue);
+            border-left: 4px solid var(--brand-secondary-fill, #0094CF);
             padding: 1rem;
             margin-bottom: 1rem;
             border-radius: 4px;
         }
 
         .comms-box strong {
-            color: var(--dark-blue);
+            color: var(--brand-primary-fill, #004C7B);
         }
 
         .signature-line {
@@ -261,8 +248,8 @@
         .quick-ref-title {
             font-size: 1.2rem;
             font-weight: bold;
-            color: var(--white);
-            background-color: var(--dark-blue);
+            color: var(--neutral-surface, #ffffff);
+            background-color: var(--brand-primary-fill, #004C7B);
             padding: 0.8rem;
             margin-bottom: 1rem;
             border-radius: 4px;
@@ -276,16 +263,16 @@
             counter-increment: step-counter;
             padding: 1rem;
             margin-bottom: 0.8rem;
-            background-color: var(--gray-light);
-            border-left: 4px solid var(--medium-blue);
+            background-color: var(--neutral-muted, #f5f5f5);
+            border-left: 4px solid var(--brand-secondary-fill, #0094CF);
             padding-left: 1.5rem;
         }
 
         .quick-ref-step::before {
             content: counter(step-counter);
             font-weight: bold;
-            color: var(--white);
-            background-color: var(--medium-blue);
+            color: var(--neutral-surface, #ffffff);
+            background-color: var(--brand-secondary-fill, #0094CF);
             border-radius: 50%;
             width: 2rem;
             height: 2rem;
@@ -299,11 +286,11 @@
         }
 
         .contacts-table {
-            background-color: var(--light-bg);
+            background-color: var(--neutral-canvas, #E8F4FD);
         }
 
         .contacts-table th {
-            background-color: var(--medium-blue);
+            background-color: var(--brand-secondary-fill, #0094CF);
         }
 
         /* Responsive Design */
@@ -362,8 +349,8 @@
         }
 
         footer {
-            background-color: var(--dark-blue);
-            color: var(--white);
+            background-color: var(--brand-primary-fill, #004C7B);
+            color: var(--neutral-surface, #ffffff);
             text-align: center;
             padding: 1rem;
             font-size: 0.85rem;
@@ -372,8 +359,8 @@
 
         .phase-badge {
             display: inline-block;
-            background-color: var(--alert-yellow);
-            color: var(--white);
+            background-color: var(--status-warning-border, #f57f17);
+            color: var(--neutral-surface, #ffffff);
             padding: 0.4rem 0.8rem;
             border-radius: 3px;
             font-size: 0.8rem;
@@ -386,12 +373,12 @@
     margin-top: 2rem;
     padding: 1.5rem;
     background-color: #f0f8ff;
-    border: 2px dashed var(--medium-blue);
+    border: 2px dashed var(--brand-secondary-fill, #0094CF);
     border-radius: 8px;
 }
 
 .form-section h3 {
-    color: var(--dark-blue);
+    color: var(--brand-primary-fill, #004C7B);
     margin-bottom: 1rem;
     font-size: 1rem;
 }
@@ -433,12 +420,12 @@
 .timeline-clock {
     font-size: 2.5rem;
     font-weight: 700;
-    color: var(--dark-blue);
+    color: var(--brand-primary-fill, #004C7B);
     font-family: 'Courier New', monospace;
-    background: var(--light-bg);
+    background: var(--neutral-canvas, #E8F4FD);
     padding: 0.5rem 1.5rem;
     border-radius: 8px;
-    border: 2px solid var(--medium-blue);
+    border: 2px solid var(--brand-secondary-fill, #0094CF);
 }
 
 .timeline-controls {
@@ -455,7 +442,7 @@
     margin-bottom: 1.5rem;
     border-radius: 8px;
     overflow: hidden;
-    border: 2px solid var(--medium-blue);
+    border: 2px solid var(--brand-secondary-fill, #0094CF);
 }
 
 .timeline-type-btn {
@@ -466,17 +453,17 @@
     font-size: 1rem;
     font-weight: 600;
     transition: all 0.3s;
-    background: var(--white);
-    color: var(--dark-blue);
+    background: var(--neutral-surface, #ffffff);
+    color: var(--brand-primary-fill, #004C7B);
 }
 
 .timeline-type-btn.active {
-    background: var(--dark-blue);
-    color: var(--white);
+    background: var(--brand-primary-fill, #004C7B);
+    color: var(--neutral-surface, #ffffff);
 }
 
 .timeline-type-btn:hover:not(.active) {
-    background: var(--light-bg);
+    background: var(--neutral-canvas, #E8F4FD);
 }
 
 .timeline-container {
@@ -509,7 +496,7 @@
     gap: 1rem;
     padding: 0.8rem 1rem;
     margin-bottom: 0.5rem;
-    background: var(--gray-light);
+    background: var(--neutral-muted, #f5f5f5);
     border-radius: 6px;
     border-left: 4px solid #ccc;
     transition: all 0.3s;
@@ -517,11 +504,11 @@
 
 .timeline-item.checked {
     background: #e8f5e9;
-    border-left-color: var(--success-green);
+    border-left-color: var(--status-ok-emphasis, #2e7d32);
 }
 
 .timeline-item.checked .timeline-time {
-    color: var(--success-green);
+    color: var(--status-ok-emphasis, #2e7d32);
     font-weight: 700;
 }
 
@@ -529,7 +516,7 @@
     width: 22px;
     height: 22px;
     cursor: pointer;
-    accent-color: var(--success-green);
+    accent-color: var(--status-ok-emphasis, #2e7d32);
     flex-shrink: 0;
     margin-top: 2px;
 }
@@ -540,7 +527,7 @@
 
 .timeline-action {
     font-weight: 600;
-    color: var(--gray-dark);
+    color: var(--neutral-fg, #333333);
     font-size: 0.95rem;
 }
 
@@ -561,20 +548,20 @@
 
 .timeline-elapsed {
     font-size: 0.75rem;
-    color: var(--medium-blue);
+    color: var(--brand-secondary-fill, #0094CF);
     font-family: 'Courier New', monospace;
 }
 
 .timeline-summary {
     margin-top: 2rem;
     padding: 1.5rem;
-    background: var(--light-bg);
+    background: var(--neutral-canvas, #E8F4FD);
     border-radius: 8px;
-    border: 1px solid var(--medium-blue);
+    border: 1px solid var(--brand-secondary-fill, #0094CF);
 }
 
 .timeline-summary h3 {
-    color: var(--dark-blue);
+    color: var(--brand-primary-fill, #004C7B);
     margin-bottom: 1rem;
 }
 
@@ -595,7 +582,7 @@
 .summary-card .value {
     font-size: 1.8rem;
     font-weight: 700;
-    color: var(--dark-blue);
+    color: var(--brand-primary-fill, #004C7B);
     font-family: 'Courier New', monospace;
 }
 
@@ -630,27 +617,27 @@
         .contacts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem; }
         /* .contact-card* migrated to shared/styles/components/card.css (Plan 3 Task 5) */
         .contact-field { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; font-size: 0.9rem; }
-        .contact-field label { font-weight: 600; color: var(--dark-blue); min-width: 80px; font-size: 0.8rem; }
+        .contact-field label { font-weight: 600; color: var(--brand-primary-fill, #004C7B); min-width: 80px; font-size: 0.8rem; }
         .contact-field input { flex: 1; padding: 0.4rem 0.6rem; border: 1px solid #ddd; border-radius: 4px; font-size: 0.9rem; font-family: inherit; }
-        .contact-field input:focus { outline: none; border-color: var(--medium-blue); box-shadow: 0 0 3px rgba(0,148,207,0.3); }
+        .contact-field input:focus { outline: none; border-color: var(--brand-secondary-fill, #0094CF); box-shadow: 0 0 3px rgba(0,148,207,0.3); }
         .contact-field input.phone-input { font-family: 'Courier New', monospace; font-weight: 600; letter-spacing: 1px; }
         /* Flowchart Styles */
         .flowchart-container { position: relative; padding: 1rem 0; }
         .flow-row { display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem; }
         .flow-node { padding: 0.8rem 1.2rem; border-radius: 8px; text-align: center; font-size: 0.85rem; font-weight: 600; min-width: 200px; max-width: 350px; position: relative; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .flow-node.trigger { background: var(--warning-red); color: white; font-size: 1rem; min-width: 280px; }
-        .flow-node.action { background: var(--dark-blue); color: white; }
-        .flow-node.decision { background: var(--alert-yellow); color: white; transform: rotate(0deg); border: 2px dashed rgba(255,255,255,0.5); }
-        .flow-node.entity { background: var(--medium-blue); color: white; }
+        .flow-node.trigger { background: var(--status-alert-emphasis, #d32f2f); color: white; font-size: 1rem; min-width: 280px; }
+        .flow-node.action { background: var(--brand-primary-fill, #004C7B); color: white; }
+        .flow-node.decision { background: var(--status-warning-border, #f57f17); color: white; transform: rotate(0deg); border: 2px dashed rgba(255,255,255,0.5); }
+        .flow-node.entity { background: var(--brand-secondary-fill, #0094CF); color: white; }
         .flow-node.external { background: #ff9800; color: white; }
-        .flow-node.end { background: var(--success-green); color: white; }
+        .flow-node.end { background: var(--status-ok-emphasis, #2e7d32); color: white; }
         .flow-node
         .flow-phone { display: block; font-family: 'Courier New', monospace; font-size: 0.8rem; margin-top: 0.3rem; opacity: 0.9; font-weight: 400; }
         .flow-node
         .flow-phone input { background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.4); color: white; padding: 0.2rem 0.4rem; border-radius: 3px; font-family: 'Courier New', monospace; font-size: 0.8rem; text-align: center; width: 140px; }
         .flow-node
         .flow-phone input::placeholder { color: rgba(255,255,255,0.6); }
-        .flow-arrow { text-align: center; color: var(--dark-blue); font-size: 1.5rem; margin: 0.3rem 0; line-height: 1; }
+        .flow-arrow { text-align: center; color: var(--brand-primary-fill, #004C7B); font-size: 1.5rem; margin: 0.3rem 0; line-height: 1; }
         .flow-parallel { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin: 0.5rem 0; }
         .flow-label { font-size: 0.75rem; color: #666; text-align: center; margin-top: -0.3rem; margin-bottom: 0.3rem; }
         .flow-section-title { text-align: center; padding: 0.5rem 1rem; margin: 1rem 0 0.5rem; font-weight: 700; font-size: 0.9rem; border-radius: 4px; }
@@ -658,10 +645,10 @@
         .flow-section-title.response { background: #fce4ec; color: #c62828; }
         .flow-section-title.operations { background: #e8f5e9; color: #2e7d32; }
         .flow-section-title.resolution { background: #e3f2fd; color: #1565c0; }
-        .flow-type-selector { display: flex; gap: 0; margin-bottom: 1.5rem; border-radius: 8px; overflow: hidden; border: 2px solid var(--medium-blue); }
-        .flow-type-btn { flex: 1; padding: 0.8rem; border: none; cursor: pointer; font-size: 0.95rem; font-weight: 600; transition: all 0.3s; background: var(--white); color: var(--dark-blue); }
-        .flow-type-btn.active { background: var(--dark-blue); color: var(--white); }
-        .flow-type-btn:hover:not(.active) { background: var(--light-bg); }
+        .flow-type-selector { display: flex; gap: 0; margin-bottom: 1.5rem; border-radius: 8px; overflow: hidden; border: 2px solid var(--brand-secondary-fill, #0094CF); }
+        .flow-type-btn { flex: 1; padding: 0.8rem; border: none; cursor: pointer; font-size: 0.95rem; font-weight: 600; transition: all 0.3s; background: var(--neutral-surface, #ffffff); color: var(--brand-primary-fill, #004C7B); }
+        .flow-type-btn.active { background: var(--brand-primary-fill, #004C7B); color: var(--neutral-surface, #ffffff); }
+        .flow-type-btn:hover:not(.active) { background: var(--neutral-canvas, #E8F4FD); }
         @media (max-width: 768px) {
         .contacts-grid { grid-template-columns: 1fr; }
         .flow-parallel { flex-direction: column; align-items: center; }
@@ -693,18 +680,18 @@
         .cr-phase-time { font-size: 0.8rem; opacity: 0.85; font-weight: 400; }
         .cr-hint { background: #fffde7; border-left: 3px solid #ffc107; padding: 0.4rem 0.8rem; font-size: 0.8rem; color: #6d5e00; margin: 0.3rem 0 0.5rem 0; border-radius: 0 4px 4px 0; }
         .cr-item { background: white; border: 1px solid #e8e8e8; border-radius: 6px; margin-bottom: 0.4rem; overflow: hidden; transition: border-color 0.2s; }
-        .cr-item.done { border-left: 4px solid var(--success-green); }
-        .cr-item.fail { border-left: 4px solid var(--warning-red); }
-        .cr-item.retry { border-left: 4px solid var(--alert-yellow); }
+        .cr-item.done { border-left: 4px solid var(--status-ok-emphasis, #2e7d32); }
+        .cr-item.fail { border-left: 4px solid var(--status-alert-emphasis, #d32f2f); }
+        .cr-item.retry { border-left: 4px solid var(--status-warning-border, #f57f17); }
         .cr-row { display: flex; align-items: flex-start; padding: 0.6rem 0.8rem; gap: 0.6rem; cursor: pointer; }
         .cr-row:hover { background: #f8f9fa; }
-        .cr-chk { width: 20px; height: 20px; min-width: 20px; margin-top: 2px; cursor: pointer; accent-color: var(--success-green); }
+        .cr-chk { width: 20px; height: 20px; min-width: 20px; margin-top: 2px; cursor: pointer; accent-color: var(--status-ok-emphasis, #2e7d32); }
         .cr-body { flex: 1; min-width: 0; }
         .cr-action { font-weight: 600; font-size: 0.9rem; color: #222; }
         .cr-who { font-size: 0.78rem; color: #777; margin: 0.15rem 0; }
         /* .cr-chip, .cr-chips migrated to shared/styles/components/badge.css (Plan 3 Task 3) */
         .cr-tel { font-family: monospace; color: #1565c0; font-weight: 600; font-size: 0.72rem; }
-        .cr-time { font-family: 'Courier New', monospace; font-size: 1rem; font-weight: 700; color: var(--dark-blue); min-width: 50px; text-align: right; white-space: nowrap; }
+        .cr-time { font-family: 'Courier New', monospace; font-size: 1rem; font-weight: 700; color: var(--brand-primary-fill, #004C7B); min-width: 50px; text-align: right; white-space: nowrap; }
         .cr-expand { display: none; background: #f9fafb; border-top: 1px solid #eee; padding: 0.6rem 0.8rem; }
         .cr-field-row { display: flex; gap: 0.6rem; margin-bottom: 0.4rem; flex-wrap: wrap; align-items: flex-end; }
         .cr-btns { display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap; }
@@ -712,28 +699,28 @@
         .cr-btn { padding: 0.3rem 0.7rem; border: 2px solid #ddd; border-radius: 6px; font-size: 0.8rem; cursor: pointer; background: white; font-weight: 600; transition: all 0.15s; }
         .cr-btn:hover { transform: scale(1.03); }
         .cr-btn.active { border-width: 2px; }
-        .cr-btn.cr-ok.active { background: #e8f5e9; border-color: var(--success-green); color: #2e7d32; }
-        .cr-btn.cr-no.active { background: #ffebee; border-color: var(--warning-red); color: #c62828; }
+        .cr-btn.cr-ok.active { background: #e8f5e9; border-color: var(--status-ok-emphasis, #2e7d32); color: #2e7d32; }
+        .cr-btn.cr-no.active { background: #ffebee; border-color: var(--status-alert-emphasis, #d32f2f); color: #c62828; }
         .cr-btn.cr-retry.active { background: #fff8e1; border-color: #f9a825; color: #e65100; }
         .cr-field { display: flex; flex-direction: column; }
         .cr-field label { font-size: 0.68rem; font-weight: 700; color: #999; text-transform: uppercase; margin-bottom: 0.1rem; }
         .cr-field input { padding: 0.3rem 0.5rem; border: 1px solid #ddd; border-radius: 4px; font-size: 0.82rem; font-family: inherit; width: 140px; }
-        .cr-field input:focus { border-color: var(--medium-blue); outline: none; }
+        .cr-field input:focus { border-color: var(--brand-secondary-fill, #0094CF); outline: none; }
         .cr-wide { width: 100%; }
         .cr-wide input { width: 100%; }
         .cr-time-field { font-family: monospace; font-weight: 600; width: 80px !important; background: #f5f5f5; }
         .cr-ctx { background: #eef6ff; border: 1px solid #b3d4fc; border-radius: 6px; padding: 0.6rem 0.8rem; margin-bottom: 0.6rem; }
-        .cr-ctx-title { font-size: 0.78rem; font-weight: 700; color: var(--dark-blue); margin-bottom: 0.4rem; }
+        .cr-ctx-title { font-size: 0.78rem; font-weight: 700; color: var(--brand-primary-fill, #004C7B); margin-bottom: 0.4rem; }
         .cr-ctx-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem; }
         .cr-ctx-grid .cr-field input { background: white; }
         @media (max-width: 768px) { .cr-ctx-grid { grid-template-columns: 1fr; } }
         .cr-stats { display: flex; align-items: center; gap: 1rem; padding: 0.5rem 1rem; background: #f5f5f5; border-radius: 6px; margin-bottom: 0.8rem; flex-wrap: wrap; }
         .cr-stat { font-size: 0.85rem; }
         .cr-stat b { font-size: 1.1rem; margin-right: 0.2rem; }
-        .cr-stat-pend b { color: var(--alert-yellow); }
-        .cr-stat-fail b { color: var(--warning-red); }
+        .cr-stat-pend b { color: var(--status-warning-border, #f57f17); }
+        .cr-stat-fail b { color: var(--status-alert-emphasis, #d32f2f); }
         .cr-bar { flex: 1; min-width: 100px; height: 6px; background: #e0e0e0; border-radius: 6px; overflow: hidden; }
-        .cr-bar-fill { height: 100%; background: linear-gradient(90deg, var(--medium-blue), var(--success-green)); border-radius: 6px; transition: width 0.4s; width: 0%; }
+        .cr-bar-fill { height: 100%; background: linear-gradient(90deg, var(--brand-secondary-fill, #0094CF), var(--status-ok-emphasis, #2e7d32)); border-radius: 6px; transition: width 0.4s; width: 0%; }
         @media (max-width: 768px) {
             .cr-field-row { flex-direction: column; }
             .cr-field input { width: 100%; }
@@ -742,7 +729,7 @@
     
         /* ======== Alarm Classification Panel ======== */
         .alarm-panel { background: #fff; border: 2px solid #ccc; border-radius: 10px; padding: 1.2rem; margin-bottom: 1rem; }
-        .alarm-title { font-size: 1.1rem; font-weight: 700; color: var(--dark-blue); margin-bottom: 0.3rem; }
+        .alarm-title { font-size: 1.1rem; font-weight: 700; color: var(--brand-primary-fill, #004C7B); margin-bottom: 0.3rem; }
         .alarm-desc { font-size: 0.85rem; color: #666; margin-bottom: 0.8rem; }
         .alarm-options { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
         /* .alarm-card* migrated to shared/styles/components/card.css (Plan 3 Task 5) */
@@ -764,7 +751,7 @@
         .toggle-btn { flex:1; padding:0.5rem 0.3rem; border:none; background:#f5f5f5; color:#555; font-size:0.8rem; font-weight:600; cursor:pointer; transition:all 0.2s; text-align:center; border-right:1px solid #ddd; }
         .toggle-btn:last-child { border-right:none; }
         .toggle-btn:hover { background:#e8e8e8; }
-        .toggle-btn.active { background:var(--dark-blue); color:white; }
+        .toggle-btn.active { background:var(--brand-primary-fill, #004C7B); color:white; }
         .toggle-btn.active-red { background:#d32f2f; color:white; }
         .toggle-btn.active-amber { background:#e65100; color:white; }
         .toggle-btn.active-green { background:#2e7d32; color:white; }
@@ -2153,7 +2140,7 @@ html { scroll-behavior: smooth; }
 .occ-action-title {
     font-size: 1.1rem;
     font-weight: 700;
-    color: var(--dark-blue);
+    color: var(--brand-primary-fill, #004C7B);
     line-height: 1.2;
 }
 .occ-action-card-emg .occ-action-title { color: #b71c1c; }
@@ -2186,7 +2173,7 @@ html { scroll-behavior: smooth; }
 .occ-action-btn:hover { filter: brightness(1.05); transform: translateY(-1px); }
 .occ-btn-primary { background: #c62828; color: #fff; }
 .occ-btn-primary-seg { background: #f39c12; color: #fff; }
-.occ-btn-secondary { background: var(--medium-blue); color: #fff; }
+.occ-btn-secondary { background: var(--brand-secondary-fill, #0094CF); color: #fff; }
 .occ-btn-tertiary { background: #6c757d; color: #fff; }
 
 /* ========== Quadro de níveis ========== */
@@ -2223,7 +2210,7 @@ html { scroll-behavior: smooth; }
 .occ-level-name {
     font-weight: 700;
     font-size: 0.92rem;
-    color: var(--dark-blue);
+    color: var(--brand-primary-fill, #004C7B);
     margin-bottom: 0.25rem;
 }
 .occ-level-desc {
@@ -2268,7 +2255,7 @@ html { scroll-behavior: smooth; }
     box-shadow: 0 1px 3px rgba(0,0,0,0.04);
 }
 .occ-phase[open] {
-    border-color: var(--medium-blue);
+    border-color: var(--brand-secondary-fill, #0094CF);
     box-shadow: 0 2px 6px rgba(0,148,207,0.12);
 }
 .occ-phase-head {
@@ -2291,7 +2278,7 @@ html { scroll-behavior: smooth; }
     width: 32px;
     height: 32px;
     border-radius: 50%;
-    background: var(--dark-blue);
+    background: var(--brand-primary-fill, #004C7B);
     color: #fff;
     display: inline-flex;
     align-items: center;
@@ -2303,7 +2290,7 @@ html { scroll-behavior: smooth; }
 .occ-phase-title {
     flex: 1;
     font-weight: 700;
-    color: var(--dark-blue);
+    color: var(--brand-primary-fill, #004C7B);
     font-size: 1rem;
 }
 .occ-phase-time {
@@ -2316,15 +2303,15 @@ html { scroll-behavior: smooth; }
     white-space: nowrap;
 }
 .occ-phase[open] .occ-phase-time {
-    background: var(--dark-blue);
+    background: var(--brand-primary-fill, #004C7B);
     color: #fff;
-    border-color: var(--dark-blue);
+    border-color: var(--brand-primary-fill, #004C7B);
 }
 .occ-phase-body {
     padding: 1rem 1.2rem 1.1rem;
 }
 .occ-phase-h4 {
-    color: var(--dark-blue);
+    color: var(--brand-primary-fill, #004C7B);
     font-size: 0.88rem;
     font-weight: 700;
     margin: 0.8rem 0 0.4rem;
@@ -2369,7 +2356,7 @@ html { scroll-behavior: smooth; }
     border-radius: 8px;
 }
 .occ-refs-title {
-    color: var(--dark-blue);
+    color: var(--brand-primary-fill, #004C7B);
     font-size: 0.95rem;
     margin: 0 0 0.8rem 0;
     text-transform: uppercase;
@@ -2395,14 +2382,14 @@ html { scroll-behavior: smooth; }
     transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
 }
 .occ-ref-card:hover {
-    border-color: var(--medium-blue);
+    border-color: var(--brand-secondary-fill, #0094CF);
     transform: translateY(-1px);
     box-shadow: 0 2px 8px rgba(0,148,207,0.15);
 }
 .occ-ref-icon { font-size: 1.3rem; }
 .occ-ref-label {
     font-weight: 700;
-    color: var(--dark-blue);
+    color: var(--brand-primary-fill, #004C7B);
     font-size: 0.88rem;
 }
 .occ-ref-hint {
@@ -2437,7 +2424,7 @@ html { scroll-behavior: smooth; }
 }
 .occ-dash-title {
     font-weight: 700;
-    color: var(--dark-blue);
+    color: var(--brand-primary-fill, #004C7B);
     font-size: 1rem;
 }
 .occ-dash-sub {
@@ -2494,7 +2481,7 @@ html { scroll-behavior: smooth; }
     padding: 0.65rem 1rem;
     border: 1px solid #dde3eb;
     background: #fff;
-    color: var(--dark-blue);
+    color: var(--brand-primary-fill, #004C7B);
     border-radius: 6px;
     font-size: 0.86rem;
     font-weight: 600;
@@ -2504,16 +2491,16 @@ html { scroll-behavior: smooth; }
 }
 .occ-dash-btn:hover {
     background: #f5fbff;
-    border-color: var(--medium-blue);
+    border-color: var(--brand-secondary-fill, #0094CF);
 }
 .occ-dash-btn-primary {
-    background: var(--medium-blue);
+    background: var(--brand-secondary-fill, #0094CF);
     color: #fff;
-    border-color: var(--medium-blue);
+    border-color: var(--brand-secondary-fill, #0094CF);
 }
 .occ-dash-btn-primary:hover {
-    background: var(--dark-blue);
-    border-color: var(--dark-blue);
+    background: var(--brand-primary-fill, #004C7B);
+    border-color: var(--brand-primary-fill, #004C7B);
 }
 .occ-dash-btn-danger {
     border-color: #e0a7a7;
@@ -2550,11 +2537,11 @@ html { scroll-behavior: smooth; }
 }
 .occ-dash-hist-item:hover {
     background: #e8f4fd;
-    border-color: var(--medium-blue);
+    border-color: var(--brand-secondary-fill, #0094CF);
 }
 .occ-dash-hist-num {
     font-weight: 700;
-    color: var(--dark-blue);
+    color: var(--brand-primary-fill, #004C7B);
     font-size: 0.9rem;
     font-family: 'Consolas', monospace;
     flex-shrink: 0;
@@ -2588,7 +2575,7 @@ html { scroll-behavior: smooth; }
     background: #fff;
     border: 1px solid #dde3eb;
     border-radius: 4px;
-    color: var(--dark-blue);
+    color: var(--brand-primary-fill, #004C7B);
     font-size: 0.78rem;
     font-weight: 600;
     cursor: pointer;
@@ -2596,9 +2583,9 @@ html { scroll-behavior: smooth; }
     flex-shrink: 0;
 }
 .occ-dash-hist-btn:hover {
-    background: var(--medium-blue);
+    background: var(--brand-secondary-fill, #0094CF);
     color: #fff;
-    border-color: var(--medium-blue);
+    border-color: var(--brand-secondary-fill, #0094CF);
 }
 
 /* Responsive */
@@ -2797,7 +2784,7 @@ html { scroll-behavior: smooth; }
                     <div class="status-card">
                         <h3>Hora Local</h3>
                         <div id="dashboardClock" style="font-size: 1.5rem; font-weight: bold; margin: 0.5rem 0;">00:00:00</div>
-                        <div id="dashboardUTC" style="font-size: 1.1rem; font-weight: bold; color: var(--medium-blue); margin-bottom: 0.5rem;">UTC 00:00:00</div>
+                        <div id="dashboardUTC" style="font-size: 1.1rem; font-weight: bold; color: var(--brand-secondary-fill, #0094CF); margin-bottom: 0.5rem;">UTC 00:00:00</div>
                         <div id="dashboardDate" style="font-size: 0.95rem; color: #666;"></div>
                     </div>
 
@@ -2867,11 +2854,11 @@ html { scroll-behavior: smooth; }
                 <!-- Occurrence History -->
                 <div class="info-card" style="margin-top: 2rem;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                        <h3 style="color: var(--dark-blue); margin: 0;">Histórico de Ocorrências</h3>
+                        <h3 style="color: var(--brand-primary-fill, #004C7B); margin: 0;">Histórico de Ocorrências</h3>
                         <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-                            <button onclick="exportRelatorioPDF()" style="background: var(--warning-red); color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer; font-size: 0.85rem; font-weight: bold;">📄 Relatório PDF</button>
-                            <button onclick="exportOccurrences()" style="background: var(--dark-blue); color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer; font-size: 0.85rem;">📥 Exportar JSON</button>
-                            <button onclick="importOccurrences()" style="background: var(--medium-blue); color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer; font-size: 0.85rem;">📤 Importar</button>
+                            <button onclick="exportRelatorioPDF()" style="background: var(--status-alert-emphasis, #d32f2f); color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer; font-size: 0.85rem; font-weight: bold;">📄 Relatório PDF</button>
+                            <button onclick="exportOccurrences()" style="background: var(--brand-primary-fill, #004C7B); color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer; font-size: 0.85rem;">📥 Exportar JSON</button>
+                            <button onclick="importOccurrences()" style="background: var(--brand-secondary-fill, #0094CF); color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer; font-size: 0.85rem;">📤 Importar</button>
                         </div>
                     </div>
                     <div id="occurrenceHistory" style="max-height: 400px; overflow-y: auto; border: 1px solid #eee; border-radius: 8px;">
@@ -2884,9 +2871,9 @@ html { scroll-behavior: smooth; }
             <section id="cronometro" class="section">
 
             <!-- MODE SELECTOR -->
-            <div style="display:flex;gap:0;margin-bottom:1.5rem;border-radius:8px;overflow:hidden;border:2px solid var(--dark-blue);">
-                <button id="modeBtn-real" onclick="switchMode('real')" style="flex:1;padding:0.9rem;border:none;cursor:pointer;font-size:1rem;font-weight:700;background:var(--warning-red);color:white;transition:all 0.3s;">🚨 OCORRÊNCIA</button>
-                <button id="modeBtn-exercicio" onclick="switchMode('exercicio')" style="flex:1;padding:0.9rem;border:none;cursor:pointer;font-size:1rem;font-weight:700;background:white;color:var(--dark-blue);transition:all 0.3s;">🎯 EXERCÍCIO / SIMULACRO</button>
+            <div style="display:flex;gap:0;margin-bottom:1.5rem;border-radius:8px;overflow:hidden;border:2px solid var(--brand-primary-fill, #004C7B);">
+                <button id="modeBtn-real" onclick="switchMode('real')" style="flex:1;padding:0.9rem;border:none;cursor:pointer;font-size:1rem;font-weight:700;background:var(--status-alert-emphasis, #d32f2f);color:white;transition:all 0.3s;">🚨 OCORRÊNCIA</button>
+                <button id="modeBtn-exercicio" onclick="switchMode('exercicio')" style="flex:1;padding:0.9rem;border:none;cursor:pointer;font-size:1rem;font-weight:700;background:white;color:var(--brand-primary-fill, #004C7B);transition:all 0.3s;">🎯 EXERCÍCIO / SIMULACRO</button>
             </div>
 
             <!-- TYPE CLASSIFICATION (Emergência vs Ameaça de Bomba) — shown in real mode -->
@@ -2919,8 +2906,8 @@ html { scroll-behavior: smooth; }
 
             <!-- REAL OCCURRENCE EXTRA FIELDS (visible after type selection) -->
             <div id="realOccurrenceFields" style="display:none;margin-bottom:1.5rem;">
-                <div class="info-card" style="border-left:4px solid var(--warning-red);background:#fff5f5;">
-                    <h3 style="color:var(--warning-red);margin-top:0;">⚠ OCORRÊNCIA — Dados Operacionais</h3>
+                <div class="info-card" style="border-left:4px solid var(--status-alert-emphasis, #d32f2f);background:#fff5f5;">
+                    <h3 style="color:var(--status-alert-emphasis, #d32f2f);margin-top:0;">⚠ OCORRÊNCIA — Dados Operacionais</h3>
                     <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;">
                         <div>
                             <label style="font-size:0.85rem;font-weight:600;color:#333;">Nº Ocorrência:</label>
@@ -3001,7 +2988,7 @@ html { scroll-behavior: smooth; }
 
             <div class="timeline-header">
                 <div>
-                    <h1 style="color:var(--dark-blue);margin-bottom:0.2rem;" id="chronoTitle">OCORRÊNCIA — TIMELINE OPERACIONAL</h1>
+                    <h1 style="color:var(--brand-primary-fill, #004C7B);margin-bottom:0.2rem;" id="chronoTitle">OCORRÊNCIA — TIMELINE OPERACIONAL</h1>
                     <p style="color:#666;font-size:0.9rem;" id="chronoSubtitle">Centro de Operações de Emergência — Registo cronológico da ocorrência</p>
                 </div>
                 <div class="timeline-clock" id="exercise-clock">00:00:00</div>
@@ -3009,8 +2996,8 @@ html { scroll-behavior: smooth; }
                     <button class="btn-timeline btn-start" onclick="startExercise()">▶ Iniciar</button>
                     <button class="btn-timeline btn-stop" onclick="stopExercise()">⏸ Pausar</button>
                     <button class="btn-timeline btn-reset" onclick="resetExercise()">↺ Reset</button>
-                    <button class="btn-timeline btn-export" onclick="crExport()" style="background:var(--success-green);color:white;">📊 CSV</button>
-                    <button class="btn-timeline" onclick="exportRelatorioPDF()" style="background:var(--warning-red);color:white;border:none;padding:0.5rem 1rem;border-radius:4px;cursor:pointer;font-weight:bold;">📄 PDF</button>
+                    <button class="btn-timeline btn-export" onclick="crExport()" style="background:var(--status-ok-emphasis, #2e7d32);color:white;">📊 CSV</button>
+                    <button class="btn-timeline" onclick="exportRelatorioPDF()" style="background:var(--status-alert-emphasis, #d32f2f);color:white;border:none;padding:0.5rem 1rem;border-radius:4px;cursor:pointer;font-weight:bold;">📄 PDF</button>
                 </div>
             </div>
 
@@ -3031,7 +3018,7 @@ html { scroll-behavior: smooth; }
             <!-- ENTITY CONTACTS (from Activação) -->
             <div class="info-card" id="entityContactsPanel" style="margin-top:1.5rem;">
                 <div style="display:flex;justify-content:space-between;align-items:center;cursor:pointer;" onclick="document.getElementById('contactsListWrapper').style.display = document.getElementById('contactsListWrapper').style.display === 'none' ? 'block' : 'none'; this.querySelector('.toggle-arrow').textContent = document.getElementById('contactsListWrapper').style.display === 'none' ? '▶' : '▼';">
-                    <h3 style="margin:0;color:var(--dark-blue);"><span class="toggle-arrow">▶</span> Accionamento de Entidades</h3>
+                    <h3 style="margin:0;color:var(--brand-primary-fill, #004C7B);"><span class="toggle-arrow">▶</span> Accionamento de Entidades</h3>
                     <span style="font-size:0.9rem;color:#666;"><strong id="contactsProgress">0/0</strong> contactadas</span>
                 </div>
                 <div id="contactsListWrapper" style="display:none;">
@@ -5894,10 +5881,10 @@ function switchMode(mode) {
     var typeClassPanel = document.getElementById('typeClassPanel');
 
     if (mode === 'real') {
-        btnReal.style.background = 'var(--warning-red)';
+        btnReal.style.background = 'var(--status-alert-emphasis, #d32f2f)';
         btnReal.style.color = 'white';
         btnEx.style.background = 'white';
-        btnEx.style.color = 'var(--dark-blue)';
+        btnEx.style.color = 'var(--brand-primary-fill, #004C7B)';
         // Show type classification panel, hide old timeline selector
         typeClassPanel.style.display = 'block';
         var tlSelector = document.getElementById('timelineTypeSelector');
@@ -5907,10 +5894,10 @@ function switchMode(mode) {
         title.textContent = 'OCORRÊNCIA — TIMELINE OPERACIONAL';
         subtitle.textContent = 'Centro de Operações de Emergência — Registo operacional';
     } else {
-        btnEx.style.background = 'var(--dark-blue)';
+        btnEx.style.background = 'var(--brand-primary-fill, #004C7B)';
         btnEx.style.color = 'white';
         btnReal.style.background = 'white';
-        btnReal.style.color = 'var(--dark-blue)';
+        btnReal.style.color = 'var(--brand-primary-fill, #004C7B)';
         // Hide type classification and form in exercise mode
         typeClassPanel.style.display = 'none';
         realFields.style.display = 'none';
@@ -6451,10 +6438,10 @@ async function clearContacts() {
             realFields.style.display = 'none';
             var formCard = realFields.querySelector('.info-card');
             if (formCard) {
-                formCard.style.borderLeftColor = 'var(--warning-red)';
+                formCard.style.borderLeftColor = 'var(--status-alert-emphasis, #d32f2f)';
                 formCard.style.background = '#fff5f5';
                 var h3 = formCard.querySelector('h3');
-                if (h3) { h3.style.color = 'var(--warning-red)'; h3.innerHTML = '⚠ OCORRÊNCIA — Dados Operacionais'; }
+                if (h3) { h3.style.color = 'var(--status-alert-emphasis, #d32f2f)'; h3.innerHTML = '⚠ OCORRÊNCIA — Dados Operacionais'; }
             }
             // Reset form fields
             var occNum = document.getElementById('realOccNum'); if (occNum) occNum.value = '';
@@ -6589,7 +6576,7 @@ async function clearContacts() {
             <!-- ACTIVATION SUMMARY -->
             <div class="info-card" style="margin-top:1.5rem;">
                 <div style="display:flex;justify-content:space-between;align-items:center;">
-                    <h3 style="margin:0;color:var(--dark-blue);">Resumo da Activação</h3>
+                    <h3 style="margin:0;color:var(--brand-primary-fill, #004C7B);">Resumo da Activação</h3>
                     <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
                         <button onclick="exportRelatorioPDF()" style="background-color:#d32f2f;color:white;padding:0.6rem 1.2rem;border:none;border-radius:4px;cursor:pointer;font-weight:bold;font-size:0.9rem;">📄 Relatório PDF</button>
                         <button onclick="exportActivationCSV()" style="background-color:#004C7B;color:white;padding:0.6rem 1.2rem;border:none;border-radius:4px;cursor:pointer;font-weight:bold;font-size:0.9rem;">📥 Exportar CSV</button>
@@ -6609,9 +6596,9 @@ async function clearContacts() {
             <!-- CONTACTOS Section -->
             <section id="contactos" class="section">
 
-            <h1 style="color: var(--dark-blue); margin-bottom: 0.5rem;">CONTACTOS DE EMERGÊNCIA</h1>
+            <h1 style="color: var(--brand-primary-fill, #004C7B); margin-bottom: 0.5rem;">CONTACTOS DE EMERGÊNCIA</h1>
             <p style="color: #666; margin-bottom: 0.3rem;">Conforme LT-FNMO-PEA-001, LT-FNMO-PEA-002 e LT-FNMO-PEA-003 | Revisão 00 — 04/07/2025</p>
-            <p style="color: var(--warning-red); font-weight: 600; margin-bottom: 1.5rem;">⚠ DOCUMENTO CONFIDENCIAL — Uso restrito ao pessoal autorizado do SREA</p>
+            <p style="color: var(--status-alert-emphasis, #d32f2f); font-weight: 600; margin-bottom: 1.5rem;">⚠ DOCUMENTO CONFIDENCIAL — Uso restrito ao pessoal autorizado do SREA</p>
 
             <div style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
                 <button class="btn-print-card" onclick="window.print()">🖨 Imprimir</button>
@@ -6635,9 +6622,9 @@ async function clearContacts() {
                 </thead>
                 <tbody>
                     <tr><td><strong>SCI — Linha Regular</strong></td><td style="font-family:monospace;font-weight:700;font-size:1.1rem;">48</td><td>Chamada normal</td></tr>
-                    <tr style="background:#fce4ec;"><td><strong>SCI — Linha Quente</strong></td><td style="font-family:monospace;font-weight:700;font-size:1.1rem;color:var(--warning-red);">38</td><td style="color:var(--warning-red);font-weight:600;">EMERGÊNCIA — Activação imediata</td></tr>
+                    <tr style="background:#fce4ec;"><td><strong>SCI — Linha Quente</strong></td><td style="font-family:monospace;font-weight:700;font-size:1.1rem;color:var(--status-alert-emphasis, #d32f2f);">38</td><td style="color:var(--status-alert-emphasis, #d32f2f);font-weight:600;">EMERGÊNCIA — Activação imediata</td></tr>
                     <tr><td><strong>TWR — Linha Regular</strong></td><td style="font-family:monospace;font-weight:700;font-size:1.1rem;">24</td><td>Chamada normal</td></tr>
-                    <tr style="background:#fce4ec;"><td><strong>TWR — Linha Quente</strong></td><td style="font-family:monospace;font-weight:700;font-size:1.1rem;color:var(--warning-red);">37</td><td style="color:var(--warning-red);font-weight:600;">EMERGÊNCIA — Activação imediata</td></tr>
+                    <tr style="background:#fce4ec;"><td><strong>TWR — Linha Quente</strong></td><td style="font-family:monospace;font-weight:700;font-size:1.1rem;color:var(--status-alert-emphasis, #d32f2f);">37</td><td style="color:var(--status-alert-emphasis, #d32f2f);font-weight:600;">EMERGÊNCIA — Activação imediata</td></tr>
                     <tr><td><strong>Director do Aeroporto</strong></td><td style="font-family:monospace;font-weight:700;font-size:1.1rem;">1519</td><td>Direcção</td></tr>
                     <tr><td><strong>SOA (Operações)</strong></td><td style="font-family:monospace;font-weight:700;font-size:1.1rem;">1861</td><td>Operações</td></tr>
                     <tr><td><strong>DREA</strong></td><td style="font-family:monospace;font-weight:700;font-size:1.1rem;">1946</td><td>Emergências</td></tr>
@@ -6651,25 +6638,25 @@ async function clearContacts() {
 
             <!-- MAPAS DE QUADRÍCULA Section -->
             <section id="mapas" class="section">
-            <h1 style="color: var(--dark-blue); margin-bottom: 0.5rem;">MAPAS DE QUADRÍCULA</h1>
+            <h1 style="color: var(--brand-primary-fill, #004C7B); margin-bottom: 0.5rem;">MAPAS DE QUADRÍCULA</h1>
             <p style="color: #666; margin-bottom: 0.3rem;">Conforme MQ-FNMO-PEA-001 e MQ-FNMO-PEA-002 | PEA Rev. 00 — 04/07/2025</p>
-            <p style="color: var(--warning-red); font-weight: 600; margin-bottom: 1.5rem;">⚠ DOCUMENTO CONFIDENCIAL — Uso restrito ao pessoal autorizado do SREA</p>
+            <p style="color: var(--status-alert-emphasis, #d32f2f); font-weight: 600; margin-bottom: 1.5rem;">⚠ DOCUMENTO CONFIDENCIAL — Uso restrito ao pessoal autorizado do SREA</p>
 
             <!-- Map selector tabs -->
-            <div style="display:flex;gap:0;margin-bottom:1rem;border-radius:8px;overflow:hidden;border:2px solid var(--dark-blue);">
-                <button id="mapBtn-externo" onclick="switchMap('externo')" style="flex:1;padding:0.9rem;border:none;cursor:pointer;font-size:1rem;font-weight:700;background:var(--dark-blue);color:white;transition:all 0.3s;">🗺️ MAPA EXTERNO (Raio 8 km)</button>
-                <button id="mapBtn-interno" onclick="switchMap('interno')" style="flex:1;padding:0.9rem;border:none;cursor:pointer;font-size:1rem;font-weight:700;background:white;color:var(--dark-blue);transition:all 0.3s;">🏗️ MAPA INTERNO (Aeroporto)</button>
+            <div style="display:flex;gap:0;margin-bottom:1rem;border-radius:8px;overflow:hidden;border:2px solid var(--brand-primary-fill, #004C7B);">
+                <button id="mapBtn-externo" onclick="switchMap('externo')" style="flex:1;padding:0.9rem;border:none;cursor:pointer;font-size:1rem;font-weight:700;background:var(--brand-primary-fill, #004C7B);color:white;transition:all 0.3s;">🗺️ MAPA EXTERNO (Raio 8 km)</button>
+                <button id="mapBtn-interno" onclick="switchMap('interno')" style="flex:1;padding:0.9rem;border:none;cursor:pointer;font-size:1rem;font-weight:700;background:white;color:var(--brand-primary-fill, #004C7B);transition:all 0.3s;">🏗️ MAPA INTERNO (Aeroporto)</button>
             </div>
 
             <!-- Map info cards -->
             <div id="mapInfoExterno" style="margin-bottom:1rem;">
-                <div class="info-card" style="border-left:4px solid var(--medium-blue);padding:1rem;">
+                <div class="info-card" style="border-left:4px solid var(--brand-secondary-fill, #0094CF);padding:1rem;">
                     <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.5rem;">
                         <div>
-                            <strong style="color:var(--dark-blue);">MQ-FNMO-PEA-001 — Mapa de Quadrícula Externo</strong><br>
+                            <strong style="color:var(--brand-primary-fill, #004C7B);">MQ-FNMO-PEA-001 — Mapa de Quadrícula Externo</strong><br>
                             <span style="font-size:0.85rem;color:#666;">Quadrículas: 1,75 × 1,75 km | Raio: 8 km do PE (Ponto de Encontro) | Coordenadas: AA-JJ × 35-54</span>
                         </div>
-                        <button onclick="openMapFullscreen('externo')" style="padding:0.5rem 1rem;background:var(--dark-blue);color:white;border:none;border-radius:6px;cursor:pointer;font-weight:600;font-size:0.85rem;">🔍 Ecrã Inteiro</button>
+                        <button onclick="openMapFullscreen('externo')" style="padding:0.5rem 1rem;background:var(--brand-primary-fill, #004C7B);color:white;border:none;border-radius:6px;cursor:pointer;font-weight:600;font-size:0.85rem;">🔍 Ecrã Inteiro</button>
                     </div>
                     <div style="margin-top:0.8rem;display:flex;flex-wrap:wrap;gap:0.5rem;font-size:0.8rem;">
                         <span style="background:#fff3e0;padding:3px 8px;border-radius:4px;font-weight:600;">01 — Hosp. Manuel F. Silva Clemente (110 leitos)</span>
@@ -6728,13 +6715,13 @@ async function clearContacts() {
                 var infoExt = document.getElementById('mapInfoExterno');
                 var infoInt = document.getElementById('mapInfoInterno');
                 if (type === 'externo') {
-                    btnExt.style.background = 'var(--dark-blue)'; btnExt.style.color = 'white';
-                    btnInt.style.background = 'white'; btnInt.style.color = 'var(--dark-blue)';
+                    btnExt.style.background = 'var(--brand-primary-fill, #004C7B)'; btnExt.style.color = 'white';
+                    btnInt.style.background = 'white'; btnInt.style.color = 'var(--brand-primary-fill, #004C7B)';
                     imgExt.style.display = 'block'; imgInt.style.display = 'none';
                     infoExt.style.display = 'block'; infoInt.style.display = 'none';
                 } else {
                     btnInt.style.background = '#e65100'; btnInt.style.color = 'white';
-                    btnExt.style.background = 'white'; btnExt.style.color = 'var(--dark-blue)';
+                    btnExt.style.background = 'white'; btnExt.style.color = 'var(--brand-primary-fill, #004C7B)';
                     imgInt.style.display = 'block'; imgExt.style.display = 'none';
                     infoInt.style.display = 'block'; infoExt.style.display = 'none';
                 }
@@ -6777,7 +6764,7 @@ async function clearContacts() {
 
             <!-- FLUXOGRAMAS Section -->
             <section id="fluxogramas" class="section">
-            <h1 style="color: var(--dark-blue); margin-bottom: 0.5rem;">FLUXOGRAMAS DE ACTIVAÇÃO</h1>
+            <h1 style="color: var(--brand-primary-fill, #004C7B); margin-bottom: 0.5rem;">FLUXOGRAMAS DE ACTIVAÇÃO</h1>
             <p style="color: #666; margin-bottom: 1.5rem;">Fluxogramas operacionais de activação de emergência e segurança conforme PEA/PCA</p>
 
             <div class="flow-type-selector">
@@ -6797,7 +6784,7 @@ async function clearContacts() {
                 <div class="flow-arrow">⬇</div>
                 <div class="flow-parallel">
                     <div class="flow-node entity" data-awm-contact="02" data-awm-format="name-cel-cisco">COE / DREA activado<span class="flow-phone"></span></div>
-                    <div class="flow-node" style="background:var(--warning-red);color:white;" data-awm-contact="07" data-awm-format="quente-name-cel">SCI ALARMADO<span class="flow-phone"></span></div>
+                    <div class="flow-node" style="background:var(--status-alert-emphasis, #d32f2f);color:white;" data-awm-contact="07" data-awm-format="quente-name-cel">SCI ALARMADO<span class="flow-phone"></span></div>
                 </div>
                 <div class="flow-section-title response">FASE 2 — RESPOSTA IMEDIATA (T+0 a T+2 min)</div>
                 <div class="flow-arrow">⬇</div>
@@ -6878,7 +6865,7 @@ async function clearContacts() {
                 <div class="flow-parallel">
                     <div class="flow-node entity" data-awm-contact="03" data-awm-format="cel">SOA — Adão Miguel<span class="flow-phone"></span></div>
                     <div class="flow-node external" data-awm-contact="03E" data-awm-format="cel">PNA — Jaime de Brito<span class="flow-phone"></span></div>
-                    <div class="flow-node" style="background:var(--warning-red);color:white;" data-awm-contact="07" data-awm-format="quente">SCI prontidão<span class="flow-phone"></span></div>
+                    <div class="flow-node" style="background:var(--status-alert-emphasis, #d32f2f);color:white;" data-awm-contact="07" data-awm-format="quente">SCI prontidão<span class="flow-phone"></span></div>
                 </div>
                 <div class="flow-section-title operations">FASE 3 — NEUTRALIZAÇÃO</div>
                 <div class="flow-arrow">⬇</div>
@@ -6910,55 +6897,55 @@ async function clearContacts() {
             <!-- GUIA-USO Section -->
             <section id="guia-uso" class="section">
 
-            <h1 style="color: var(--dark-blue); margin-bottom: 0.5rem;">GUIA DE UTILIZAÇÃO DO PORTAL</h1>
+            <h1 style="color: var(--brand-primary-fill, #004C7B); margin-bottom: 0.5rem;">GUIA DE UTILIZAÇÃO DO PORTAL</h1>
             <p style="color: #666; margin-bottom: 2rem;">Portal de Simulacros — {{AIRPORT.NAME}} ({{AIRPORT.OACI}}) | Versão 9.0</p>
 
-            <div class="role-card" style="border-left-color: var(--medium-blue);">
+            <div class="role-card" style="border-left-color: var(--brand-secondary-fill, #0094CF);">
                 <h2 class="section-title" style="margin-top: 0;">O QUE É ESTE PORTAL?</h2>
                 <p style="margin-bottom: 1rem;">Este portal é a ferramenta central de apoio aos exercícios de simulacro do {{AIRPORT.NAME}} ({{AIRPORT.OACI}}), operado pela {{AIRPORT.OPERATOR_LONG}}. Reúne todos os procedimentos, fichas de função, guias e ferramentas necessárias para a preparação, execução e avaliação de simulacros de emergência aeronáutica e segurança (AVSEC).</p>
                 <p>Desenvolvido em conformidade com o PEA (Plano de Emergência Aeroportuário), PSA (Programa de Segurança da Aviação) e PCA (Plano de Contingência Aeroportuário), baseados no ICAO Doc 9137, ICAO Annex 17 e NTA 32 da ANAC de Angola.</p>
             
 
-            <div class="role-card" style="border-left-color: var(--success-green);">
+            <div class="role-card" style="border-left-color: var(--status-ok-emphasis, #2e7d32);">
                 <h2 class="section-title" style="margin-top: 0;">ESTRUTURA DO PORTAL — 8 ABAS</h2>
 
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; margin-top: 1rem;">
-                    <div style="background: var(--light-bg); padding: 1.2rem; border-radius: 6px; border-left: 4px solid var(--dark-blue);">
-                        <strong style="color: var(--dark-blue); font-size: 1.05rem;">1. GUIA DE UTILIZAÇÃO</strong>
+                    <div style="background: var(--neutral-canvas, #E8F4FD); padding: 1.2rem; border-radius: 6px; border-left: 4px solid var(--brand-primary-fill, #004C7B);">
+                        <strong style="color: var(--brand-primary-fill, #004C7B); font-size: 1.05rem;">1. GUIA DE UTILIZAÇÃO</strong>
                         <p style="margin-top: 0.5rem; font-size: 0.9rem;">Esta página. Explica como usar o portal, para quem é dirigido e o que contém cada aba.</p>
                     </div>
-                    <div style="background: var(--light-bg); padding: 1.2rem; border-radius: 6px; border-left: 4px solid var(--warning-red);">
-                        <strong style="color: var(--dark-blue); font-size: 1.05rem;">2. CHECKLIST RÁPIDA</strong>
+                    <div style="background: var(--neutral-canvas, #E8F4FD); padding: 1.2rem; border-radius: 6px; border-left: 4px solid var(--status-alert-emphasis, #d32f2f);">
+                        <strong style="color: var(--brand-primary-fill, #004C7B); font-size: 1.05rem;">2. CHECKLIST RÁPIDA</strong>
                         <p style="margin-top: 0.5rem; font-size: 0.9rem;">Resumo passo-a-passo dos procedimentos de emergência e segurança. Consulta rápida durante o exercício — imprimível em 1 página.</p>
                     </div>
-                    <div style="background: var(--light-bg); padding: 1.2rem; border-radius: 6px; border-left: 4px solid var(--medium-blue);">
-                        <strong style="color: var(--dark-blue); font-size: 1.05rem;">3. GUIA EMERGÊNCIA</strong>
+                    <div style="background: var(--neutral-canvas, #E8F4FD); padding: 1.2rem; border-radius: 6px; border-left: 4px solid var(--brand-secondary-fill, #0094CF);">
+                        <strong style="color: var(--brand-primary-fill, #004C7B); font-size: 1.05rem;">3. GUIA EMERGÊNCIA</strong>
                         <p style="margin-top: 0.5rem; font-size: 0.9rem;">Guia completo do simulacro de emergência aeronáutica (acidente de aeronave). Contém cenário, objectivos, cronograma e procedimentos detalhados.</p>
                     </div>
-                    <div style="background: var(--light-bg); padding: 1.2rem; border-radius: 6px; border-left: 4px solid var(--medium-blue);">
-                        <strong style="color: var(--dark-blue); font-size: 1.05rem;">4. FICHAS EMERGÊNCIA (13 fichas)</strong>
+                    <div style="background: var(--neutral-canvas, #E8F4FD); padding: 1.2rem; border-radius: 6px; border-left: 4px solid var(--brand-secondary-fill, #0094CF);">
+                        <strong style="color: var(--brand-primary-fill, #004C7B); font-size: 1.05rem;">4. FICHAS EMERGÊNCIA (13 fichas)</strong>
                         <p style="margin-top: 0.5rem; font-size: 0.9rem;">Fichas individuais para cada entidade participante: SSCI, TWR, COE, Direcção, SOA, AVSEC, SPCB, GAB.SEG.OP., PNA, INEMA, Hospital, SIC, ANAC. Cada ficha tem campos preenchíveis.</p>
                     </div>
-                    <div style="background: var(--light-bg); padding: 1.2rem; border-radius: 6px; border-left: 4px solid var(--alert-yellow);">
-                        <strong style="color: var(--dark-blue); font-size: 1.05rem;">5. GUIA SEGURANÇA</strong>
+                    <div style="background: var(--neutral-canvas, #E8F4FD); padding: 1.2rem; border-radius: 6px; border-left: 4px solid var(--status-warning-border, #f57f17);">
+                        <strong style="color: var(--brand-primary-fill, #004C7B); font-size: 1.05rem;">5. GUIA SEGURANÇA</strong>
                         <p style="margin-top: 0.5rem; font-size: 0.9rem;">Guia completo do simulacro de segurança (ameaça de bomba). Contém cenário, níveis de ameaça, 3 fases de resposta e procedimentos AVSEC.</p>
                     </div>
-                    <div style="background: var(--light-bg); padding: 1.2rem; border-radius: 6px; border-left: 4px solid var(--alert-yellow);">
-                        <strong style="color: var(--dark-blue); font-size: 1.05rem;">6. FICHAS SEGURANÇA (11 fichas)</strong>
+                    <div style="background: var(--neutral-canvas, #E8F4FD); padding: 1.2rem; border-radius: 6px; border-left: 4px solid var(--status-warning-border, #f57f17);">
+                        <strong style="color: var(--brand-primary-fill, #004C7B); font-size: 1.05rem;">6. FICHAS SEGURANÇA (11 fichas)</strong>
                         <p style="margin-top: 0.5rem; font-size: 0.9rem;">Fichas individuais AVSEC: AVSEC, COE, TWR, SSCI, Direcção, SOA, GAB.SEG.OP., PNA, INEMA, SIC, ANAC. Classificação RESTRITO AVSEC. Campos preenchíveis.</p>
                     </div>
-                    <div style="background: var(--light-bg); padding: 1.2rem; border-radius: 6px; border-left: 4px solid var(--success-green);">
-                        <strong style="color: var(--dark-blue); font-size: 1.05rem;">7. PEA / PCA / PSA</strong>
+                    <div style="background: var(--neutral-canvas, #E8F4FD); padding: 1.2rem; border-radius: 6px; border-left: 4px solid var(--status-ok-emphasis, #2e7d32);">
+                        <strong style="color: var(--brand-primary-fill, #004C7B); font-size: 1.05rem;">7. PEA / PCA / PSA</strong>
                         <p style="margin-top: 0.5rem; font-size: 0.9rem;">Mapeamento normativo: ligação entre cada procedimento e o plano/norma aplicável (ICAO, NTA 32). Referência para auditoria e conformidade.</p>
                     </div>
-                    <div style="background: var(--light-bg); padding: 1.2rem; border-radius: 6px; border-left: 4px solid #9c27b0;">
-                        <strong style="color: var(--dark-blue); font-size: 1.05rem;">8. CRONÓMETRO</strong>
+                    <div style="background: var(--neutral-canvas, #E8F4FD); padding: 1.2rem; border-radius: 6px; border-left: 4px solid #9c27b0;">
+                        <strong style="color: var(--brand-primary-fill, #004C7B); font-size: 1.05rem;">8. CRONÓMETRO</strong>
                         <p style="margin-top: 0.5rem; font-size: 0.9rem;">Registo minuto-a-minuto em tempo real. O operador marca checkboxes à medida que cada acção acontece — o sistema regista hora e tempo T+. Exporta relatório CSV.</p>
                     </div>
                 </div>
             </div>
 
-            <div class="role-card" style="border-left-color: var(--alert-yellow);">
+            <div class="role-card" style="border-left-color: var(--status-warning-border, #f57f17);">
                 <h2 class="section-title" style="margin-top: 0;">COMO USAR — ANTES DO EXERCÍCIO</h2>
                 <ol style="margin-left: 1.5rem; line-height: 2;">
                     <li><strong>Distribuir fichas:</strong> Abra a aba <em>Fichas Emergência</em> ou <em>Fichas Segurança</em> conforme o tipo de exercício. Cada participante deve receber a ficha da sua entidade.</li>
@@ -6969,7 +6956,7 @@ async function clearContacts() {
                 </ol>
             </div>
 
-            <div class="role-card" style="border-left-color: var(--warning-red);">
+            <div class="role-card" style="border-left-color: var(--status-alert-emphasis, #d32f2f);">
                 <h2 class="section-title" style="margin-top: 0;">COMO USAR — DURANTE O EXERCÍCIO</h2>
                 <ol style="margin-left: 1.5rem; line-height: 2;">
                     <li><strong>Abrir o Cronómetro:</strong> O operador responsável pela monitorização abre a aba <strong>ACTIVAÇÃO & CRONÓMETRO</strong> num tablet ou portátil.</li>
@@ -6981,7 +6968,7 @@ async function clearContacts() {
                 </ol>
             </div>
 
-            <div class="role-card" style="border-left-color: var(--success-green);">
+            <div class="role-card" style="border-left-color: var(--status-ok-emphasis, #2e7d32);">
                 <h2 class="section-title" style="margin-top: 0;">COMO USAR — APÓS O EXERCÍCIO</h2>
                 <ol style="margin-left: 1.5rem; line-height: 2;">
                     <li><strong>Exportar timeline:</strong> Na secção Activação & Cronómetro, clicar <strong>📊 Exportar Relatório</strong> para descarregar um ficheiro CSV com todos os tempos registados. Abre no Excel.</li>
@@ -6992,11 +6979,11 @@ async function clearContacts() {
                 </ol>
             </div>
 
-            <div class="role-card" style="border-left-color: var(--dark-blue);">
+            <div class="role-card" style="border-left-color: var(--brand-primary-fill, #004C7B);">
                 <h2 class="section-title" style="margin-top: 0;">REQUISITOS TÉCNICOS</h2>
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
                     <div>
-                        <h4 style="color: var(--dark-blue);">Necessário</h4>
+                        <h4 style="color: var(--brand-primary-fill, #004C7B);">Necessário</h4>
                         <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
                             <li>Qualquer browser moderno (Chrome, Firefox, Edge, Safari)</li>
                             <li>Funciona offline — não precisa de internet</li>
@@ -7005,7 +6992,7 @@ async function clearContacts() {
                         </ul>
                     </div>
                     <div>
-                        <h4 style="color: var(--dark-blue);">Recomendado</h4>
+                        <h4 style="color: var(--brand-primary-fill, #004C7B);">Recomendado</h4>
                         <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
                             <li>Tablet ou portátil para o operador do cronómetro</li>
                             <li>Impressora para fichas individuais (se necessário)</li>
@@ -7025,13 +7012,13 @@ async function clearContacts() {
                 <p><strong>Contacto:</strong> Centro de Operações de Emergência (COE) — FNMO</p>
             </div>
 
-            <div style="text-align: center; margin-top: 2rem; padding: 1.5rem; background: var(--light-bg); border-radius: 8px;">
-                <p style="font-size: 1.1rem; color: var(--dark-blue); font-weight: 600;">Pronto para começar?</p>
+            <div style="text-align: center; margin-top: 2rem; padding: 1.5rem; background: var(--neutral-canvas, #E8F4FD); border-radius: 8px;">
+                <p style="font-size: 1.1rem; color: var(--brand-primary-fill, #004C7B); font-weight: 600;">Pronto para começar?</p>
                 <p style="color: #666; margin-bottom: 1rem;">Seleccione a aba correspondente ao que precisa.</p>
                 <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
                     <button class="btn-timeline btn-start" onclick="switchTab('checklist')" style="font-size: 1rem;">Checklist Rápida</button>
-                    <button class="btn-timeline" onclick="switchTab('fichas-emg')" style="background: var(--medium-blue); color: white; font-size: 1rem;">Fichas Emergência</button>
-                    <button class="btn-timeline" onclick="switchTab('fichas-seg')" style="background: var(--alert-yellow); color: white; font-size: 1rem;">Fichas Segurança</button>
+                    <button class="btn-timeline" onclick="switchTab('fichas-emg')" style="background: var(--brand-secondary-fill, #0094CF); color: white; font-size: 1rem;">Fichas Emergência</button>
+                    <button class="btn-timeline" onclick="switchTab('fichas-seg')" style="background: var(--status-warning-border, #f57f17); color: white; font-size: 1rem;">Fichas Segurança</button>
                     <button class="btn-timeline" onclick="openSection('cronometro', null)" style="background: #9c27b0; color: white; font-size: 1rem;">Cronómetro</button>
                 </div>
             </div>
@@ -7039,7 +7026,7 @@ async function clearContacts() {
 
         <!-- TAB 1: CHECKLIST RÁPIDA -->
         <div id="checklist" class="tab-content">
-            <h1 style="color: var(--dark-blue); margin-bottom: 1.5rem;">CHECKLIST RÁPIDA DE RESPOSTA</h1>
+            <h1 style="color: var(--brand-primary-fill, #004C7B); margin-bottom: 1.5rem;">CHECKLIST RÁPIDA DE RESPOSTA</h1>
 
             <div class="quick-ref-section">
                 <div class="quick-ref-title">EMERGÊNCIA AERONÁUTICA (Acidente de Aeronave)</div>
@@ -7062,7 +7049,7 @@ async function clearContacts() {
             <div class="quick-ref-section">
                 <div class="quick-ref-title">SEGURANÇA AEROPORTUÁRIA (Ameaça de Bomba)</div>
 
-                <h3 style="color: var(--dark-blue); margin-top: 1.5rem; margin-bottom: 1rem;">FASE 1 — Recepção da Ameaça</h3>
+                <h3 style="color: var(--brand-primary-fill, #004C7B); margin-top: 1.5rem; margin-bottom: 1rem;">FASE 1 — Recepção da Ameaça</h3>
                 <div class="quick-ref-steps">
                     <div class="quick-ref-step"><strong>Quem recebe a chamada</strong> → MANTER pessoa na linha</div>
                     <div class="quick-ref-step"><strong>Preencher checklist de ameaça</strong> → FRM-FNMO-AB-001 (10 perguntas)</div>
@@ -7070,7 +7057,7 @@ async function clearContacts() {
                     <div class="quick-ref-step"><strong>Informar COE imediatamente</strong> → ativar protocolo de resposta</div>
                 </div>
 
-                <h3 style="color: var(--dark-blue); margin-top: 1.5rem; margin-bottom: 1rem;">FASE 2 — Objeto Suspeito</h3>
+                <h3 style="color: var(--brand-primary-fill, #004C7B); margin-top: 1.5rem; margin-bottom: 1rem;">FASE 2 — Objeto Suspeito</h3>
                 <div class="quick-ref-steps">
                     <div class="quick-ref-step"><strong>Se encontrado</strong> → NÃO TOCAR, NÃO MOVER, NÃO ABRIR</div>
                     <div class="quick-ref-step"><strong>Evacuar raio de 100 metros</strong> → área imediatamente ao redor</div>
@@ -7079,7 +7066,7 @@ async function clearContacts() {
                     <div class="quick-ref-step"><strong>Aguardar equipa especializada</strong> → EOD/PNA</div>
                 </div>
 
-                <h3 style="color: var(--dark-blue); margin-top: 1.5rem; margin-bottom: 1rem;">FASE 3 — Resolução</h3>
+                <h3 style="color: var(--brand-primary-fill, #004C7B); margin-top: 1.5rem; margin-bottom: 1rem;">FASE 3 — Resolução</h3>
                 <div class="quick-ref-steps">
                     <div class="quick-ref-step"><strong>Equipa especializada avalia</strong> → EOD inspeciona objeto</div>
                     <div class="quick-ref-step"><strong>Falso alarme</strong> → retorno gradual autorizado pelo COE</div>
@@ -7088,7 +7075,7 @@ async function clearContacts() {
                 </div>
             </div>
 
-            <h3 style="color: var(--dark-blue); margin-top: 2rem; margin-bottom: 1rem;">CONTACTOS ESSENCIAIS</h3>
+            <h3 style="color: var(--brand-primary-fill, #004C7B); margin-top: 2rem; margin-bottom: 1rem;">CONTACTOS ESSENCIAIS</h3>
             <table class="contacts-table">
                 <thead>
                     <tr>
@@ -7153,7 +7140,7 @@ async function clearContacts() {
             <!-- GUIA-EMG Section -->
             <section id="guia-emg" class="section">
 
-            <h1 style="color: var(--dark-blue); margin-bottom: 0.4rem;">✈ GUIA DE OCORRÊNCIA — EMERGÊNCIA AERONÁUTICA</h1>
+            <h1 style="color: var(--brand-primary-fill, #004C7B); margin-bottom: 0.4rem;">✈ GUIA DE OCORRÊNCIA — EMERGÊNCIA AERONÁUTICA</h1>
             <p style="color:#666; margin:0 0 1.5rem 0; font-size:0.9rem;">Procedimentos operacionais do Coordenador COE durante uma emergência aeronáutica real. Conforme PEA PL-FNMO-PEA-001 Rev.00, ICAO Doc 9137 e NTA 32 ANAC.</p>
 
             <!-- Cartão de Acção Imediata -->
@@ -7336,7 +7323,7 @@ async function clearContacts() {
             <!-- FICHAS-EMG Section -->
             <section id="fichas-emg" class="section">
 
-            <h1 style="color: var(--dark-blue); margin-bottom: 0.4rem;">✈ FORMULÁRIO OPERACIONAL — EMERGÊNCIA AERONÁUTICA</h1>
+            <h1 style="color: var(--brand-primary-fill, #004C7B); margin-bottom: 0.4rem;">✈ FORMULÁRIO OPERACIONAL — EMERGÊNCIA AERONÁUTICA</h1>
             <p style="color:#666; margin:0 0 1.5rem 0; font-size:0.9rem;">Ponto de entrada do Coordenador COE para o formulário operacional de ocorrência (EFB). Acesso rápido ao formulário activo, histórico de ocorrências e ferramentas de exportação.</p>
 
             <!-- Ocorrência activa (snapshot) -->
@@ -7404,7 +7391,7 @@ async function clearContacts() {
             <!-- GUIA-SEG Section -->
             <section id="guia-seg" class="section">
 
-            <h1 style="color: var(--dark-blue); margin-bottom: 0.4rem;">🛡 GUIA DE OCORRÊNCIA — SEGURANÇA (AVSEC)</h1>
+            <h1 style="color: var(--brand-primary-fill, #004C7B); margin-bottom: 0.4rem;">🛡 GUIA DE OCORRÊNCIA — SEGURANÇA (AVSEC)</h1>
             <p style="color:#666; margin:0 0 0.6rem 0; font-size:0.9rem;">Procedimentos operacionais do Coordenador COE durante uma ocorrência de segurança real (ameaça ou acto de interferência ilícita). Conforme PSA, NTA 32 ANAC e ICAO Annex 17.</p>
             <div class="occ-restricted-banner">⚠ RESTRITO AVSEC — Distribuição limitada a pessoal autorizado</div>
 
@@ -7618,7 +7605,7 @@ async function clearContacts() {
             <!-- FICHAS-SEG Section -->
             <section id="fichas-seg" class="section">
 
-            <h1 style="color: var(--dark-blue); margin-bottom: 1.5rem;">GUIAS E FICHAS — SIMULACRO DE SEGURANÇA (RESTRITO AVSEC)</h1>
+            <h1 style="color: var(--brand-primary-fill, #004C7B); margin-bottom: 1.5rem;">GUIAS E FICHAS — SIMULACRO DE SEGURANÇA (RESTRITO AVSEC)</h1>
 
             <div class="sub-tabs" id="seg-sub-tabs">
                 <button class="sub-tab-btn active" onclick="switchSubTab('fichas-seg', 'seg-01')">FICHA-SEC-01 AVSEC</button>
@@ -7636,7 +7623,7 @@ async function clearContacts() {
 
             <div style="padding: 1rem 0; text-align: right;">
                 <button class="btn-export-all" onclick="exportAllCards('seg')">📊 Exportar CSV</button>
-                <button class="btn-export-all" onclick="exportRelatorioPDF()" style="background:var(--warning-red);">📄 Relatório PDF</button>
+                <button class="btn-export-all" onclick="exportRelatorioPDF()" style="background:var(--status-alert-emphasis, #d32f2f);">📄 Relatório PDF</button>
             </div>
 
             <!-- FICHA-SEC-01: AVSEC -->
@@ -7672,7 +7659,7 @@ async function clearContacts() {
                         <li>Checklist de ameaça telefónica: FRM-FNMO-AB-001 (10 perguntas essenciais)</li>
                     </ul>
                     <h3 class="section-title">Procedimentos por Fase</h3>
-                    <h4 style="color: var(--medium-blue); margin-top: 1rem;">FASE 1 — Recepção da Ameaça</h4>
+                    <h4 style="color: var(--brand-secondary-fill, #0094CF); margin-top: 1rem;">FASE 1 — Recepção da Ameaça</h4>
                     <ol class="procedures-list">
                         <li>Ao receber notificação de ameaça de bomba (via telefone, email, ou outra via):
                             <ul>
@@ -7694,7 +7681,7 @@ async function clearContacts() {
                             </ul>
                         </li>
                     </ol>
-                    <h4 style="color: var(--medium-blue); margin-top: 1rem;">FASE 1 — Avaliação Inicial</h4>
+                    <h4 style="color: var(--brand-secondary-fill, #0094CF); margin-top: 1rem;">FASE 1 — Avaliação Inicial</h4>
                     <ol class="procedures-list">
                         <li>Avaliar o NÍVEL de ameaça com base nas informações obtidas:
                             <ul>
@@ -7705,7 +7692,7 @@ async function clearContacts() {
                         </li>
                         <li>Informar <strong>IMEDIATAMENTE</strong> o COE sobre a ameaça e o nível avaliado.</li>
                     </ol>
-                    <h4 style="color: var(--medium-blue); margin-top: 1rem;">FASE 1 — Activação do Protocolo</h4>
+                    <h4 style="color: var(--brand-secondary-fill, #0094CF); margin-top: 1rem;">FASE 1 — Activação do Protocolo</h4>
                     <ol class="procedures-list">
                         <li>Conforme o nível de ameaça:
                             <ul>
@@ -7715,7 +7702,7 @@ async function clearContacts() {
                             </ul>
                         </li>
                     </ol>
-                    <h4 style="color: var(--medium-blue); margin-top: 1rem;">FASE 2 — Busca Sistemática</h4>
+                    <h4 style="color: var(--brand-secondary-fill, #0094CF); margin-top: 1rem;">FASE 2 — Busca Sistemática</h4>
                     <ol class="procedures-list">
                         <li>Organizar busca por sectores do aeroporto:
                             <ul>
@@ -7726,7 +7713,7 @@ async function clearContacts() {
                         </li>
                         <li><strong>NUNCA</strong> tocar, mover ou abrir objecto suspeito</li>
                     </ol>
-                    <h4 style="color: var(--medium-blue); margin-top: 1rem;">FASE 2 — Objecto Suspeito Encontrado</h4>
+                    <h4 style="color: var(--brand-secondary-fill, #0094CF); margin-top: 1rem;">FASE 2 — Objecto Suspeito Encontrado</h4>
                     <ol class="procedures-list">
                         <li>Se for encontrado um objecto suspeito:
                             <ul>
@@ -7739,7 +7726,7 @@ async function clearContacts() {
                             </ul>
                         </li>
                     </ol>
-                    <h4 style="color: var(--medium-blue); margin-top: 1rem;">FASE 2 — Evacuação (se NÍVEL 3 ou objecto encontrado)</h4>
+                    <h4 style="color: var(--brand-secondary-fill, #0094CF); margin-top: 1rem;">FASE 2 — Evacuação (se NÍVEL 3 ou objecto encontrado)</h4>
                     <ol class="procedures-list">
                         <li>Activar procedimento de evacuação do terminal</li>
                         <li>Usar sistema de som: mensagem calma mas firme</li>
@@ -7748,7 +7735,7 @@ async function clearContacts() {
                         <li>Verificar casas de banho e áreas escondidas</li>
                         <li>Contar passageiros no ponto de reunião</li>
                     </ol>
-                    <h4 style="color: var(--medium-blue); margin-top: 1rem;">FASE 3 — Resolução</h4>
+                    <h4 style="color: var(--brand-secondary-fill, #0094CF); margin-top: 1rem;">FASE 3 — Resolução</h4>
                     <ol class="procedures-list">
                         <li>Após avaliação pela equipa especializada:
                             <ul>
@@ -7759,7 +7746,7 @@ async function clearContacts() {
                         </li>
                         <li>Informar COE do resultado final</li>
                     </ol>
-                    <h4 style="color: var(--medium-blue); margin-top: 1rem;">Coordenação Contínua</h4>
+                    <h4 style="color: var(--brand-secondary-fill, #0094CF); margin-top: 1rem;">Coordenação Contínua</h4>
                     <ol class="procedures-list">
                         <li>Durante todo o incidente:
                             <ul>
@@ -8462,8 +8449,8 @@ async function clearContacts() {
                 </div>
             </div>
 
-                <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 3px solid var(--medium-blue);">
-                    <h3 style="color: var(--dark-blue); margin-bottom: 1rem;">📋 FICHA DE PREENCHIMENTO</h3>
+                <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 3px solid var(--brand-secondary-fill, #0094CF);">
+                    <h3 style="color: var(--brand-primary-fill, #004C7B); margin-bottom: 1rem;">📋 FICHA DE PREENCHIMENTO</h3>
                 </div>
 
 
@@ -8475,8 +8462,8 @@ async function clearContacts() {
 
 
 
-<div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 3px solid var(--medium-blue);">
-    <h3 style="color: var(--dark-blue); margin-bottom: 1rem;">📋 FICHA DE PREENCHIMENTO</h3>
+<div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 3px solid var(--brand-secondary-fill, #0094CF);">
+    <h3 style="color: var(--brand-primary-fill, #004C7B); margin-bottom: 1rem;">📋 FICHA DE PREENCHIMENTO</h3>
 </div>
 <div class="form-section" id="form-seg-01">
     <h3>PREENCHIMENTO DO PARTICIPANTE</h3>
@@ -8534,8 +8521,8 @@ async function clearContacts() {
         <button class="btn-clear" onclick="clearCard('seg-01')">🗑 Limpar Campos</button>
     </div>
 </div>
-<div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 3px solid var(--medium-blue);">
-    <h3 style="color: var(--dark-blue); margin-bottom: 1rem;">📋 FICHA DE PREENCHIMENTO</h3>
+<div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 3px solid var(--brand-secondary-fill, #0094CF);">
+    <h3 style="color: var(--brand-primary-fill, #004C7B); margin-bottom: 1rem;">📋 FICHA DE PREENCHIMENTO</h3>
 </div>
 <div class="form-section" id="form-seg-02">
     <h3>PREENCHIMENTO DO PARTICIPANTE</h3>
@@ -8593,8 +8580,8 @@ async function clearContacts() {
         <button class="btn-clear" onclick="clearCard('seg-02')">🗑 Limpar Campos</button>
     </div>
 </div>
-<div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 3px solid var(--medium-blue);">
-    <h3 style="color: var(--dark-blue); margin-bottom: 1rem;">📋 FICHA DE PREENCHIMENTO</h3>
+<div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 3px solid var(--brand-secondary-fill, #0094CF);">
+    <h3 style="color: var(--brand-primary-fill, #004C7B); margin-bottom: 1rem;">📋 FICHA DE PREENCHIMENTO</h3>
 </div>
 <div class="form-section" id="form-seg-03">
     <h3>PREENCHIMENTO DO PARTICIPANTE</h3>
@@ -8652,8 +8639,8 @@ async function clearContacts() {
         <button class="btn-clear" onclick="clearCard('seg-03')">🗑 Limpar Campos</button>
     </div>
 </div>
-<div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 3px solid var(--medium-blue);">
-    <h3 style="color: var(--dark-blue); margin-bottom: 1rem;">📋 FICHA DE PREENCHIMENTO</h3>
+<div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 3px solid var(--brand-secondary-fill, #0094CF);">
+    <h3 style="color: var(--brand-primary-fill, #004C7B); margin-bottom: 1rem;">📋 FICHA DE PREENCHIMENTO</h3>
 </div>
 <div class="form-section" id="form-seg-04">
     <h3>PREENCHIMENTO DO PARTICIPANTE</h3>
@@ -8711,8 +8698,8 @@ async function clearContacts() {
         <button class="btn-clear" onclick="clearCard('seg-04')">🗑 Limpar Campos</button>
     </div>
 </div>
-<div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 3px solid var(--medium-blue);">
-    <h3 style="color: var(--dark-blue); margin-bottom: 1rem;">📋 FICHA DE PREENCHIMENTO</h3>
+<div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 3px solid var(--brand-secondary-fill, #0094CF);">
+    <h3 style="color: var(--brand-primary-fill, #004C7B); margin-bottom: 1rem;">📋 FICHA DE PREENCHIMENTO</h3>
 </div>
 <div class="form-section" id="form-seg-05">
     <h3>PREENCHIMENTO DO PARTICIPANTE</h3>
@@ -8770,8 +8757,8 @@ async function clearContacts() {
         <button class="btn-clear" onclick="clearCard('seg-05')">🗑 Limpar Campos</button>
     </div>
 </div>
-<div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 3px solid var(--medium-blue);">
-    <h3 style="color: var(--dark-blue); margin-bottom: 1rem;">📋 FICHA DE PREENCHIMENTO</h3>
+<div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 3px solid var(--brand-secondary-fill, #0094CF);">
+    <h3 style="color: var(--brand-primary-fill, #004C7B); margin-bottom: 1rem;">📋 FICHA DE PREENCHIMENTO</h3>
 </div>
 <div class="form-section" id="form-seg-06">
     <h3>PREENCHIMENTO DO PARTICIPANTE</h3>
@@ -8829,8 +8816,8 @@ async function clearContacts() {
         <button class="btn-clear" onclick="clearCard('seg-06')">🗑 Limpar Campos</button>
     </div>
 </div>
-<div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 3px solid var(--medium-blue);">
-    <h3 style="color: var(--dark-blue); margin-bottom: 1rem;">📋 FICHA DE PREENCHIMENTO</h3>
+<div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 3px solid var(--brand-secondary-fill, #0094CF);">
+    <h3 style="color: var(--brand-primary-fill, #004C7B); margin-bottom: 1rem;">📋 FICHA DE PREENCHIMENTO</h3>
 </div>
 <div class="form-section" id="form-seg-07">
     <h3>PREENCHIMENTO DO PARTICIPANTE</h3>
@@ -8888,8 +8875,8 @@ async function clearContacts() {
         <button class="btn-clear" onclick="clearCard('seg-07')">🗑 Limpar Campos</button>
     </div>
 </div>
-<div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 3px solid var(--medium-blue);">
-    <h3 style="color: var(--dark-blue); margin-bottom: 1rem;">📋 FICHA DE PREENCHIMENTO</h3>
+<div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 3px solid var(--brand-secondary-fill, #0094CF);">
+    <h3 style="color: var(--brand-primary-fill, #004C7B); margin-bottom: 1rem;">📋 FICHA DE PREENCHIMENTO</h3>
 </div>
 <div class="form-section" id="form-seg-08">
     <h3>PREENCHIMENTO DO PARTICIPANTE</h3>
@@ -8947,8 +8934,8 @@ async function clearContacts() {
         <button class="btn-clear" onclick="clearCard('seg-08')">🗑 Limpar Campos</button>
     </div>
 </div>
-<div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 3px solid var(--medium-blue);">
-    <h3 style="color: var(--dark-blue); margin-bottom: 1rem;">📋 FICHA DE PREENCHIMENTO</h3>
+<div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 3px solid var(--brand-secondary-fill, #0094CF);">
+    <h3 style="color: var(--brand-primary-fill, #004C7B); margin-bottom: 1rem;">📋 FICHA DE PREENCHIMENTO</h3>
 </div>
 <div class="form-section" id="form-seg-09">
     <h3>PREENCHIMENTO DO PARTICIPANTE</h3>
@@ -9006,8 +8993,8 @@ async function clearContacts() {
         <button class="btn-clear" onclick="clearCard('seg-09')">🗑 Limpar Campos</button>
     </div>
 </div>
-<div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 3px solid var(--medium-blue);">
-    <h3 style="color: var(--dark-blue); margin-bottom: 1rem;">📋 FICHA DE PREENCHIMENTO</h3>
+<div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 3px solid var(--brand-secondary-fill, #0094CF);">
+    <h3 style="color: var(--brand-primary-fill, #004C7B); margin-bottom: 1rem;">📋 FICHA DE PREENCHIMENTO</h3>
 </div>
 <div class="form-section" id="form-seg-10">
     <h3>PREENCHIMENTO DO PARTICIPANTE</h3>
@@ -9065,8 +9052,8 @@ async function clearContacts() {
         <button class="btn-clear" onclick="clearCard('seg-10')">🗑 Limpar Campos</button>
     </div>
 </div>
-<div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 3px solid var(--medium-blue);">
-    <h3 style="color: var(--dark-blue); margin-bottom: 1rem;">📋 FICHA DE PREENCHIMENTO</h3>
+<div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 3px solid var(--brand-secondary-fill, #0094CF);">
+    <h3 style="color: var(--brand-primary-fill, #004C7B); margin-bottom: 1rem;">📋 FICHA DE PREENCHIMENTO</h3>
 </div>
 <div class="form-section" id="form-seg-11">
     <h3>PREENCHIMENTO DO PARTICIPANTE</h3>
@@ -9131,7 +9118,7 @@ async function clearContacts() {
             <section id="documentacao" class="section">
                 <h2>Documentação Técnica do Aeroporto</h2>
 
-                <div style="background:#e7f5ff; border-left:4px solid var(--medium-blue); padding:0.9rem 1rem; border-radius:6px; margin-bottom:1.2rem; font-size:0.9rem;">
+                <div style="background:#e7f5ff; border-left:4px solid var(--brand-secondary-fill, #0094CF); padding:0.9rem 1rem; border-radius:6px; margin-bottom:1.2rem; font-size:0.9rem;">
                     <strong>ℹ</strong> Os documentos <strong>PEA</strong> e <strong>PSCI</strong> estão incorporados no portal e abrem directamente aqui. O <strong>MOA</strong>, <strong>PCA</strong> e <strong>PSA</strong> podem ser consultados através do selector de ficheiro ou colocando o PDF na pasta do portal.
                 </div>
 
@@ -9176,7 +9163,7 @@ async function clearContacts() {
                         <p id="doc-psa-status" style="margin:0.6rem 0 0; font-size:0.78rem; color:#666;">⏳ Documento ainda não incorporado</p>
                     </div>
 
-                    <div class="info-card" style="border-top:4px solid var(--medium-blue);">
+                    <div class="info-card" style="border-top:4px solid var(--brand-secondary-fill, #0094CF);">
                         <h3>📘 PSCI</h3>
                         <p style="margin:0.3rem 0 0.8rem; color:#555;"><strong>Plano de Salvamento e Combate a Incêndios</strong><br><small>PL-FNMO-PSCI-001 Rev.00 — Organização e procedimentos do SCI.</small></p>
                         <div style="display:flex; flex-wrap:wrap; gap:0.5rem;">
@@ -9190,7 +9177,7 @@ async function clearContacts() {
                 <!-- Visualizador de PDF (modal) -->
                 <div id="docViewerModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:10000; align-items:center; justify-content:center;">
                     <div style="background:#fff; width:95%; height:92%; max-width:1400px; border-radius:8px; display:flex; flex-direction:column; overflow:hidden;">
-                        <div style="background:var(--dark-blue); color:#fff; padding:0.7rem 1rem; display:flex; align-items:center; justify-content:space-between;">
+                        <div style="background:var(--brand-primary-fill, #004C7B); color:#fff; padding:0.7rem 1rem; display:flex; align-items:center; justify-content:space-between;">
                             <strong id="docViewerTitle" style="font-size:1rem;">Documento</strong>
                             <div style="display:flex; gap:0.4rem;">
                                 <button onclick="docViewerDownload()" style="background:#27ae60; color:#fff; border:none; padding:0.45rem 0.9rem; border-radius:4px; cursor:pointer; font-size:0.85rem;">⬇ Descarregar</button>
@@ -9230,11 +9217,11 @@ async function clearContacts() {
 
             <!-- GUIA RÁPIDO Section -->
             <section id="ajuda" class="section">
-                <h1 style="color: var(--dark-blue); margin-bottom: 0.3rem;">❓ GUIA RÁPIDO DE USO — PORTAL COE</h1>
+                <h1 style="color: var(--brand-primary-fill, #004C7B); margin-bottom: 0.3rem;">❓ GUIA RÁPIDO DE USO — PORTAL COE</h1>
                 <p style="color:#666; margin-bottom:1.2rem;">Como utilizar o Portal do Centro de Operações de Emergência. Leitura: ~7 minutos.</p>
 
                 <!-- Cross-link para Guia de Utilização (PATCH v12 / v13) -->
-                <div class="info-card" style="border-left:4px solid var(--medium-blue); background:#f5fbff;">
+                <div class="info-card" style="border-left:4px solid var(--brand-secondary-fill, #0094CF); background:#f5fbff;">
                     <h3 style="margin-top:0;">📖 Estrutura Completa do Portal</h3>
                     <p style="font-size:0.9rem; margin:0.3rem 0 0.8rem;">
                         Para uma visão detalhada da estrutura do portal e do fluxo operacional de ocorrências, consulta o <strong>Guia de Utilização</strong>.
@@ -9244,7 +9231,7 @@ async function clearContacts() {
                     </button>
                 </div>
 
-                <div class="info-card" style="border-left:4px solid var(--medium-blue);">
+                <div class="info-card" style="border-left:4px solid var(--brand-secondary-fill, #0094CF);">
                     <h3>🚀 O que é este portal?</h3>
                     <p style="font-size:0.92rem; line-height:1.7;">
                         O <strong>Portal COE</strong> é a ferramenta digital do <strong>Centro de Operações de Emergência</strong> do {{AIRPORT.NAME}} ({{AIRPORT.OACI}}).
@@ -9365,7 +9352,7 @@ async function clearContacts() {
 
             <!-- CONFIGURAÇÕES Section -->
             <section id="configuracoes" class="section">
-                <h1 style="color: var(--dark-blue); margin-bottom: 0.3rem;">⚙ CONFIGURAÇÕES DO PORTAL</h1>
+                <h1 style="color: var(--brand-primary-fill, #004C7B); margin-bottom: 0.3rem;">⚙ CONFIGURAÇÕES DO PORTAL</h1>
                 <p style="color:#666; margin-bottom:1.2rem;">Editar dados do aeroporto, contactos e operadores COE. As alterações são guardadas neste dispositivo (localStorage) e aplicadas automaticamente.</p>
 
                 <div style="background:#fff3cd; border-left:4px solid #ffc107; padding:0.8rem 1rem; border-radius:6px; margin-bottom:1.2rem; font-size:0.88rem;">
@@ -9392,7 +9379,7 @@ async function clearContacts() {
                 <!-- TAB: DADOS AEROPORTO -->
                 <div id="cfg-tab-aeroporto" class="cfg-tab-content" style="display:none;">
                     <div class="info-card" style="margin-bottom:1rem;">
-                        <h3 style="color:var(--dark-blue);margin-top:0;">Dados Gerais do Aeroporto</h3>
+                        <h3 style="color:var(--brand-primary-fill, #004C7B);margin-top:0;">Dados Gerais do Aeroporto</h3>
                         <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:1rem;">
                             <div><label style="display:block;font-size:0.85rem;font-weight:600;color:#333;margin-bottom:0.3rem;">Nome do Aeroporto</label><input type="text" id="cfg-apt-nome" style="width:100%;padding:0.6rem;border:1px solid #ccc;border-radius:5px;font-size:0.95rem;box-sizing:border-box;"></div>
                             <div><label style="display:block;font-size:0.85rem;font-weight:600;color:#333;margin-bottom:0.3rem;">Código OACI</label><input type="text" id="cfg-apt-oaci" style="width:100%;padding:0.6rem;border:1px solid #ccc;border-radius:5px;font-size:0.95rem;box-sizing:border-box;text-transform:uppercase;"></div>
@@ -9419,7 +9406,7 @@ async function clearContacts() {
                     <div class="info-card" style="margin-bottom:1rem;">
                         <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:0.8rem;flex-wrap:wrap;gap:0.8rem;">
                             <div>
-                                <h3 style="color:var(--dark-blue);margin:0 0 0.3rem 0;">📇 Contactos</h3>
+                                <h3 style="color:var(--brand-primary-fill, #004C7B);margin:0 0 0.3rem 0;">📇 Contactos</h3>
                                 <p style="margin:0;color:#666;font-size:0.82rem;">Fonte única de todos os contactos do portal. Edita, adiciona ou remove — as alterações propagam-se a todas as secções (Contactos, Fluxogramas, Fichas, Verificação Mensal) ao clicar em <strong>Guardar</strong>.</p>
                             </div>
                             <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
@@ -9465,7 +9452,7 @@ async function clearContacts() {
                 <div id="cfg-tab-ops" class="cfg-tab-content" style="display:none;">
                     <div class="info-card" style="margin-bottom:1rem;">
                         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.8rem;flex-wrap:wrap;gap:0.5rem;">
-                            <h3 style="color:var(--dark-blue);margin:0;">Operadores Autorizados do COE</h3>
+                            <h3 style="color:var(--brand-primary-fill, #004C7B);margin:0;">Operadores Autorizados do COE</h3>
                             <button onclick="cfgAddRow('ops')" style="background:#28a745;color:white;border:none;padding:0.5rem 1rem;border-radius:5px;font-weight:600;cursor:pointer;">+ Adicionar Operador</button>
                         </div>
                         <p style="font-size:0.85rem;color:#666;margin-top:0;">Os nomes aqui listados aparecem como sugestões no ecrã de login do Portal COE e no campo "Coordenador" da Ficha Única Geral.</p>
@@ -9488,7 +9475,7 @@ async function clearContacts() {
                 <!-- TAB: PARÂMETROS -->
                 <div id="cfg-tab-param" class="cfg-tab-content" style="display:none;">
                     <div class="info-card" style="margin-bottom:1rem;">
-                        <h3 style="color:var(--dark-blue);margin-top:0;">Parâmetros Operacionais</h3>
+                        <h3 style="color:var(--brand-primary-fill, #004C7B);margin-top:0;">Parâmetros Operacionais</h3>
                         <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:1rem;">
                             <div><label style="display:block;font-size:0.85rem;font-weight:600;color:#333;margin-bottom:0.3rem;">Tempo Resposta SSCI (segundos — ICAO)</label><input type="number" id="cfg-par-tempossci" style="width:100%;padding:0.6rem;border:1px solid #ccc;border-radius:5px;font-size:0.95rem;box-sizing:border-box;" value="180"></div>
                             <div><label style="display:block;font-size:0.85rem;font-weight:600;color:#333;margin-bottom:0.3rem;">Tempo Activação COE (minutos)</label><input type="number" id="cfg-par-tempocoe" style="width:100%;padding:0.6rem;border:1px solid #ccc;border-radius:5px;font-size:0.95rem;box-sizing:border-box;" value="15"></div>
@@ -9499,7 +9486,7 @@ async function clearContacts() {
                         </div>
                     </div>
                     <div class="info-card">
-                        <h3 style="color:var(--dark-blue);margin-top:0;">Sobre o Portal</h3>
+                        <h3 style="color:var(--brand-primary-fill, #004C7B);margin-top:0;">Sobre o Portal</h3>
                         <p style="font-size:0.88rem; color:#666;">Portal COE {{AIRPORT.NAME_SHORT}} — Versão {{VERSION}} ({{BUILD_DATE_SHORT}})<br>Desenvolvido para o {{AIRPORT.NAME}} ({{AIRPORT.OACI}}), {{AIRPORT.LOCATION}}.<br>Dados armazenados localmente em <code>localStorage</code> (chave: <code>coe_awm_config</code>).</p>
                     </div>
                 </div>
@@ -9538,13 +9525,13 @@ async function clearContacts() {
             
             // Hide all sections
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-            
+            document.querySelectorAll('.nav-btn').forEach(b => { b.classList.remove('active'); b.removeAttribute('aria-current'); });
+
             // Show selected section
             document.getElementById(sectionId).classList.add('active');
 
             // Mark nav button as active
-            event?.target?.classList.add('active');
+            if (event?.target) { event.target.classList.add('active'); event.target.setAttribute('aria-current', 'page'); }
 
             // Auto-generate occurrence number when opening chronometer in real mode
             if (sectionId === 'cronometro' && currentMode === 'real') {
@@ -14250,7 +14237,7 @@ if (document.readyState !== 'loading') {
     }
 
     function headerClassOrStyle(cat, isSsci) {
-        if (isSsci) return { className: '', style: 'background:var(--warning-red);color:white;' };
+        if (isSsci) return { className: '', style: 'background:var(--status-alert-emphasis, #d32f2f);color:white;' };
         var v = CAT_HEADER_STYLES[cat] || '';
         if (v === 'internal' || v === 'authority' || v === 'external') {
             return { className: v, style: '' };
@@ -14288,7 +14275,7 @@ if (document.readyState !== 'loading') {
         if (c.quente) {
             fields.push(
                 '<div class="contact-field"><label>CISCO Quente</label>' +
-                '<span class="phone-input" style="font-family:monospace;font-weight:600;color:var(--warning-red);">' + esc(c.quente) + '</span></div>'
+                '<span class="phone-input" style="font-family:monospace;font-weight:600;color:var(--status-alert-emphasis, #d32f2f);">' + esc(c.quente) + '</span></div>'
             );
         }
         if (c.cel) {
