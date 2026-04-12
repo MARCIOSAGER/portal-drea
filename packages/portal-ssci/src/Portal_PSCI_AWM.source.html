@@ -231,6 +231,35 @@
 <!-- ELEGANT TOAST CONTAINER -->
 <div id="awmToastContainer" aria-live="polite" aria-atomic="true"></div>
 
+<!-- LOGIN / IDENTIFICATION OVERLAY -->
+<div id="loginOverlay" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,44,75,0.92);z-index:10000;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(5px);">
+    <div style="background:white;border-radius:16px;padding:2.5rem 3rem;max-width:480px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,0.4);text-align:center;">
+        <div style="margin-bottom:1.5rem;">
+            <div style="font-size:2.5rem;margin-bottom:0.5rem;">🚒</div>
+            <h2 style="color:#004C7B;margin:0;font-size:1.4rem;">Serviço de Salvamento e Combate a Incêndio</h2>
+            <p style="color:#666;font-size:0.9rem;margin:0.3rem 0 0;">{{AIRPORT.NAME}} ({{AIRPORT.OACI}})</p>
+        </div>
+        <div style="border-top:2px solid #f0f0f0;padding-top:1.5rem;">
+            <label style="display:block;text-align:left;font-size:0.85rem;font-weight:600;color:#333;margin-bottom:0.4rem;">Operador de Serviço:</label>
+            <input type="text" id="loginOperatorName" placeholder="Nome completo do operador" style="width:100%;padding:0.8rem 1rem;border:2px solid #ccc;border-radius:8px;font-size:1rem;box-sizing:border-box;transition:border-color 0.2s;" onfocus="this.style.borderColor='#0094CF'" onblur="this.style.borderColor='#ccc'">
+            <label style="display:block;text-align:left;font-size:0.85rem;font-weight:600;color:#333;margin:1rem 0 0.4rem;">Função / Cargo:</label>
+            <select id="loginOperatorRole" style="width:100%;padding:0.8rem 1rem;border:2px solid #ccc;border-radius:8px;font-size:1rem;box-sizing:border-box;background:white;">
+                <option value="">— Seleccionar —</option>
+                <option value="Chefe de Brigada">Chefe de Brigada</option>
+                <option value="Sub-Chefe de Brigada">Sub-Chefe de Brigada</option>
+                <option value="Bombeiro Aeronáutico">Bombeiro Aeronáutico</option>
+                <option value="Operador COE">Operador COE</option>
+                <option value="DREA">DREA (Resp. Emergências)</option>
+                <option value="SGSO">SGSO (Safety Officer)</option>
+                <option value="Direcção">Direcção do Aeroporto</option>
+                <option value="Outro">Outro</option>
+            </select>
+            <button onclick="loginSSCI()" style="width:100%;padding:0.9rem;margin-top:1.5rem;background:#004C7B;color:white;border:none;border-radius:8px;font-size:1.05rem;font-weight:700;cursor:pointer;transition:background 0.2s;" onmouseover="this.style.background='#0094CF'" onmouseout="this.style.background='#004C7B'">Entrar no Portal SSCI</button>
+        </div>
+        <p style="color:#999;font-size:0.75rem;margin-top:1rem;">O nome do operador será registado em todos os relatórios e exportações.</p>
+    </div>
+</div>
+
 <!-- Splash screen (Plan 5 Task 13) — fade-out via splash.js after 1500ms. Bypass: ?nosplash=1 -->
 <div class="ds-splash" id="dsSplash" data-state="in" role="status" aria-live="polite">
     <img class="ds-splash__logo" src="data:image/png;base64,{{LOGO_SGA_PNG_BASE64}}" alt="SGA — Sociedade Gestora de Aeroportos, S.A.">
@@ -266,6 +295,7 @@
             <div class="time-display" id="psci-clock" style="display:none;"></div>
         </div>
 
+        <div class="ds-shell-bar__operator" id="operatorBadge" data-logged-in="false" style="display:none;"></div>
         <div class="ds-shell-bar__operator" id="psci-turno" data-logged-in="true" style="display:inline-flex;">Turno: —</div>
     </div>
 </header>
@@ -2479,7 +2509,7 @@ function exportForm(sectionId) {
         subtitle: 'Serviço de Salvamento e Combate a Incêndio — {{AIRPORT.LOCATION}}',
         bodyHtml: bodyHtml,
         signatures: ['Bombeiro Responsável', 'Chefe de Turno', 'SGSO'],
-        footerLeft: 'Portal PSCI — AWM'
+        footerLeft: 'Portal PSCI — AWM' + (ssciOperatorName ? ' · Operador: ' + ssciOperatorName + ' (' + ssciOperatorRole + ')' : '')
     });
     if (window.notify) window.notify('PDF gerado e guardado no histórico', 'success');
 }
@@ -2562,7 +2592,7 @@ function printFormHistory(id) {
             title: entry.title,
             subtitle: 'Registo histórico — ' + entry.stamp,
             bodyHtml: bodyHtml,
-            footerLeft: 'Portal PSCI — AWM'
+            footerLeft: 'Portal PSCI — AWM' + (ssciOperatorName ? ' · Operador: ' + ssciOperatorName : '')
         });
     } catch(e) { console.error(e); }
     // Restaura estado original
@@ -4092,6 +4122,65 @@ if (document.readyState !== 'loading') setTimeout(stkRenderAll, 120);
 
 <!-- ===== PATCH v5 — Print safety rede (esconder UXP chrome + no-print global) ===== -->
 <!-- ===== /PATCH v5 — Print safety rede ===== -->
+
+<!-- SSCI Login / Operator identification -->
+<script>
+var ssciOperatorName = '';
+var ssciOperatorRole = '';
+
+function loginSSCI() {
+    var nameInput = document.getElementById('loginOperatorName');
+    var roleSelect = document.getElementById('loginOperatorRole');
+    var name = nameInput.value.trim();
+    var role = roleSelect.value;
+    if (!name) {
+        nameInput.style.borderColor = '#d32f2f';
+        nameInput.placeholder = 'Por favor, insira o nome do operador';
+        nameInput.focus();
+        return;
+    }
+    ssciOperatorName = name;
+    ssciOperatorRole = role || 'Bombeiro Aeronáutico';
+    document.getElementById('loginOverlay').style.display = 'none';
+    var badge = document.getElementById('operatorBadge');
+    if (badge) {
+        badge.innerHTML = '\uD83D\uDC64 ' + ssciOperatorName + ' \u2014 ' + ssciOperatorRole +
+            ' <button onclick="logoutSSCI()" style="background:rgba(255,255,255,0.25);border:1px solid rgba(255,255,255,0.4);color:white;padding:1px 8px;border-radius:3px;cursor:pointer;font-size:0.7rem;margin-left:8px;" title="Terminar sessão">Sair</button>';
+        badge.style.display = 'inline-flex';
+        badge.setAttribute('data-logged-in', 'true');
+    }
+    try { localStorage.setItem('ssci_operator', JSON.stringify({ name: name, role: ssciOperatorRole })); } catch(e){}
+}
+
+function logoutSSCI() {
+    ssciOperatorName = '';
+    ssciOperatorRole = '';
+    var badge = document.getElementById('operatorBadge');
+    if (badge) { badge.innerHTML = ''; badge.style.display = 'none'; badge.setAttribute('data-logged-in', 'false'); }
+    document.getElementById('loginOverlay').style.display = 'flex';
+    try { localStorage.removeItem('ssci_operator'); } catch(e){}
+    var nameInput = document.getElementById('loginOperatorName');
+    if (nameInput) { nameInput.value = ''; nameInput.focus(); }
+}
+
+// Auto-login from localStorage + Enter key
+document.addEventListener('DOMContentLoaded', function() {
+    try {
+        var saved = JSON.parse(localStorage.getItem('ssci_operator') || 'null');
+        if (saved && saved.name) {
+            document.getElementById('loginOperatorName').value = saved.name;
+            if (saved.role) document.getElementById('loginOperatorRole').value = saved.role;
+            loginSSCI();
+            return;
+        }
+    } catch(e){}
+    var loginInput = document.getElementById('loginOperatorName');
+    if (loginInput) {
+        loginInput.addEventListener('keypress', function(e) { if (e.key === 'Enter') loginSSCI(); });
+        loginInput.focus();
+    }
+});
+</script>
 
 <!-- Plan 5 Task 14 — Design System splash lifecycle (inlined from shared/scripts/chrome/splash.js) -->
 <script>
