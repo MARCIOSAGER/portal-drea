@@ -66,11 +66,60 @@
   --cat-externa-emg:     var(--purple-800);
   --cat-operadores:      var(--slate-600);
 
-  /* ---------- Elevation aliases ---------- */
-  --elevation-card:    var(--shadow-1);
-  --elevation-hover:   var(--shadow-2);
-  --elevation-overlay: var(--shadow-3);
-  --elevation-modal:   var(--shadow-4);
+  /* ---------- Plan 7: Elevation aliases ---------- */
+  --elevation-card:    var(--shadow-elevation-1);
+  --elevation-hover:   var(--shadow-elevation-2);
+  --elevation-overlay: var(--shadow-elevation-3);
+  --elevation-modal:   var(--shadow-elevation-4);
+
+  /* ---------- Plan 7: Status quad — monitoring-specific ---------- */
+  --status-normal-bg:            var(--green-100);
+  --status-normal-border:        var(--green-600);
+  --status-normal-fg:            var(--green-900);
+  --status-normal-gauge:         var(--green-600);
+  --status-normal-pulse:         var(--green-600);
+
+  --status-warning-gauge:        var(--amber-500-bright);
+  --status-warning-pulse:        var(--amber-500-bright);
+
+  --status-unknown-bg:           var(--neutral-subtle);
+  --status-unknown-border:       var(--neutral-muted);
+  --status-unknown-fg:           var(--neutral-fg-subtle);
+  --status-unknown-gauge:        var(--neutral-muted);
+  --status-unknown-pulse:        transparent;
+
+  --status-critical-bg:          #fef2f2;
+  --status-critical-border:      var(--red-600);
+  --status-critical-fg:          #991b1b;
+  --status-critical-gauge:       var(--red-600);
+  --status-critical-pulse:       var(--red-600);
+
+  /* ---------- Plan 7: Motion tokens ---------- */
+  --transition-hover:   120ms cubic-bezier(.2, 0, 0, 1);
+  --transition-active:  80ms cubic-bezier(.2, 0, 0, 1);
+
+  /* ---------- Plan 7: Pill active nav tokens ---------- */
+  --pill-active-bg:     var(--brand-primary);
+  --pill-active-fg:     var(--white);
+  --pill-active-icon:   var(--white);
+  --pill-active-shadow: 0 2px 4px rgba(0,76,123,0.25);
+  --pill-hover-bg:      #f1f5f9;
+  --pill-hover-fg:      #0f172a;
+  --pill-radius:        7px;
+
+  /* ---------- Plan 7: Gauge tokens ---------- */
+  --gauge-height:       4px;
+  --gauge-bg:           #eef1f4;
+  --gauge-radius:       2px;
+  --gauge-fill-default: var(--brand-primary);
+  --gauge-fill-ok:      var(--status-normal-gauge);
+  --gauge-fill-warning: var(--status-warning-gauge);
+  --gauge-fill-critical: var(--status-critical-gauge);
+  --gauge-transition:   width 300ms cubic-bezier(.2, 0, 0, 1);
+
+  /* ---------- Plan 7: Font family semantic aliases ---------- */
+  --font-ui:         'Inter', -apple-system, 'Segoe UI', sans-serif;
+  --font-numeric:    var(--font-mono-family);
 
   /* ---------- Focus ring ---------- */
   --focus-ring-color:  var(--blue-700);
