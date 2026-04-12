@@ -7,22 +7,55 @@ Versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
 
 ---
 
-## [Unreleased] — em main (pós v2.1.0-alpha.1)
+## [2.2.0-alpha.1] — 2026-04-12
+
+### Plan 7 — Visual Polish
+
+Aplicação do Design System SGA aos conteúdos operacionais legados,
+adicionando depth, estados real-time, typography profissional, e
+operational context. Produto de 8 iterações de brainstorming no
+visual companion + 7 queries ao ui-ux-pro-max-skill.
 
 ### Added
-- **Real SGA institutional logo** (`shared/assets/logo-sga.png`, 512×207, 7.6 KB) substitui o stub SVG usado nos Plans 1-6. Embebida em base64 via novo helper `encode_image_base64()` em `ds_build_helpers.py` e placeholder `{{LOGO_SGA_PNG_BASE64}}`.
-- **Splash screen**: agora mostra o logo SGA real (horizontal lockup com wordmark "SGA" + graphic + tagline "SOCIEDADE GESTORA DE AEROPORTOS, S.A.") em vez do stub triangle+line.
-- **Print header** (`shared/styles/print/print.css`): novo `.print-header` hidden on screen, visível no @media print com o logo SGA real centrado + metadata "Portal X · OACI · Aeroporto". Aparece no topo da primeira página de qualquer impressão/PDF.
-- `scripts/ds_build_helpers.py::encode_image_base64()` helper genérico para embebber imagens (PNG/JPG/SVG) em base64, reusa o padrão do `encode_font_woff2_base64`.
-- Build pipeline em ambos os portais aceita markers com contagem ≥1 (não só exactly-1) para permitir placeholders que aparecem em múltiplos lugares (splash + print-header).
 
-### Removed
-- `shared/assets/logo-sga-mark.svg` (stub 32×32, nunca referenciado)
-- `shared/assets/logo-sga-full.svg` (stub 240×120, nunca referenciado)
+**New design tokens** (shared/styles/tokens/):
+- Elevation scale (shadow-elevation-1 through -4)
+- Status quad (normal/warning/critical/unknown with gauge + pulse)
+- Motion tokens (transition-hover 120ms, transition-active 80ms)
+- Pill active nav tokens (bg, fg, icon, shadow, hover, radius)
+- Gauge tokens (height, bg, radius, 4 fill variants, transition)
+- Typography tokens (font-ui, font-numeric, font-mono-family)
 
-### Não-alterado
-- Shell bar icon continua a usar `icon-sga-mark` do sprite SVG (é 32×32 — o PNG full ficaria ilegível a esse tamanho). Futuro: extrair só o graphic do PNG num SVG mark-only.
-- Todos os 45 tests continuam a passar.
+**New components** (shared/styles/components/):
+- stat-card-gauge — KPI card with mono value + progress gauge
+- state-pulse — animated dot for real-time critical/warning states
+- dash-section — row-based grouping with gradient divider
+- form-banner — inline contextual banner (warning/info/critical)
+- form-two-col — 2fr:1fr wrapper for forms with sticky sidebar
+- sticky-timer-card — chronometer + summary + auto-save indicator
+- form-group--numeric modifier on existing form-group
+- nav-btn--pill modifier on existing sidebar nav items
+
+**New fonts** (shared/assets/fonts/):
+- JetBrainsMono-Regular.woff2 + JetBrainsMono-Bold.woff2 (OFL)
+- Embedded via base64, resolves --font-mono-family
+
+**Real SGA institutional logo** (integrated pre-Plan-7):
+- shared/assets/logo-sga.png in splash + shell bar + print header
+
+### Changed
+
+- SSCI dashboard: 6 KPIs in 2 dash-sections with progress gauges
+- COE #emgFormBlock: two-col layout + sticky chronometer card
+- Both sidebars: nav-btn--pill modifier (solid SGA-blue active pill)
+- Numbers everywhere render in JetBrains Mono tabular numerals
+
+### Preserved
+
+- All JS-load-bearing IDs/classes unchanged
+- openSection, updateHeaderClock, cfgApplyToPortal, PSCI_CFG, etc.
+- All data stores (localStorage, awmContacts schema)
+- 48 tests passing (45 baseline + 3 new)
 
 ---
 
