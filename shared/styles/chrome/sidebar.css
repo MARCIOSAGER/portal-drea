@@ -191,3 +191,48 @@
 @media (prefers-reduced-motion: reduce) {
   .nav-btn.nav-btn--pill { transition: none; }
 }
+
+/* =========================================================================
+ * Responsive — hamburger menu for mobile/tablet (<1024px)
+ * ========================================================================= */
+
+/* Hamburger button — hidden on desktop, visible on mobile */
+.ds-shell-bar__hamburger {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--neutral-surface, #fff);
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: var(--space-3, 6px);
+  line-height: 1;
+  margin-right: var(--space-3, 6px);
+}
+
+/* Overlay behind sidebar on mobile */
+.ds-sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 44, 75, 0.5);
+  z-index: 89;
+}
+.ds-sidebar-overlay.open { display: block; }
+
+@media (max-width: 1023px) {
+  .ds-shell-bar__hamburger { display: flex; align-items: center; }
+
+  .ds-sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.25s ease;
+    z-index: 91;
+    box-shadow: none;
+  }
+  .ds-sidebar.open {
+    transform: translateX(0);
+    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+  }
+
+  /* Page grid — full width on mobile */
+  .ds-page-grid { margin-left: 0; }
+}

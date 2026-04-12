@@ -2673,6 +2673,7 @@ html { scroll-behavior: smooth; }
     <!-- DS Shell Bar (replaces legacy <header>) — Plan 4 Task 11 -->
     <header class="ds-shell-bar" role="banner">
         <div class="ds-shell-bar__brand">
+            <button class="ds-shell-bar__hamburger" onclick="toggleSidebar()" aria-label="Menu" type="button">&#9776;</button>
             <img class="ds-shell-bar__logo" src="data:image/png;base64,{{LOGO_SGA_PNG_BASE64}}" alt="SGA">
             <span class="ds-shell-bar__portal-name">Portal COE</span>
             <span class="ds-shell-bar__separator" aria-hidden="true"></span>
@@ -2705,7 +2706,8 @@ html { scroll-behavior: smooth; }
     </header>
 
     <!-- DS Sidebar (replaces legacy <div class="sidebar">) — Plan 4 Task 11 -->
-    <aside class="ds-sidebar" role="navigation" aria-label="Navegação principal">
+    <div class="ds-sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+    <aside class="ds-sidebar" id="dsSidebar" role="navigation" aria-label="Navegação principal">
         <div class="ds-sidebar__section">
             <h3 class="ds-sidebar__section-title">Principal</h3>
             <ul class="ds-sidebar__list">
@@ -9552,6 +9554,17 @@ async function clearContacts() {
                     timeInput.value = now.toLocaleTimeString('pt-PT', {hour:'2-digit', minute:'2-digit', hour12:false});
                 }
             }
+            // Close sidebar on mobile after navigation
+            var sidebar = document.getElementById('dsSidebar');
+            if (sidebar && sidebar.classList.contains('open')) toggleSidebar();
+        }
+
+        function toggleSidebar() {
+            var sidebar = document.getElementById('dsSidebar');
+            var overlay = document.getElementById('sidebarOverlay');
+            if (!sidebar) return;
+            sidebar.classList.toggle('open');
+            if (overlay) overlay.classList.toggle('open');
         }
 
         // Activity log
