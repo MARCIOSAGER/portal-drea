@@ -80,6 +80,15 @@
         .result-toggle .rt-btn { min-width: 36px; padding: 4px 10px; }
         /* Células da tabela de inspecção ficam centradas */
         .check-table td .result-toggle { justify-content: center; }
+        /* Tab buttons — Estoque, Configurações, Turno */
+        .portal-tab-bar { display: flex; gap: 0.3rem; border-bottom: 2px solid #e0e0e0; margin-bottom: 1.2rem; flex-wrap: wrap; }
+        .portal-tab-btn {
+            padding: 0.7rem 1.2rem; border: none; background: #e9ecef; color: #333;
+            cursor: pointer; font-weight: 600; border-radius: 6px 6px 0 0;
+            font-size: 0.88rem; font-family: inherit; transition: background 0.15s, color 0.15s;
+        }
+        .portal-tab-btn:hover { background: #dee2e6; }
+        .portal-tab-btn.active { background: var(--brand-primary-fill, #004C7B); color: #fff; }
 
         /* ===== Plan 5 Tasks 8+9 — awm-modal + awm-toast migrated =====
          * The entire awm-toast + awm-modal CSS (including keyframes,
@@ -199,30 +208,13 @@
 }
 @media print {
     .sidebar, .top-bar, nav, .nav-item, .uxp-savebadge,
-    .uxp-toasts, .uxp-totop, .uxp-skip, button, .no-print { display: none !important; }
+    .uxp-toasts, .uxp-toast, .uxp-totop, .uxp-skip,
+    .awm-modal-overlay, #awm-section-announcer,
+    button:not(.rt-btn), .btn-row, .no-print { display: none !important; }
+    .result-toggle .rt-btn { pointer-events: none; }
     .section { display: block !important; page-break-after: auto; }
     body { background: #fff !important; color: #000 !important; font-size: 11pt; }
     .card, .info-card { box-shadow: none !important; border: 1px solid #999 !important; page-break-inside: avoid; }
-}
-html { scroll-behavior: smooth; }
-.uxp-fv button:active { transform: scale(0.97); }
-
-
-/* Rede de segurança para impressão — esconde elementos da camada UXP que nunca
-   devem aparecer em PDFs ou print. Aditivo: não toca nos @media print existentes
-   das fichas/cartões, apenas adiciona hides globais. */
-@media print {
-    .uxp-savebadge,
-    .uxp-toasts,
-    .uxp-toast,
-    .uxp-totop,
-    .uxp-skip,
-    .awm-modal-overlay,
-    #awm-section-announcer,
-    .no-print {
-        display: none !important;
-    }
-    body { background: #ffffff !important; }
 }
 </style>
 </head>
@@ -1605,11 +1597,11 @@ html { scroll-behavior: smooth; }
             </section>
 
             <!-- Sub-tabs -->
-            <div style="display:flex;gap:0.3rem;border-bottom:2px solid #e0e0e0;margin-bottom:1.2rem;flex-wrap:wrap;">
-                <button class="stk-tab-btn active" onclick="stkTab('agentes', this)" style="padding:0.7rem 1.2rem;border:none;background:#004C7B;color:white;cursor:pointer;font-weight:600;border-radius:6px 6px 0 0;">🧯 Agentes Extintores</button>
-                <button class="stk-tab-btn" onclick="stkTab('epi', this)" style="padding:0.7rem 1.2rem;border:none;background:#e9ecef;color:#333;cursor:pointer;font-weight:600;border-radius:6px 6px 0 0;">👷 EPI</button>
-                <button class="stk-tab-btn" onclick="stkTab('epr', this)" style="padding:0.7rem 1.2rem;border:none;background:#e9ecef;color:#333;cursor:pointer;font-weight:600;border-radius:6px 6px 0 0;">🫁 EPR / ARICA</button>
-                <button class="stk-tab-btn" onclick="stkTab('equipamentos', this)" style="padding:0.7rem 1.2rem;border:none;background:#e9ecef;color:#333;cursor:pointer;font-weight:600;border-radius:6px 6px 0 0;">🧰 Equipamentos</button>
+            <div class="portal-tab-bar">
+                <button class="portal-tab-btn stk-tab-btn active" onclick="stkTab('agentes', this)">🧯 Agentes Extintores</button>
+                <button class="portal-tab-btn stk-tab-btn" onclick="stkTab('epi', this)">👷 EPI</button>
+                <button class="portal-tab-btn stk-tab-btn" onclick="stkTab('epr', this)">🫁 EPR / ARICA</button>
+                <button class="portal-tab-btn stk-tab-btn" onclick="stkTab('equipamentos', this)">🧰 Equipamentos</button>
             </div>
 
             <!-- AGENTES EXTINTORES -->
@@ -1841,21 +1833,21 @@ html { scroll-behavior: smooth; }
             </div>
 
             <!-- Sub-tabs -->
-            <div style="display:flex;gap:0.3rem;border-bottom:2px solid #e0e0e0;margin-bottom:1.2rem;flex-wrap:wrap;">
-                <button class="psci-cfg-tab-btn active" onclick="psciCfgTab('efectivo', this)" style="padding:0.7rem 1.2rem;border:none;background:#004C7B;color:white;cursor:pointer;font-weight:600;border-radius:6px 6px 0 0;">👥 Efectivo</button>
-                <button class="psci-cfg-tab-btn" onclick="psciCfgTab('viaturas', this)" style="padding:0.7rem 1.2rem;border:none;background:#e9ecef;color:#333;cursor:pointer;font-weight:600;border-radius:6px 6px 0 0;">🚒 Viaturas</button>
-                <button class="psci-cfg-tab-btn" onclick="psciCfgTab('equip', this)" style="padding:0.7rem 1.2rem;border:none;background:#e9ecef;color:#333;cursor:pointer;font-weight:600;border-radius:6px 6px 0 0;">🧰 Equipamento</button>
-                <button class="psci-cfg-tab-btn" onclick="psciCfgTab('contactos', this)" style="padding:0.7rem 1.2rem;border:none;background:#e9ecef;color:#333;cursor:pointer;font-weight:600;border-radius:6px 6px 0 0;">📞 Contactos</button>
-                <button class="psci-cfg-tab-btn" onclick="psciCfgTab('param', this)" style="padding:0.7rem 1.2rem;border:none;background:#e9ecef;color:#333;cursor:pointer;font-weight:600;border-radius:6px 6px 0 0;">⚙ Parâmetros</button>
+            <div class="portal-tab-bar">
+                <button class="portal-tab-btn psci-cfg-tab-btn active" onclick="psciCfgTab('efectivo', this)">👥 Efectivo</button>
+                <button class="portal-tab-btn psci-cfg-tab-btn" onclick="psciCfgTab('viaturas', this)">🚒 Viaturas</button>
+                <button class="portal-tab-btn psci-cfg-tab-btn" onclick="psciCfgTab('equip', this)">🧰 Equipamento</button>
+                <button class="portal-tab-btn psci-cfg-tab-btn" onclick="psciCfgTab('contactos', this)">📞 Contactos</button>
+                <button class="portal-tab-btn psci-cfg-tab-btn" onclick="psciCfgTab('param', this)">⚙ Parâmetros</button>
             </div>
 
             <!-- EFECTIVO -->
             <div id="psci-cfg-efectivo" class="psci-cfg-content" style="display:block;">
                 <div class="form-card">
                     <div style="display:flex;gap:0.3rem;margin-bottom:1rem;flex-wrap:wrap;">
-                        <button class="psci-turno-btn active" data-turno="ALPHA" onclick="psciCfgTurno('ALPHA', this)" style="padding:0.5rem 1rem;border:none;background:#004C7B;color:white;cursor:pointer;font-weight:600;border-radius:5px;">Turno ALPHA</button>
-                        <button class="psci-turno-btn" data-turno="BRAVO" onclick="psciCfgTurno('BRAVO', this)" style="padding:0.5rem 1rem;border:none;background:#e9ecef;color:#333;cursor:pointer;font-weight:600;border-radius:5px;">Turno BRAVO</button>
-                        <button class="psci-turno-btn" data-turno="CHARLIE" onclick="psciCfgTurno('CHARLIE', this)" style="padding:0.5rem 1rem;border:none;background:#e9ecef;color:#333;cursor:pointer;font-weight:600;border-radius:5px;">Turno CHARLIE</button>
+                        <button class="portal-tab-btn psci-turno-btn active" data-turno="ALPHA" onclick="psciCfgTurno('ALPHA', this)">Turno ALPHA</button>
+                        <button class="portal-tab-btn psci-turno-btn" data-turno="BRAVO" onclick="psciCfgTurno('BRAVO', this)">Turno BRAVO</button>
+                        <button class="portal-tab-btn psci-turno-btn" data-turno="CHARLIE" onclick="psciCfgTurno('CHARLIE', this)">Turno CHARLIE</button>
                     </div>
                     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.8rem;flex-wrap:wrap;gap:0.5rem;">
                         <h3 style="color:var(--dark-blue);margin:0;">Pessoal — Turno <span id="psci-turno-label">ALPHA</span></h3>
@@ -2361,7 +2353,8 @@ function psciBuildPrintableHTML(section) {
         var txt = active ? active.getAttribute('data-result') : '—';
         var span = document.createElement('span');
         span.textContent = txt;
-        span.style.cssText = 'display:inline-block;padding:2px 8px;border-radius:3px;font-weight:bold;color:#fff;background:' + (txt === 'OK' ? '#2e7d32' : (txt === 'NOK' ? '#c0392b' : '#888')) + ';';
+        var bg = (txt === 'OK' || txt === 'OP') ? '#2e7d32' : (txt === 'NOK' || txt === 'NO') ? '#c0392b' : (txt === 'NA' || txt === 'N/A') ? '#757575' : '#888';
+        span.style.cssText = 'display:inline-block;padding:2px 8px;border-radius:3px;font-weight:bold;color:#fff;background:' + bg + ';';
         g.parentNode.replaceChild(span, g);
     });
     return clone.innerHTML;
@@ -2497,30 +2490,33 @@ function openFormHistory(sectionFilter) {
     if (sectionFilter) hist = hist.filter(function(h){ return h.sectionId === sectionFilter; });
     var overlay = document.createElement('div');
     overlay.id = 'psciHistOverlay';
-    overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:99998;display:flex;align-items:center;justify-content:center;padding:20px;';
+    overlay.className = 'awm-modal-overlay';
+    overlay.setAttribute('role', 'dialog');
+    overlay.setAttribute('aria-modal', 'true');
+    overlay.setAttribute('aria-label', 'Histórico de Formulários');
     var modal = document.createElement('div');
-    modal.style.cssText = 'background:#fff;max-width:900px;width:100%;max-height:85vh;border-radius:8px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,0.4);';
-    var header = '<div style="background:#004C7B;color:#fff;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;">'
-        + '<h2 style="margin:0;font-size:1.1rem;">📂 Histórico de Formulários' + (sectionFilter ? ' — ' + sectionFilter : '') + '</h2>'
-        + '<button onclick="document.getElementById(\'psciHistOverlay\').remove()" style="background:none;border:none;color:#fff;font-size:1.4rem;cursor:pointer;line-height:1;">✕</button>'
+    modal.style.cssText = 'background:var(--neutral-surface,#fff);max-width:900px;width:92%;max-height:85vh;border-radius:14px;overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--elevation-modal,0 20px 60px rgba(0,0,0,0.4));animation:awmModalPop 0.28s cubic-bezier(0.22,1,0.36,1);';
+    var header = '<div class="awm-modal-header" style="padding:1rem 1.5rem;background:var(--brand-primary-fill,#004C7B);border-bottom:none;">'
+        + '<h3 class="awm-modal-title" style="color:#fff;margin:0;">Histórico de Formulários' + (sectionFilter ? ' — ' + sectionFilter : '') + '</h3>'
+        + '<button onclick="document.getElementById(\'psciHistOverlay\').remove()" style="background:none;border:none;color:#fff;font-size:1.4rem;cursor:pointer;line-height:1;margin-left:auto;">✕</button>'
         + '</div>';
-    var body = '<div style="padding:16px 20px;overflow-y:auto;flex:1;">';
+    var body = '<div class="awm-modal-body" style="overflow-y:auto;flex:1;">';
     if (!hist.length) {
-        body += '<p style="text-align:center;color:#888;padding:30px 0;">Nenhum formulário guardado ainda. Ao clicar em <b>Exportar PDF</b>, o formulário é automaticamente arquivado aqui.</p>';
+        body += '<p style="text-align:center;color:var(--neutral-fg-muted,#888);padding:30px 0;">Nenhum formulário guardado ainda. Ao clicar em <b>Exportar PDF</b>, o formulário é automaticamente arquivado aqui.</p>';
     } else {
-        body += '<p style="color:#555;margin:0 0 10px;font-size:0.85rem;">' + hist.length + ' registo(s) guardado(s).</p>';
-        body += '<table style="width:100%;border-collapse:collapse;font-size:0.85rem;">';
-        body += '<thead><tr><th style="background:#004C7B;color:#fff;padding:8px;text-align:left;">Data/Hora</th>'
-             + '<th style="background:#004C7B;color:#fff;padding:8px;text-align:left;">Formulário</th>'
-             + '<th style="background:#004C7B;color:#fff;padding:8px;text-align:center;">Acções</th></tr></thead><tbody>';
+        body += '<p style="color:var(--neutral-fg-muted,#555);margin:0 0 10px;font-size:0.85rem;">' + hist.length + ' registo(s) guardado(s).</p>';
+        body += '<table class="data-tbl" style="width:100%;border-collapse:collapse;font-size:0.85rem;">';
+        body += '<thead><tr style="background:var(--brand-primary-fill,#004C7B);color:#fff;"><th style="padding:8px;text-align:left;">Data/Hora</th>'
+             + '<th style="padding:8px;text-align:left;">Formulário</th>'
+             + '<th style="padding:8px;text-align:center;">Acções</th></tr></thead><tbody>';
         hist.forEach(function(h) {
-            body += '<tr style="border-bottom:1px solid #eee;">'
+            body += '<tr style="border-bottom:1px solid var(--neutral-muted,#eee);">'
                  + '<td style="padding:8px;">' + (h.stamp || h.timestamp) + '</td>'
                  + '<td style="padding:8px;">' + (h.title || h.sectionId) + '</td>'
                  + '<td style="padding:8px;text-align:center;white-space:nowrap;">'
-                 + '<button onclick="loadFormHistory(\'' + h.id + '\')" style="background:#0094CF;color:#fff;border:none;padding:5px 10px;border-radius:3px;cursor:pointer;margin-right:4px;font-size:0.8rem;">📂 Carregar</button>'
-                 + '<button onclick="printFormHistory(\'' + h.id + '\')" style="background:#2e7d32;color:#fff;border:none;padding:5px 10px;border-radius:3px;cursor:pointer;margin-right:4px;font-size:0.8rem;">🖨️ PDF</button>'
-                 + '<button onclick="deleteFormHistory(\'' + h.id + '\')" style="background:#c0392b;color:#fff;border:none;padding:5px 10px;border-radius:3px;cursor:pointer;font-size:0.8rem;">🗑</button>'
+                 + '<button class="btn btn-primary" onclick="loadFormHistory(\'' + h.id + '\')" style="padding:5px 10px;font-size:0.8rem;margin-right:4px;">Carregar</button>'
+                 + '<button class="btn btn-success" onclick="printFormHistory(\'' + h.id + '\')" style="padding:5px 10px;font-size:0.8rem;margin-right:4px;">PDF</button>'
+                 + '<button class="btn btn-danger" onclick="deleteFormHistory(\'' + h.id + '\')" style="padding:5px 10px;font-size:0.8rem;">Remover</button>'
                  + '</td></tr>';
         });
         body += '</tbody></table>';
@@ -2529,6 +2525,7 @@ function openFormHistory(sectionFilter) {
     modal.innerHTML = header + body;
     overlay.appendChild(modal);
     overlay.addEventListener('click', function(e){ if (e.target === overlay) overlay.remove(); });
+    document.addEventListener('keydown', function histEsc(e){ if (e.key === 'Escape') { overlay.remove(); document.removeEventListener('keydown', histEsc); } });
     document.body.appendChild(overlay);
 }
 
@@ -2579,12 +2576,8 @@ function deleteFormHistory(id) {
         var overlay = document.getElementById('psciHistOverlay');
         if (overlay) { overlay.remove(); openFormHistory(); }
     };
-    if (window.confirmModal) {
-        window.confirmModal({ title: 'Remover registo?', message: 'Esta acção não pode ser desfeita.', variant: 'danger', okText: 'Remover' })
-            .then(function(ok){ if (ok) doDel(); });
-    } else {
-        if (confirm('Remover este registo?')) doDel();
-    }
+    window.awmConfirm('Esta acção não pode ser desfeita.', { title: 'Remover registo?', variant: 'danger', okText: 'Remover' })
+        .then(function(ok){ if (ok) doDel(); });
 }
 
 // === CLEAR FORM ===
@@ -2601,12 +2594,8 @@ function clearForm(sectionId) {
         section.querySelectorAll('.rt-value').forEach(function(i){ i.value = ''; });
         if (window.notify) window.notify('Formulário limpo', 'info');
     };
-    if (window.confirmModal) {
-        window.confirmModal({ title: 'Limpar formulário?', message: 'Todos os campos deste formulário serão apagados. O histórico permanece intacto.', variant: 'warn', okText: 'Limpar' })
-            .then(function(ok){ if (ok) doClear(); });
-    } else {
-        if (confirm('Limpar todos os campos deste formulário?')) doClear();
-    }
+    window.awmConfirm('Todos os campos deste formulário serão apagados. O histórico permanece intacto.', { title: 'Limpar formulário?', variant: 'warn', okText: 'Limpar' })
+        .then(function(ok){ if (ok) doClear(); });
 }
 
 // =============================================================
@@ -2687,8 +2676,8 @@ function psciCfgTab(tab, btn) {
     document.querySelectorAll('.psci-cfg-content').forEach(function(el) { el.style.display = 'none'; });
     var t = document.getElementById('psci-cfg-' + tab);
     if (t) t.style.display = 'block';
-    document.querySelectorAll('.psci-cfg-tab-btn').forEach(function(b) { b.style.background = '#e9ecef'; b.style.color = '#333'; });
-    if (btn) { btn.style.background = '#004C7B'; btn.style.color = 'white'; }
+    document.querySelectorAll('.psci-cfg-tab-btn').forEach(function(b) { b.classList.remove('active'); });
+    if (btn) { btn.classList.add('active'); }
 }
 
 function psciCfgTurno(turno, btn) {
@@ -2696,8 +2685,8 @@ function psciCfgTurno(turno, btn) {
     PSCI_CFG.efectivo[PSCI_TURNO_ACTUAL] = psciCollectEfectivo();
     PSCI_TURNO_ACTUAL = turno;
     document.getElementById('psci-turno-label').textContent = turno;
-    document.querySelectorAll('.psci-turno-btn').forEach(function(b) { b.style.background = '#e9ecef'; b.style.color = '#333'; });
-    if (btn) { btn.style.background = '#004C7B'; btn.style.color = 'white'; }
+    document.querySelectorAll('.psci-turno-btn').forEach(function(b) { b.classList.remove('active'); });
+    if (btn) { btn.classList.add('active'); }
     psciRenderEfectivo();
 }
 
@@ -3091,8 +3080,8 @@ function stkTab(which, btn) {
     document.querySelectorAll('.stk-tab').forEach(function(el){ el.style.display = 'none'; });
     var tgt = document.getElementById('stk-tab-' + which);
     if (tgt) tgt.style.display = 'block';
-    document.querySelectorAll('.stk-tab-btn').forEach(function(b){ b.style.background = '#e9ecef'; b.style.color = '#333'; b.classList.remove('active'); });
-    if (btn) { btn.style.background = '#004C7B'; btn.style.color = 'white'; btn.classList.add('active'); }
+    document.querySelectorAll('.stk-tab-btn').forEach(function(b){ b.classList.remove('active'); });
+    if (btn) { btn.classList.add('active'); }
 }
 
 function stkRenderAgentes() {
