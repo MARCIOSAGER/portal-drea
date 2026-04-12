@@ -1975,17 +1975,18 @@ html { scroll-behavior: smooth; }
 
 <script>
 // === NAVIGATION ===
-function openSection(id) {
+function openSection(id, event) {
     document.querySelectorAll('.section').forEach(function(s) { s.classList.remove('active'); });
-    document.querySelectorAll('.nav-item').forEach(function(n) { n.classList.remove('active'); });
+    document.querySelectorAll('.nav-btn').forEach(function(n) { n.classList.remove('active'); });
     var sec = document.getElementById(id);
     if (sec) sec.classList.add('active');
     // Find and activate nav item
-    document.querySelectorAll('.nav-item').forEach(function(n) {
+    document.querySelectorAll('.nav-btn').forEach(function(n) {
         if (n.getAttribute('onclick') && n.getAttribute('onclick').indexOf("'" + id + "'") > -1) {
             n.classList.add('active');
         }
     });
+    if (event) event.preventDefault();
 }
 
 // === CLOCK (Plan 5 Task 14 — 1s tick, writes to new DS shell bar IDs) ===
