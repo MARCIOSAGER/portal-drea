@@ -1557,44 +1557,52 @@ html { scroll-behavior: smooth; }
             </div>
 
             <!-- Resumo -->
-            <div class="dash-grid" style="margin-bottom:1rem;">
-                <div class="dash-card" style="border-top:4px solid #c0392b;">
-                    <div class="dash-icon">💧</div>
-                    <div class="dash-title">Água (L)</div>
-                    <div class="dash-value" id="stk-sum-agua">—</div>
-                    <div style="font-size:0.7rem;color:#888;" id="stk-sum-agua-pct">— %</div>
+            <section class="dash-section" style="margin-bottom:1rem;">
+                <div class="dash-section__label">Resumo do Estoque</div>
+                <div class="dash-section__grid">
+                    <div class="stat-card-gauge" data-state="unknown" id="stk-card-agua">
+                        <div class="stat-card-gauge__label">Água (L)</div>
+                        <div class="stat-card-gauge__value" id="stk-sum-agua">—</div>
+                        <div class="stat-card-gauge__bar"><div class="stat-card-gauge__fill" style="--fill: 0%"></div></div>
+                        <div class="stat-card-gauge__sub" id="stk-sum-agua-pct">— %</div>
+                    </div>
+                    <div class="stat-card-gauge" data-state="unknown" id="stk-card-lge">
+                        <div class="stat-card-gauge__label">LGE (L)</div>
+                        <div class="stat-card-gauge__value" id="stk-sum-lge">—</div>
+                        <div class="stat-card-gauge__bar"><div class="stat-card-gauge__fill" style="--fill: 0%"></div></div>
+                        <div class="stat-card-gauge__sub" id="stk-sum-lge-pct">— %</div>
+                    </div>
+                    <div class="stat-card-gauge" data-state="unknown" id="stk-card-po">
+                        <div class="stat-card-gauge__label">Pó Químico (kg)</div>
+                        <div class="stat-card-gauge__value" id="stk-sum-po">—</div>
+                        <div class="stat-card-gauge__bar"><div class="stat-card-gauge__fill" style="--fill: 0%"></div></div>
+                        <div class="stat-card-gauge__sub" id="stk-sum-po-pct">— %</div>
+                    </div>
                 </div>
-                <div class="dash-card" style="border-top:4px solid #f39c12;">
-                    <div class="dash-icon">🧴</div>
-                    <div class="dash-title">LGE (L)</div>
-                    <div class="dash-value" id="stk-sum-lge">—</div>
-                    <div style="font-size:0.7rem;color:#888;" id="stk-sum-lge-pct">— %</div>
+            </section>
+            <section class="dash-section" style="margin-bottom:1rem;">
+                <div class="dash-section__label">Equipamento Operacional</div>
+                <div class="dash-section__grid">
+                    <div class="stat-card-gauge" data-state="unknown" id="stk-card-epi">
+                        <div class="stat-card-gauge__label">Conjuntos EPI</div>
+                        <div class="stat-card-gauge__value" id="stk-sum-epi">—</div>
+                        <div class="stat-card-gauge__bar"><div class="stat-card-gauge__fill" style="--fill: 0%"></div></div>
+                        <div class="stat-card-gauge__sub">Operacionais</div>
+                    </div>
+                    <div class="stat-card-gauge" data-state="unknown" id="stk-card-epr">
+                        <div class="stat-card-gauge__label">ARICA / EPR</div>
+                        <div class="stat-card-gauge__value" id="stk-sum-epr">—</div>
+                        <div class="stat-card-gauge__bar"><div class="stat-card-gauge__fill" style="--fill: 0%"></div></div>
+                        <div class="stat-card-gauge__sub">Operacionais</div>
+                    </div>
+                    <div class="stat-card-gauge" data-state="normal" id="stk-card-alerts">
+                        <div class="stat-card-gauge__label">Alertas</div>
+                        <div class="stat-card-gauge__value" id="stk-sum-alerts">—</div>
+                        <div class="stat-card-gauge__bar"><div class="stat-card-gauge__fill" style="--fill: 0%"></div></div>
+                        <div class="stat-card-gauge__sub">Itens abaixo do mínimo</div>
+                    </div>
                 </div>
-                <div class="dash-card" style="border-top:4px solid #1e8449;">
-                    <div class="dash-icon">🧯</div>
-                    <div class="dash-title">Pó Químico (kg)</div>
-                    <div class="dash-value" id="stk-sum-po">—</div>
-                    <div style="font-size:0.7rem;color:#888;" id="stk-sum-po-pct">— %</div>
-                </div>
-                <div class="dash-card" style="border-top:4px solid var(--medium-blue);">
-                    <div class="dash-icon">👷</div>
-                    <div class="dash-title">Conjuntos EPI</div>
-                    <div class="dash-value" id="stk-sum-epi">—</div>
-                    <div style="font-size:0.7rem;color:#888;">Operacionais</div>
-                </div>
-                <div class="dash-card" style="border-top:4px solid #8e44ad;">
-                    <div class="dash-icon">🫁</div>
-                    <div class="dash-title">ARICA / EPR</div>
-                    <div class="dash-value" id="stk-sum-epr">—</div>
-                    <div style="font-size:0.7rem;color:#888;">Operacionais</div>
-                </div>
-                <div class="dash-card" style="border-top:4px solid #16a085;">
-                    <div class="dash-icon">⚠</div>
-                    <div class="dash-title">Alertas</div>
-                    <div class="dash-value" id="stk-sum-alerts" style="color:#c0392b;">—</div>
-                    <div style="font-size:0.7rem;color:#888;">Itens abaixo do mínimo</div>
-                </div>
-            </div>
+            </section>
 
             <!-- Sub-tabs -->
             <div style="display:flex;gap:0.3rem;border-bottom:2px solid #e0e0e0;margin-bottom:1.2rem;flex-wrap:wrap;">
@@ -3252,17 +3260,33 @@ function stkRefreshSummary() {
         capPo   += parseFloat(r.poCap) || 0;
     });
     var setText = function(id, v) { var el = document.getElementById(id); if (el) el.textContent = v; };
+    var setFill = function(cardId, pct) {
+        var card = document.getElementById(cardId);
+        if (!card) return;
+        var fill = card.querySelector('.stat-card-gauge__fill');
+        if (fill) fill.style.setProperty('--fill', Math.min(pct, 100) + '%');
+        var state = pct >= 90 ? 'ok' : (pct >= 50 ? 'warning' : 'critical');
+        applyStatState(card, state);
+    };
     setText('stk-sum-agua', totAgua.toLocaleString('pt-PT'));
     setText('stk-sum-lge',  totLge.toLocaleString('pt-PT'));
     setText('stk-sum-po',   totPo.toLocaleString('pt-PT'));
-    setText('stk-sum-agua-pct', capAgua > 0 ? Math.round(totAgua/capAgua*100) + ' %' : '— %');
-    setText('stk-sum-lge-pct',  capLge > 0 ? Math.round(totLge/capLge*100) + ' %' : '— %');
-    setText('stk-sum-po-pct',   capPo > 0 ? Math.round(totPo/capPo*100) + ' %' : '— %');
+    var pctAgua = capAgua > 0 ? Math.round(totAgua/capAgua*100) : 0;
+    var pctLge  = capLge > 0 ? Math.round(totLge/capLge*100) : 0;
+    var pctPo   = capPo > 0 ? Math.round(totPo/capPo*100) : 0;
+    setText('stk-sum-agua-pct', pctAgua > 0 ? pctAgua + ' %' : '— %');
+    setText('stk-sum-lge-pct',  pctLge > 0 ? pctLge + ' %' : '— %');
+    setText('stk-sum-po-pct',   pctPo > 0 ? pctPo + ' %' : '— %');
+    setFill('stk-card-agua', pctAgua);
+    setFill('stk-card-lge', pctLge);
+    setFill('stk-card-po', pctPo);
 
     // EPI operacionais (conjuntos = min entre items marcados operacionais)
     var epiOp = (STK_DATA.epi || []).filter(function(e){return (e.estado||'').toLowerCase().indexOf('oper')===0;}).reduce(function(acc,e){return Math.min(acc, parseInt(e.qtd)||0);}, 999);
     if (epiOp === 999) epiOp = 0;
+    var epiTotal = (STK_DATA.epi || []).length;
     setText('stk-sum-epi', epiOp);
+    setFill('stk-card-epi', epiTotal > 0 ? Math.round(epiOp / epiTotal * 100) : 0);
 
     // EPR operacionais (ARICA completos operacionais com pressão >= 270)
     var eprOp = (STK_DATA.epr || []).filter(function(e){
@@ -3271,7 +3295,9 @@ function stkRefreshSummary() {
         var p = parseInt(e.pressao) || 0;
         return op && tipo && (p === 0 || p >= 270);
     }).length;
+    var eprTotal = (STK_DATA.epr || []).length;
     setText('stk-sum-epr', eprOp);
+    setFill('stk-card-epr', eprTotal > 0 ? Math.round(eprOp / eprTotal * 100) : 0);
 
     // Alertas = itens abaixo do mínimo + ARICAs com pressão baixa + agentes < 90%
     var alerts = 0;
@@ -3283,6 +3309,8 @@ function stkRefreshSummary() {
         if ((r.lgeCap||0)  > 0 && (r.lge||0)  < (r.lgeCap*0.9))  alerts++;
     });
     setText('stk-sum-alerts', alerts);
+    var alertCard = document.getElementById('stk-card-alerts');
+    if (alertCard) applyStatState(alertCard, alerts === 0 ? 'ok' : (alerts <= 2 ? 'warning' : 'critical'));
 
     // CAT Analysis
     var catNominalStr = (typeof PSCI_CFG !== 'undefined' && PSCI_CFG.parametros && PSCI_CFG.parametros.catsci) ? String(PSCI_CFG.parametros.catsci).replace(/[^0-9]/g,'') : '';
