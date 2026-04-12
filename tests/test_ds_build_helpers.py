@@ -331,3 +331,26 @@ class TestEncodeFontWoff2Base64:
         missing = tmp_path / "nonexistent.woff2"
         with pytest.raises(FileNotFoundError):
             dsh.encode_font_woff2_base64(missing)
+
+    def test_encodes_jetbrains_mono_regular(self, tmp_path: Path):
+        """JetBrains Mono Regular woff2 is valid base64-encodable."""
+        fake = tmp_path / "JetBrainsMono-Regular.woff2"
+        fake.write_bytes(b"wOF2" + b"\x00" * 100)
+        result = dsh.encode_font_woff2_base64(fake)
+        assert result.startswith("d09G")
+        assert len(result) > 0
+
+    def test_encodes_jetbrains_mono_bold(self, tmp_path: Path):
+        """JetBrains Mono Bold woff2 handled identically to Regular."""
+        fake = tmp_path / "JetBrainsMono-Bold.woff2"
+        fake.write_bytes(b"wOF2" + b"\xff" * 200)
+        result = dsh.encode_font_woff2_base64(fake)
+        assert len(result) > 100
+
+    def test_multiple_fonts_independent(self, tmp_path: Path):
+        """Encoding different fonts yields different base64 outputs."""
+        a = tmp_path / "a.woff2"
+        b = tmp_path / "b.woff2"
+        a.write_bytes(b"\x00\x01\x02\x03")
+        b.write_bytes(b"\x04\x05\x06\x07")
+        assert dsh.encode_font_woff2_base64(a) != dsh.encode_font_woff2_base64(b)
