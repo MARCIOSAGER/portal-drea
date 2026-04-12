@@ -1,0 +1,45 @@
+/* =========================================================================
+ * Design System SGA — Component: State Pulse (Plan 7)
+ * ========================================================================= */
+.state-pulse {
+  position: absolute;
+  top: var(--space-3);
+  right: var(--space-3);
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 1;
+}
+.state-pulse[data-level="critical"] {
+  background: var(--status-critical-pulse);
+  animation: pulse-critical 1.5s infinite;
+}
+.state-pulse[data-level="warning"] {
+  background: var(--status-warning-pulse);
+  animation: pulse-warning 2s infinite;
+}
+.state-pulse[data-level="normal"] {
+  background: var(--status-normal-pulse);
+  animation: pulse-normal 2.5s infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .state-pulse {
+    animation: none !important;
+    width: auto;
+    height: auto;
+    border-radius: var(--radius-sm);
+    padding: 1px 5px;
+    top: var(--space-2);
+    right: var(--space-2);
+    font-size: 8px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--white);
+  }
+  .state-pulse::after { content: attr(data-fallback-label); }
+  .state-pulse[data-level="critical"] { background: var(--status-critical-border); }
+  .state-pulse[data-level="warning"] { background: var(--status-warning-pulse); color: var(--status-warning-on-emphasis); }
+  .state-pulse[data-level="normal"] { background: var(--status-normal-border); }
+}
