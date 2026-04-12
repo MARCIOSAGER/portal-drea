@@ -12015,97 +12015,131 @@ if (document.readyState !== 'loading') {
     }
 
     function buildEmgBlock() {
-        var wrap = document.createElement('div');
+        var wrap = document.createElement('section');
         wrap.id = 'emgFormBlock';
+        wrap.className = 'form-two-col';
+        wrap.style.marginTop = '1.25rem';
         var h = '';
-        h += '<div class="efb-title">✈ Dados Operacionais da Emergência Aeronáutica</div>';
-        h += '<div class="efb-note">Estes dados tipicamente chegam via TWR. Preencher à medida que a informação é transmitida. <strong>ETA</strong> é crítico para calcular a janela de posicionamento do SSCI (ICAO ≤2 min após toque).</div>';
+
+        // ======== LEFT: form-two-col__main ========
+        h += '<div class="form-two-col__main">';
+        h += '<h3 class="efb-title" style="margin-top:0; font-size: 0.95rem; font-weight: 700; color: var(--status-critical-fg);">Dados Operacionais de Emerg\u00eancia Aeron\u00e1utica</h3>';
+        h += '<div class="form-banner"><strong>ETA \u00e9 cr\u00edtico</strong> \u2014 indicar hora de posicionamento dos SSCI (\u22642 min)</div>';
 
         // ---- Identificação da Ocorrência e Aeronave ----
-        h += '<div class="efb-sub">Identificação da Ocorrência e Aeronave</div>';
-        h += '<div class="efb-grid efb-grid-4">';
-        h += '  <div><label>Nº Ocorrência</label><input type="text" id="efb-occnum" readonly style="background:#f0f0f0;font-family:monospace;font-weight:bold;"></div>';
-        h += '  <div><label>Hora da Notificação</label><input type="time" id="efb-occtime"></div>';
-        h += '  <div><label>Nº Voo / Matrícula</label><input type="text" id="efb-flightnum" placeholder="Ex: DT461 / D2-TBK"></div>';
-        h += '  <div><label>Tipo de Aeronave</label><input type="text" id="efb-actype" placeholder="Ex: B737-800"></div>';
+        h += '<div class="efb-sub">Identifica\u00e7\u00e3o da Ocorr\u00eancia e Aeronave</div>';
+        h += '<div class="form-row">';
+        h += '  <div class="form-group form-group--numeric"><label>N\u00ba Ocorr\u00eancia</label><input type="text" id="efb-occnum" readonly style="background:#f0f0f0;font-weight:bold;"></div>';
+        h += '  <div class="form-group form-group--numeric"><label>Hora da Notifica\u00e7\u00e3o</label><input type="time" id="efb-occtime"></div>';
         h += '</div>';
-        h += '<div class="efb-grid efb-grid-4" style="margin-top:0.6rem;">';
-        h += '  <div><label>Companhia Aérea</label><input type="text" id="efb-airline" placeholder="Ex: TAAG"></div>';
-        h += '  <div><label>Combustível (min voo)</label><input type="number" id="efb-fuel-min" min="0" placeholder="Ex: 45"></div>';
-        h += '  <div><label>Combustível (litros)</label><input type="number" id="efb-fuel-litros" min="0" placeholder="Ex: 8000"></div>';
-        h += '  <div><label>Carga Perigosa (DG)</label><select id="efb-cargadg"><option value="não">Não</option><option value="sim">Sim (especificar)</option></select></div>';
+        h += '<div class="form-row">';
+        h += '  <div class="form-group"><label>N\u00ba Voo / Matr\u00edcula</label><input type="text" id="efb-flightnum" placeholder="Ex: DT461 / D2-TBK"></div>';
+        h += '  <div class="form-group"><label>Tipo de Aeronave</label><input type="text" id="efb-actype" placeholder="Ex: B737-800"></div>';
         h += '</div>';
-        h += '<div id="efb-dg-wrapper" style="margin-top:0.6rem; display:none;"><label>Tipo de Carga Perigosa</label><input type="text" id="efb-dg-type" placeholder="Ex: ONU 1263 — Tintas classe 3"></div>';
+        h += '<div class="form-row">';
+        h += '  <div class="form-group"><label>Companhia A\u00e9rea</label><input type="text" id="efb-airline" placeholder="Ex: TAAG"></div>';
+        h += '  <div class="form-group form-group--numeric"><label>Combust\u00edvel (min voo)</label><input type="number" id="efb-fuel-min" min="0" placeholder="Ex: 45"></div>';
+        h += '</div>';
+        h += '<div class="form-row">';
+        h += '  <div class="form-group form-group--numeric"><label>Combust\u00edvel (litros)</label><input type="number" id="efb-fuel-litros" min="0" placeholder="Ex: 8000"></div>';
+        h += '  <div class="form-group"><label>Carga Perigosa (DG)</label><select id="efb-cargadg"><option value="n\u00e3o">N\u00e3o</option><option value="sim">Sim (especificar)</option></select></div>';
+        h += '</div>';
+        h += '<div id="efb-dg-wrapper" class="form-group" style="margin-top:0.6rem; display:none;"><label>Tipo de Carga Perigosa</label><input type="text" id="efb-dg-type" placeholder="Ex: ONU 1263 \u2014 Tintas classe 3"></div>';
 
         // ---- Declaração do piloto ----
-        h += '<div class="efb-sub">Declaração do Piloto</div>';
+        h += '<div class="efb-sub">Declara\u00e7\u00e3o do Piloto</div>';
         h += '<div class="efb-declaracao">';
-        h += '  <button type="button" class="efb-decl-btn" data-decl="MAYDAY" data-cls="active-mayday">🔴 MAYDAY<br><span style="font-size:0.68rem;font-weight:400;">Perigo iminente</span></button>';
-        h += '  <button type="button" class="efb-decl-btn" data-decl="PAN-PAN" data-cls="active-pan">🟠 PAN-PAN<br><span style="font-size:0.68rem;font-weight:400;">Urgência</span></button>';
-        h += '  <button type="button" class="efb-decl-btn" data-decl="Squawk 7700" data-cls="active-squawk">🟣 SQUAWK 7700<br><span style="font-size:0.68rem;font-weight:400;">Emergência (código)</span></button>';
-        h += '  <button type="button" class="efb-decl-btn" data-decl="Nenhuma" data-cls="active-none">⚪ Nenhuma<br><span style="font-size:0.68rem;font-weight:400;">Sem declaração</span></button>';
+        h += '  <button type="button" class="efb-decl-btn" data-decl="MAYDAY" data-cls="active-mayday">\uD83D\uDD34 MAYDAY<br><span style="font-size:0.68rem;font-weight:400;">Perigo iminente</span></button>';
+        h += '  <button type="button" class="efb-decl-btn" data-decl="PAN-PAN" data-cls="active-pan">\uD83D\uDFE0 PAN-PAN<br><span style="font-size:0.68rem;font-weight:400;">Urg\u00eancia</span></button>';
+        h += '  <button type="button" class="efb-decl-btn" data-decl="Squawk 7700" data-cls="active-squawk">\uD83D\uDFE3 SQUAWK 7700<br><span style="font-size:0.68rem;font-weight:400;">Emerg\u00eancia (c\u00f3digo)</span></button>';
+        h += '  <button type="button" class="efb-decl-btn" data-decl="Nenhuma" data-cls="active-none">\u26AA Nenhuma<br><span style="font-size:0.68rem;font-weight:400;">Sem declara\u00e7\u00e3o</span></button>';
         h += '</div>';
         h += '<input type="hidden" id="efb-declaracao" value="">';
 
         // ---- ETA e tempos ----
         h += '<div class="efb-sub">Tempos Operacionais</div>';
-        h += '<div class="efb-eta-row">';
-        h += '  <div><label>ETA (hora)</label><input type="time" id="efb-eta-hora"><div class="efb-eta-hint">Hora prevista aterragem</div></div>';
-        h += '  <div><label>ETA (minutos até)</label><input type="number" id="efb-eta-min" min="0" placeholder="Ex: 8"><div class="efb-eta-hint">Minutos até aterragem</div></div>';
-        h += '  <div><label>Hora alerta TWR</label><input type="time" id="efb-hora-twr"><div class="efb-eta-hint">TWR comunicou COE</div></div>';
-        h += '  <div><label>Nível declarado</label><select id="efb-nivel"><option value="">—</option><option>ALERTA LOCAL (LOCAL STANDBY)</option><option>ALERTA COMPLETO (FULL EMERGENCY)</option><option>ACIDENTE (AIRCRAFT ACCIDENT)</option></select><div class="efb-eta-hint" style="visibility:hidden;">_</div></div>';
+        h += '<div class="form-row">';
+        h += '  <div class="form-group form-group--numeric"><label>ETA (hora)</label><input type="time" id="efb-eta-hora"><div class="efb-eta-hint">Hora prevista aterragem</div></div>';
+        h += '  <div class="form-group form-group--numeric"><label>ETA (minutos at\u00e9)</label><input type="number" id="efb-eta-min" min="0" placeholder="Ex: 8"><div class="efb-eta-hint">Minutos at\u00e9 aterragem</div></div>';
+        h += '</div>';
+        h += '<div class="form-row">';
+        h += '  <div class="form-group form-group--numeric"><label>Hora alerta TWR</label><input type="time" id="efb-hora-twr"><div class="efb-eta-hint">TWR comunicou COE</div></div>';
+        h += '  <div class="form-group"><label>N\u00edvel declarado</label><select id="efb-nivel"><option value="">\u2014</option><option>ALERTA LOCAL (LOCAL STANDBY)</option><option>ALERTA COMPLETO (FULL EMERGENCY)</option><option>ACIDENTE (AIRCRAFT ACCIDENT)</option></select></div>';
         h += '</div>';
 
         // ---- Fase do voo e posição ----
-        h += '<div class="efb-sub">Fase do Voo e Posição</div>';
-        h += '<div class="efb-grid efb-grid-4">';
-        h += '  <div><label>Fase do voo</label><select id="efb-fase">' +
-            '<option value="">—</option>' +
+        h += '<div class="efb-sub">Fase do Voo e Posi\u00e7\u00e3o</div>';
+        h += '<div class="form-row">';
+        h += '  <div class="form-group"><label>Fase do voo</label><select id="efb-fase">' +
+            '<option value="">\u2014</option>' +
             FASES_VOO.map(function(f){return '<option>'+f+'</option>';}).join('') +
             '</select></div>';
-        h += '  <div><label>RWY prevista</label><select id="efb-rwy"><option value="">—</option><option>07</option><option>25</option><option>Outra</option></select></div>';
-        h += '  <div><label>Altitude (ft)</label><input type="number" id="efb-altitude" placeholder="Ex: 5000"></div>';
-        h += '  <div><label>Distância ao aeroporto</label><input type="text" id="efb-distancia" placeholder="Ex: 12 NM"></div>';
+        h += '  <div class="form-group"><label>RWY prevista</label><select id="efb-rwy"><option value="">\u2014</option><option>07</option><option>25</option><option>Outra</option></select></div>';
         h += '</div>';
-        h += '<div class="efb-grid efb-grid-2" style="margin-top:0.6rem;">';
-        h += '  <div><label>Origem</label><input type="text" id="efb-origem" placeholder="Ex: LAD Luanda"></div>';
-        h += '  <div><label>Destino planeado</label><input type="text" id="efb-destino" placeholder="Ex: MSZ Namibe"></div>';
+        h += '<div class="form-row">';
+        h += '  <div class="form-group form-group--numeric"><label>Altitude (ft)</label><input type="number" id="efb-altitude" placeholder="Ex: 5000"></div>';
+        h += '  <div class="form-group"><label>Dist\u00e2ncia ao aeroporto</label><input type="text" id="efb-distancia" placeholder="Ex: 12 NM"></div>';
+        h += '</div>';
+        h += '<div class="form-row">';
+        h += '  <div class="form-group"><label>Origem</label><input type="text" id="efb-origem" placeholder="Ex: LAD Luanda"></div>';
+        h += '  <div class="form-group"><label>Destino planeado</label><input type="text" id="efb-destino" placeholder="Ex: MSZ Namibe"></div>';
         h += '</div>';
 
         // ---- Tipo específico de emergência ----
-        h += '<div class="efb-sub">Natureza Específica da Emergência</div>';
-        h += '<div><label>Tipo (marcar todos os aplicáveis)</label>';
+        h += '<div class="efb-sub">Natureza Espec\u00edfica da Emerg\u00eancia</div>';
+        h += '<div class="form-group" style="grid-column: 1 / -1;"><label>Tipo (marcar todos os aplic\u00e1veis)</label>';
         h += '  <div class="efb-chips" id="efb-tipos-chips">';
         TIPOS_EMG_ESPECIFICOS.forEach(function(t) {
             h += '<span class="efb-chip" role="button" tabindex="0" aria-pressed="false"><input type="checkbox" value="' + t + '" tabindex="-1"> ' + t + '</span>';
         });
         h += '  </div>';
         h += '</div>';
-        h += '<div class="efb-grid efb-grid-2" style="margin-top:0.6rem;">';
-        h += '  <div><label>Descrição declarada pelo piloto</label><input type="text" id="efb-piloto-desc" placeholder="Ex: falha motor 2, fumo na cabine..."></div>';
-        h += '  <div><label>Intenções do piloto</label><input type="text" id="efb-piloto-int" placeholder="Ex: aterragem imediata RWY 25, desvio para LAD..."></div>';
+        h += '<div class="form-row">';
+        h += '  <div class="form-group"><label>Descri\u00e7\u00e3o declarada pelo piloto</label><input type="text" id="efb-piloto-desc" placeholder="Ex: falha motor 2, fumo na cabine..."></div>';
+        h += '  <div class="form-group"><label>Inten\u00e7\u00f5es do piloto</label><input type="text" id="efb-piloto-int" placeholder="Ex: aterragem imediata RWY 25, desvio para LAD..."></div>';
         h += '</div>';
 
         // ---- POB detalhado ----
         h += '<div class="efb-sub">Pessoas a Bordo (Detalhe)</div>';
-        h += '<div class="efb-grid efb-grid-4">';
-        h += '  <div><label>Passageiros</label><input type="number" id="efb-pax" min="0" placeholder="0"></div>';
-        h += '  <div><label>Tripulação</label><input type="number" id="efb-crew" min="0" placeholder="0"></div>';
-        h += '  <div><label>Crianças / Bebés</label><input type="text" id="efb-inf" placeholder="Ex: 4 / 2"></div>';
-        h += '  <div><label>PRM (mobilidade reduzida)</label><input type="number" id="efb-prm" min="0" placeholder="0"></div>';
+        h += '<div class="form-row">';
+        h += '  <div class="form-group form-group--numeric"><label>Passageiros</label><input type="number" id="efb-pax" min="0" placeholder="0"></div>';
+        h += '  <div class="form-group form-group--numeric"><label>Tripula\u00e7\u00e3o</label><input type="number" id="efb-crew" min="0" placeholder="0"></div>';
+        h += '</div>';
+        h += '<div class="form-row">';
+        h += '  <div class="form-group"><label>Crian\u00e7as / Beb\u00e9s</label><input type="text" id="efb-inf" placeholder="Ex: 4 / 2"></div>';
+        h += '  <div class="form-group form-group--numeric"><label>PRM (mobilidade reduzida)</label><input type="number" id="efb-prm" min="0" placeholder="0"></div>';
         h += '</div>';
 
         // ---- Meteorologia específica ----
-        h += '<div class="efb-sub">Condições Relevantes</div>';
-        h += '<div class="efb-grid efb-grid-3">';
-        h += '  <div><label>Condições meteorológicas</label><select id="efb-meteo"><option value="">—</option><option>VMC — visibilidade boa</option><option>Marginal</option><option>IMC — instrumentos</option><option>Tempestade próxima</option><option>Vento forte</option><option>Pista molhada</option></select></div>';
-        h += '  <div><label>Luz do dia</label><select id="efb-luz"><option value="">—</option><option>Diurno</option><option>Crepúsculo</option><option>Nocturno</option></select></div>';
-        h += '  <div><label>Visibilidade (m)</label><input type="number" id="efb-vis" placeholder="Ex: 8000"></div>';
+        h += '<div class="efb-sub">Condi\u00e7\u00f5es Relevantes</div>';
+        h += '<div class="form-row">';
+        h += '  <div class="form-group"><label>Condi\u00e7\u00f5es meteorol\u00f3gicas</label><select id="efb-meteo"><option value="">\u2014</option><option>VMC \u2014 visibilidade boa</option><option>Marginal</option><option>IMC \u2014 instrumentos</option><option>Tempestade pr\u00f3xima</option><option>Vento forte</option><option>Pista molhada</option></select></div>';
+        h += '  <div class="form-group"><label>Luz do dia</label><select id="efb-luz"><option value="">\u2014</option><option>Diurno</option><option>Crep\u00fasculo</option><option>Nocturno</option></select></div>';
+        h += '</div>';
+        h += '<div class="form-row">';
+        h += '  <div class="form-group form-group--numeric"><label>Visibilidade (m)</label><input type="number" id="efb-vis" placeholder="Ex: 8000"></div>';
+        h += '  <div class="form-group"></div>';
         h += '</div>';
 
         // ---- Notas operacionais ----
         h += '<div class="efb-sub">Notas do Coordenador COE</div>';
-        h += '<div><textarea id="efb-notas" rows="3" placeholder="Acções determinadas, decisões tomadas, comunicações com TWR/piloto/SSCI..."></textarea></div>';
+        h += '<div class="form-group" style="grid-column: 1 / -1;"><textarea id="efb-notas" rows="3" placeholder="Ac\u00e7\u00f5es determinadas, decis\u00f5es tomadas, comunica\u00e7\u00f5es com TWR/piloto/SSCI..."></textarea></div>';
+
+        h += '</div>'; // end .form-two-col__main
+
+        // ======== RIGHT: form-two-col__sidebar ========
+        h += '<aside class="form-two-col__sidebar">';
+        h += '<div class="sticky-timer-card">';
+        h += '  <div class="sticky-timer-card__label">Cron\u00f3metro desde notif.</div>';
+        h += '  <div class="sticky-timer-card__clock" id="occ-chronometer">\u2014</div>';
+        h += '  <div class="sticky-timer-card__active" id="occ-active" style="display:none">ACTIVA</div>';
+        h += '  <div class="sticky-timer-card__row"><span class="sticky-timer-card__row-label">Occ</span><span class="sticky-timer-card__row-value" id="occ-id-ref">\u2014</span></div>';
+        h += '  <div class="sticky-timer-card__row"><span class="sticky-timer-card__row-label">Notif.</span><span class="sticky-timer-card__row-value" id="occ-notif-ref">\u2014</span></div>';
+        h += '  <div class="sticky-timer-card__row"><span class="sticky-timer-card__row-label">Voo</span><span class="sticky-timer-card__row-value" id="occ-voo-ref">\u2014</span></div>';
+        h += '  <div class="sticky-timer-card__row"><span class="sticky-timer-card__row-label">Aeronave</span><span class="sticky-timer-card__row-value" id="occ-aircraft-ref">\u2014</span></div>';
+        h += '  <div class="sticky-timer-card__saveindicator" id="occ-autosave">sem altera\u00e7\u00f5es</div>';
+        h += '</div>';
+        h += '</aside>';
 
         wrap.innerHTML = h;
         return wrap;
