@@ -77,6 +77,17 @@
         }
         .portal-tab-btn:hover { background: #dee2e6; }
         .portal-tab-btn.active { background: var(--brand-primary-fill, #004C7B); color: #fff; }
+        /* Photo grid for inspections */
+        .photo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 0.5rem; }
+        .photo-grid__item { position: relative; border-radius: 6px; overflow: hidden; border: 1px solid #ddd; }
+        .photo-grid__item img { width: 100%; height: 100px; object-fit: cover; display: block; cursor: pointer; }
+        .photo-grid__item .photo-caption { font-size: 0.7rem; padding: 3px 6px; color: #666; }
+        .photo-grid__item .photo-del {
+            position: absolute; top: 4px; right: 4px; background: rgba(0,0,0,0.6); color: #fff;
+            border: none; border-radius: 50%; width: 22px; height: 22px; cursor: pointer;
+            font-size: 0.7rem; display: flex; align-items: center; justify-content: center;
+        }
+        @media print { .photo-grid__item .photo-del { display: none; } }
         /* Section headings */
         .section-heading { color: var(--brand-primary-fill, #004C7B); margin: 0; }
         h2.section-heading { margin-bottom: 0.3rem; }
@@ -745,6 +756,18 @@
                 <div class="form-row full"><div class="form-group"><label>Observações Gerais</label><textarea class="frm-w01" data-field="obs" rows="3" placeholder="Anomalias, necessidades de manutenção..."></textarea></div></div>
             </div>
             
+            <div class="form-card">
+                <h3>📷 Registo Fotográfico</h3>
+                <p style="font-size:0.85rem;color:#666;margin-bottom:0.8rem;">Fotografe anomalias, danos ou estado geral do veículo. As fotos são incluídas no PDF.</p>
+                <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:0.8rem;">
+                    <button class="btn btn-primary" onclick="capturePhoto('insp-w01')" type="button">📸 Tirar Foto</button>
+                    <button class="btn btn-gray" onclick="selectPhoto('insp-w01')" type="button">📁 Galeria</button>
+                </div>
+                <input type="file" id="photo-input-insp-w01" accept="image/*" capture="environment" style="display:none;" onchange="handlePhoto('insp-w01', event)">
+                <input type="file" id="photo-gallery-insp-w01" accept="image/*" style="display:none;" onchange="handlePhoto('insp-w01', event)">
+                <div id="photo-grid-insp-w01" class="photo-grid"></div>
+            </div>
+
             <div class="btn-row">
                 <button class="btn btn-success" onclick="exportForm('insp-w01')">📄 Exportar PDF</button>
                 <button class="btn btn-gray" onclick="clearForm('insp-w01')">🗑 Limpar</button>
@@ -986,6 +1009,18 @@
                 <div class="form-row full"><div class="form-group"><label>Observações Gerais</label><textarea class="frm-w02" data-field="obs" rows="3" placeholder="Anomalias, necessidades de manutenção..."></textarea></div></div>
             </div>
             
+            <div class="form-card">
+                <h3>📷 Registo Fotográfico</h3>
+                <p style="font-size:0.85rem;color:#666;margin-bottom:0.8rem;">Fotografe anomalias, danos ou estado geral do veículo. As fotos são incluídas no PDF.</p>
+                <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:0.8rem;">
+                    <button class="btn btn-primary" onclick="capturePhoto('insp-w02')" type="button">📸 Tirar Foto</button>
+                    <button class="btn btn-gray" onclick="selectPhoto('insp-w02')" type="button">📁 Galeria</button>
+                </div>
+                <input type="file" id="photo-input-insp-w02" accept="image/*" capture="environment" style="display:none;" onchange="handlePhoto('insp-w02', event)">
+                <input type="file" id="photo-gallery-insp-w02" accept="image/*" style="display:none;" onchange="handlePhoto('insp-w02', event)">
+                <div id="photo-grid-insp-w02" class="photo-grid"></div>
+            </div>
+
             <div class="btn-row">
                 <button class="btn btn-success" onclick="exportForm('insp-w02')">📄 Exportar PDF</button>
                 <button class="btn btn-gray" onclick="clearForm('insp-w02')">🗑 Limpar</button>
@@ -2036,6 +2071,78 @@ function toggleSidebar() {
     if (overlay) overlay.classList.toggle('open');
 }
 
+// === PHOTO CAPTURE FOR INSPECTIONS ===
+var PHOTO_STORE = {};
+function photoKey(sectionId) { return 'psci_photos_' + sectionId; }
+function loadPhotos(sectionId) {
+    try { PHOTO_STORE[sectionId] = JSON.parse(localStorage.getItem(photoKey(sectionId)) || '[]'); }
+    catch(e) { PHOTO_STORE[sectionId] = []; }
+    return PHOTO_STORE[sectionId];
+}
+function savePhotos(sectionId) {
+    try { localStorage.setItem(photoKey(sectionId), JSON.stringify(PHOTO_STORE[sectionId] || [])); } catch(e) {}
+}
+function capturePhoto(sectionId) {
+    document.getElementById('photo-input-' + sectionId).click();
+}
+function selectPhoto(sectionId) {
+    document.getElementById('photo-gallery-' + sectionId).click();
+}
+function handlePhoto(sectionId, ev) {
+    var file = ev.target.files && ev.target.files[0];
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function(e) {
+        // Resize to max 800px to save localStorage space
+        var img = new Image();
+        img.onload = function() {
+            var maxW = 800, maxH = 600;
+            var w = img.width, h = img.height;
+            if (w > maxW) { h = h * maxW / w; w = maxW; }
+            if (h > maxH) { w = w * maxH / h; h = maxH; }
+            var canvas = document.createElement('canvas');
+            canvas.width = w; canvas.height = h;
+            canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+            var dataUrl = canvas.toDataURL('image/jpeg', 0.7);
+            var photos = loadPhotos(sectionId);
+            var stamp = new Date().toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' });
+            photos.push({ src: dataUrl, caption: stamp, ts: Date.now() });
+            PHOTO_STORE[sectionId] = photos;
+            savePhotos(sectionId);
+            renderPhotos(sectionId);
+        };
+        img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+    ev.target.value = '';
+}
+function deletePhoto(sectionId, idx) {
+    var photos = loadPhotos(sectionId);
+    photos.splice(idx, 1);
+    PHOTO_STORE[sectionId] = photos;
+    savePhotos(sectionId);
+    renderPhotos(sectionId);
+}
+function renderPhotos(sectionId) {
+    var grid = document.getElementById('photo-grid-' + sectionId);
+    if (!grid) return;
+    var photos = loadPhotos(sectionId);
+    if (!photos.length) { grid.innerHTML = '<p style="color:#999;font-size:0.85rem;">Nenhuma foto adicionada.</p>'; return; }
+    grid.innerHTML = '';
+    photos.forEach(function(p, i) {
+        var div = document.createElement('div');
+        div.className = 'photo-grid__item';
+        div.innerHTML = '<img src="' + p.src + '" alt="Foto ' + (i+1) + '" onclick="window.open(this.src)">'
+            + '<button class="photo-del" type="button" onclick="deletePhoto(\'' + sectionId + '\',' + i + ')" title="Remover">&times;</button>'
+            + '<div class="photo-caption">' + (p.caption || '') + '</div>';
+        grid.appendChild(div);
+    });
+}
+// Load photos on init for W01/W02
+document.addEventListener('DOMContentLoaded', function() {
+    ['insp-w01', 'insp-w02'].forEach(function(id) { renderPhotos(id); });
+});
+
 // === CLOCK (Plan 5 Task 14 — 1s tick, writes to new DS shell bar IDs) ===
 function updateClock() {
     var now = new Date();
@@ -2528,6 +2635,19 @@ function exportForm(sectionId) {
     try { bodyHtml = psciBuildPrintableHTML(section); }
     catch(e) { bodyHtml = section.innerHTML; }
 
+    // 2b) Append photos if any
+    var photos = loadPhotos(sectionId);
+    if (photos && photos.length) {
+        bodyHtml += '<div style="page-break-before:auto;margin-top:1.5rem;"><h3 style="color:#004C7B;margin-bottom:0.8rem;">Registo Fotográfico (' + photos.length + ')</h3>';
+        bodyHtml += '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px;">';
+        photos.forEach(function(p, i) {
+            bodyHtml += '<div style="border:1px solid #ddd;border-radius:4px;overflow:hidden;">'
+                + '<img src="' + p.src + '" style="width:100%;height:140px;object-fit:cover;">'
+                + '<div style="padding:3px 6px;font-size:9px;color:#666;">Foto ' + (i+1) + ' — ' + (p.caption || '') + '</div></div>';
+        });
+        bodyHtml += '</div></div>';
+    }
+
     // 3) USAR TEMPLATE PADRÃO SGA
     window.sgaPrintReport({
         title: titleText,
@@ -2647,6 +2767,8 @@ function clearForm(sectionId) {
         section.querySelectorAll('input[type="checkbox"]').forEach(function(el) { el.checked = false; });
         section.querySelectorAll('.rt-btn').forEach(function(b){ b.classList.remove('active'); });
         section.querySelectorAll('.rt-value').forEach(function(i){ i.value = ''; });
+        // Clear photos if any
+        if (typeof PHOTO_STORE !== 'undefined') { PHOTO_STORE[sectionId] = []; savePhotos(sectionId); renderPhotos(sectionId); }
         if (window.notify) window.notify('Formulário limpo', 'info');
     };
     window.awmConfirm('Todos os campos deste formulário serão apagados. O histórico permanece intacto.', { title: 'Limpar formulário?', variant: 'warn', okText: 'Limpar' })
