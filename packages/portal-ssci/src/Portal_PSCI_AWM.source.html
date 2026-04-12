@@ -2814,31 +2814,87 @@ function psciCfgRenderAll() {
     psciCfgApplyToDashboard();
 }
 
+// Helper: apply data-state + aria attributes to a stat-card-gauge element
+function applyStatState(el, state) {
+    if (!el) return;
+    el.setAttribute('data-state', state);
+    if (state === 'critical') {
+        el.setAttribute('role', 'alert');
+        el.setAttribute('aria-live', 'assertive');
+    } else {
+        el.removeAttribute('role');
+        el.setAttribute('aria-live', 'polite');
+    }
+}
+window.applyStatState = applyStatState;
+
 // Sincroniza os cards do dashboard com a configuração
 function psciCfgApplyToDashboard() {
     try {
         var p = PSCI_CFG.parametros || {};
+
         // Categoria SCI
-        var elCat = document.getElementById('dash-catsci');
-        if (elCat) elCat.textContent = p.catsci || '—';
-        // Viaturas (total = configuradas; operacionais ainda por ligar a estado operacional)
-        var totalViaturas = (PSCI_CFG.viaturas || []).length;
-        var opViaturas = (PSCI_CFG.viaturas || []).filter(function(v){
+        var cat = parseInt(p.catsci) || 0;
+        var catEl = document.getElementById('kpi-cat');
+        if (catEl) {
+            var cv = catEl.querySelector('.stat-card-gauge__value');
+            if (cv) cv.innerHTML = (cat || '\u2014') + '<span class="stat-card-gauge__suffix">/10</span>';
+            var cf = catEl.querySelector('.stat-card-gauge__fill');
+            if (cf) cf.style.setProperty('--fill', (cat / 10 * 100) + '%');
+            applyStatState(catEl, cat >= 7 ? 'normal' : (cat >= 4 ? 'warning' : (cat > 0 ? 'critical' : 'unknown')));
+        }
+
+        // Viaturas
+        var totalViaturas = (PSCI_CFG.viaturas || []).length || 3;
+        var opViaturas = (PSCI_CFG.viaturas || []).filter(function(v) {
             return (v.estado || '').toLowerCase().indexOf('oper') === 0;
         }).length;
-        var elVi = document.getElementById('dash-viaturas');
-        if (elVi) elVi.textContent = (opViaturas || '—') + '/' + (totalViaturas || '—');
-        // Efectivo: denominador = mínimo por turno (config), numerador = efectivo do turno actual seleccionado
-        var efMin = parseInt(p.efmin) || 0;
+        var viatEl = document.getElementById('kpi-viaturas');
+        if (viatEl) {
+            var vv = viatEl.querySelector('.stat-card-gauge__value');
+            if (vv) vv.innerHTML = opViaturas + '<span class="stat-card-gauge__suffix">/' + totalViaturas + '</span>';
+            var vf = viatEl.querySelector('.stat-card-gauge__fill');
+            if (vf) vf.style.setProperty('--fill', (opViaturas / totalViaturas * 100) + '%');
+            var vs = viatEl.querySelector('.stat-card-gauge__sub');
+            if (vs) vs.textContent = opViaturas === totalViaturas ? 'Todas operacionais' : (totalViaturas - opViaturas) + ' inoperacional(is)';
+            applyStatState(viatEl, opViaturas === totalViaturas ? 'ok' : (opViaturas > 0 ? 'warning' : 'critical'));
+        }
+
+        // Efectivo
+        var efMin = parseInt(p.efmin) || 9;
         var turnoSel = document.getElementById('dash-turno-sel');
         var turno = turnoSel ? (turnoSel.value || '') : '';
         var efectivoTurno = (turno && PSCI_CFG.efectivo && PSCI_CFG.efectivo[turno]) ? PSCI_CFG.efectivo[turno].length : 0;
-        var elEf = document.getElementById('dash-efectivo');
-        if (elEf) elEf.textContent = (efectivoTurno || '—') + '/' + (efMin || '—');
+        var efecEl = document.getElementById('kpi-efectivo');
+        if (efecEl) {
+            var ev = efecEl.querySelector('.stat-card-gauge__value');
+            if (ev) ev.innerHTML = (turno ? efectivoTurno : '\u2014') + '<span class="stat-card-gauge__suffix">/' + efMin + '</span>';
+            var ef = efecEl.querySelector('.stat-card-gauge__fill');
+            if (ef) ef.style.setProperty('--fill', turno ? (efectivoTurno / efMin * 100) + '%' : '0%');
+            var es = efecEl.querySelector('.stat-card-gauge__sub');
+            if (es) es.textContent = turno ? (efectivoTurno >= efMin ? 'Completo' : 'Abaixo do minimo') : 'Seleccione turno';
+            applyStatState(efecEl, !turno ? 'unknown' : (efectivoTurno >= efMin ? 'ok' : 'warning'));
+        }
+
+        // Updated-ago ticker reset
+        var updEl = document.getElementById('updated-ago');
+        if (updEl) {
+            window.__ssciDashLastUpdate = Date.now();
+            updEl.textContent = '0s';
+        }
     } catch(e) {
         console.error('Erro ao aplicar config ao dashboard:', e);
     }
 }
+
+// Updated-ago ticker (runs every 1s)
+setInterval(function() {
+    var updEl = document.getElementById('updated-ago');
+    if (updEl && window.__ssciDashLastUpdate) {
+        var diff = Math.floor((Date.now() - window.__ssciDashLastUpdate) / 1000);
+        updEl.textContent = diff + 's';
+    }
+}, 1000);
 
 function psciCfgSaveAll() {
     PSCI_CFG.efectivo[PSCI_TURNO_ACTUAL] = psciCollectEfectivo();
@@ -3216,26 +3272,24 @@ function stkRefreshSummary() {
     var elAn = document.getElementById('stk-cat-analysis');
     if (elAn) elAn.innerHTML = html;
 
-    // Update dashboard CAT Actual card
-    var elCatA = document.getElementById('dash-catactual');
-    if (elCatA) {
-        if (actual.cat > 0) {
-            elCatA.textContent = 'CAT ' + actual.cat;
-            var note = document.getElementById('dash-catactual-note');
-            if (note) {
+    // Update dashboard CAT SCI card sub-text with actual category from stock analysis
+    var catEl = document.getElementById('kpi-cat');
+    if (catEl) {
+        var sub = catEl.querySelector('.stat-card-gauge__sub');
+        if (sub) {
+            if (actual.cat > 0) {
                 if (actual.cat >= catNominal && catNominal > 0) {
-                    elCatA.style.color = '#27ae60';
-                    note.textContent = 'Conforme CAT nominal';
+                    sub.textContent = 'CAT actual ' + actual.cat + ' \u2014 conforme';
+                    applyStatState(catEl, 'ok');
                 } else if (catNominal > 0) {
-                    elCatA.style.color = '#c0392b';
-                    note.textContent = 'Abaixo da CAT nominal (' + catNominal + ')';
+                    sub.textContent = 'CAT actual ' + actual.cat + ' \u2014 abaixo nominal';
+                    applyStatState(catEl, 'warning');
                 } else {
-                    elCatA.style.color = '#e67e22';
-                    note.textContent = 'Baseada em agentes disponíveis';
+                    sub.textContent = 'CAT actual ' + actual.cat + ' (base agentes)';
                 }
+            } else {
+                sub.textContent = 'Nominal ICAO';
             }
-        } else {
-            elCatA.textContent = '—';
         }
     }
 }
