@@ -1,5 +1,7 @@
 # Design System SGA — Plan 7: Visual Polish (Implementation Plan)
 
+> **Status**: COMPLETO (2026-04-12) — Visual Polish entregue. Release v2.2.0-alpha.1 cortada.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use `superpowers:executing-plans` (ou `superpowers:subagent-driven-development` se houver paralelismo útil) para implementar este plano task-by-task. Os passos usam checkbox (`- [ ]`) para tracking.
 
 **Goal:** Subir a fasquia visual do Portal DREA aplicando o Design System SGA às secções de conteúdo legadas — dashboard SSCI (6 KPIs em row-grouped progress gauges) e formulário de ocorrência COE (two-col + sticky timer) — e entregar a release `v2.2.0-alpha.1`. A fundação DS existe desde v2.1.0-alpha.1; o Plan 7 **aplica** essa fundação ao conteúdo que ficou por migrar.
