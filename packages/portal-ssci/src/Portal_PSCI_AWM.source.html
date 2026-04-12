@@ -351,9 +351,9 @@ html { scroll-behavior: smooth; }
                 <div class="dash-section__grid">
                     <div class="stat-card-gauge" data-state="normal" id="kpi-cat">
                         <div class="stat-card-gauge__label">Categoria SCI</div>
-                        <div class="stat-card-gauge__value">7<span class="stat-card-gauge__suffix">/10</span></div>
-                        <div class="stat-card-gauge__bar"><div class="stat-card-gauge__fill" style="--fill: 70%"></div></div>
-                        <div class="stat-card-gauge__sub">Nominal ICAO</div>
+                        <div class="stat-card-gauge__value">7<span class="stat-card-gauge__suffix">/7</span></div>
+                        <div class="stat-card-gauge__bar"><div class="stat-card-gauge__fill" style="--fill: 100%"></div></div>
+                        <div class="stat-card-gauge__sub">CAT actual 7 — conforme ICAO nominal</div>
                     </div>
                     <div class="stat-card-gauge" data-state="ok" id="kpi-viaturas">
                         <div class="stat-card-gauge__label">Viaturas Operacionais</div>
@@ -2834,15 +2834,18 @@ function psciCfgApplyToDashboard() {
     try {
         var p = PSCI_CFG.parametros || {};
 
-        // Categoria SCI
+        // Categoria SCI — o nominal do aeroporto (config ou default 7)
+        var catNominal = parseInt(p.catnominal) || 7;
         var cat = parseInt(p.catsci) || 0;
         var catEl = document.getElementById('kpi-cat');
         if (catEl) {
             var cv = catEl.querySelector('.stat-card-gauge__value');
-            if (cv) cv.innerHTML = (cat || '\u2014') + '<span class="stat-card-gauge__suffix">/10</span>';
+            if (cv) cv.innerHTML = (cat || '\u2014') + '<span class="stat-card-gauge__suffix">/' + catNominal + '</span>';
             var cf = catEl.querySelector('.stat-card-gauge__fill');
-            if (cf) cf.style.setProperty('--fill', (cat / 10 * 100) + '%');
-            applyStatState(catEl, cat >= 7 ? 'normal' : (cat >= 4 ? 'warning' : (cat > 0 ? 'critical' : 'unknown')));
+            if (cf) cf.style.setProperty('--fill', (cat / catNominal * 100) + '%');
+            var catSub = catEl.querySelector('.stat-card-gauge__sub');
+            if (catSub) catSub.textContent = cat === catNominal ? 'CAT actual ' + cat + ' \u2014 conforme ICAO nominal' : 'CAT actual ' + cat + ' \u2014 nominal ' + catNominal;
+            applyStatState(catEl, cat >= catNominal ? 'ok' : (cat >= catNominal - 2 ? 'warning' : (cat > 0 ? 'critical' : 'unknown')));
         }
 
         // Viaturas
