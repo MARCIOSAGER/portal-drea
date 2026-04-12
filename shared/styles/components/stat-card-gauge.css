@@ -1,0 +1,79 @@
+/* =========================================================================
+ * Design System SGA — Component: Stat Card Gauge (Plan 7)
+ * ========================================================================= */
+.stat-card-gauge {
+  background: var(--neutral-surface);
+  border: 1px solid var(--neutral-strong);
+  border-radius: var(--radius-md);
+  padding: var(--space-4) var(--space-5);
+  position: relative;
+  transition: transform var(--transition-hover), box-shadow var(--transition-hover);
+}
+.stat-card-gauge:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--elevation-hover);
+}
+.stat-card-gauge__label {
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 600;
+  color: var(--neutral-fg-muted);
+  margin-bottom: var(--space-3);
+  font-family: var(--font-ui);
+}
+.stat-card-gauge__value {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--neutral-fg);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-family: var(--font-numeric);
+  font-feature-settings: var(--font-mono-features);
+}
+.stat-card-gauge__suffix {
+  font-size: 13px;
+  color: var(--neutral-fg-subtle);
+  font-weight: 400;
+  margin-left: 1px;
+}
+.stat-card-gauge__bar {
+  height: var(--gauge-height);
+  background: var(--gauge-bg);
+  border-radius: var(--gauge-radius);
+  margin-top: var(--space-4);
+  overflow: hidden;
+}
+.stat-card-gauge__fill {
+  height: 100%;
+  width: var(--fill, 0%);
+  background: var(--gauge-fill-default);
+  border-radius: var(--gauge-radius);
+  transition: var(--gauge-transition);
+}
+.stat-card-gauge__sub {
+  font-size: var(--text-xs);
+  color: var(--neutral-fg-muted);
+  margin-top: var(--space-3);
+  font-family: var(--font-ui);
+}
+.stat-card-gauge[data-state="ok"] .stat-card-gauge__fill { background: var(--gauge-fill-ok); }
+.stat-card-gauge[data-state="warning"] .stat-card-gauge__fill { background: var(--gauge-fill-warning); }
+.stat-card-gauge[data-state="critical"] {
+  border-left: 3px solid var(--status-critical-border);
+  background: var(--status-critical-bg);
+}
+.stat-card-gauge[data-state="critical"] .stat-card-gauge__value { color: var(--status-critical-fg); }
+.stat-card-gauge[data-state="critical"] .stat-card-gauge__fill { background: var(--gauge-fill-critical); }
+.stat-card-gauge[data-state="unknown"] { border-left: 3px dashed var(--status-unknown-border); }
+.stat-card-gauge[data-state="unknown"] .stat-card-gauge__value { color: var(--status-unknown-fg); }
+.stat-card-gauge[data-state="unknown"] .stat-card-gauge__suffix { color: var(--status-unknown-fg); }
+.stat-card-gauge:focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  outline-offset: var(--focus-ring-offset);
+}
+@media (prefers-reduced-motion: reduce) {
+  .stat-card-gauge { transition: none; }
+  .stat-card-gauge:hover { transform: none; }
+  .stat-card-gauge__fill { transition: none; }
+}
