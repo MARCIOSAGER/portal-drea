@@ -2159,16 +2159,24 @@ function psciConvertCheckboxesToToggles() {
         if (!thead) return;
         var ths = thead.querySelectorAll('th');
         // Identifica índices de colunas OP/NO/NA
-        var colMap = {}; // OP/NO/NA -> index
+        var colMap = {}; // OP/NO/NA or OK/NOK -> index
+        var isOkNok = false;
         for (var i = 0; i < ths.length; i++) {
             var t = (ths[i].textContent || '').trim().toUpperCase();
             if (t === 'OP' || t === 'NO' || t === 'NA' || t === 'N/A') {
                 colMap[t === 'N/A' ? 'NA' : t] = i;
+            } else if (t === 'OK' || t === 'NOK') {
+                colMap[t] = i;
+                isOkNok = true;
             }
         }
-        if (!('OP' in colMap) || !('NO' in colMap)) return;
+        if (isOkNok) {
+            if (!('OK' in colMap) || !('NOK' in colMap)) return;
+        } else {
+            if (!('OP' in colMap) || !('NO' in colMap)) return;
+        }
         var hasNA = ('NA' in colMap);
-        var orderedCols = hasNA ? ['OP','NO','NA'] : ['OP','NO'];
+        var orderedCols = isOkNok ? ['OK','NOK'] : (hasNA ? ['OP','NO','NA'] : ['OP','NO']);
         // Processa cada linha do tbody
         var rows = tbl.querySelectorAll('tbody > tr');
         rows.forEach(function(tr) {
@@ -2176,8 +2184,10 @@ function psciConvertCheckboxesToToggles() {
             if (tr.classList.contains('section-header')) return;
             var cells = tr.children;
             // Verifica se as células-alvo contêm um checkbox
-            var opCell = cells[colMap.OP];
-            var noCell = cells[colMap.NO];
+            var firstCol = isOkNok ? 'OK' : 'OP';
+            var secondCol = isOkNok ? 'NOK' : 'NO';
+            var opCell = cells[colMap[firstCol]];
+            var noCell = cells[colMap[secondCol]];
             if (!opCell || !noCell) return;
             var opBox = opCell.querySelector('input[type="checkbox"]');
             var noBox = noCell.querySelector('input[type="checkbox"]');
@@ -2209,9 +2219,9 @@ function psciConvertCheckboxesToToggles() {
             if (noCell && noCell.parentNode) noCell.parentNode.removeChild(noCell);
             if (naCell && naCell.parentNode) naCell.parentNode.removeChild(naCell);
         });
-        // Ajusta o cabeçalho: substitui OP/NO[/NA] por "Estado"
-        var opTh = ths[colMap.OP];
-        var noTh = ths[colMap.NO];
+        // Ajusta o cabeçalho: substitui OP/NO[/NA] ou OK/NOK por "Estado"
+        var opTh = ths[colMap[isOkNok ? 'OK' : 'OP']];
+        var noTh = ths[colMap[isOkNok ? 'NOK' : 'NO']];
         var naTh = hasNA ? ths[colMap.NA] : null;
         if (opTh) {
             opTh.textContent = 'Estado';
@@ -2861,19 +2871,9 @@ function psciCfgApplyToDashboard() {
     try {
         var p = PSCI_CFG.parametros || {};
 
-        // Categoria SCI — o nominal do aeroporto (config ou default 7)
-        var catNominal = parseInt(p.catnominal) || 7;
-        var cat = parseInt(p.catsci) || 0;
-        var catEl = document.getElementById('kpi-cat');
-        if (catEl) {
-            var cv = catEl.querySelector('.stat-card-gauge__value');
-            if (cv) cv.innerHTML = (cat || '\u2014') + '<span class="stat-card-gauge__suffix">/' + catNominal + '</span>';
-            var cf = catEl.querySelector('.stat-card-gauge__fill');
-            if (cf) cf.style.setProperty('--fill', (cat / catNominal * 100) + '%');
-            var catSub = catEl.querySelector('.stat-card-gauge__sub');
-            if (catSub) catSub.textContent = cat === catNominal ? 'CAT actual ' + cat + ' \u2014 conforme ICAO nominal' : 'CAT actual ' + cat + ' \u2014 nominal ' + catNominal;
-            applyStatState(catEl, cat >= catNominal ? 'ok' : (cat >= catNominal - 2 ? 'warning' : (cat > 0 ? 'critical' : 'unknown')));
-        }
+        // Categoria SCI — delegada a stkRefreshSummary() que calcula o CAT actual
+        // baseado nos dados de estoque. Chamamos aqui para garantir actualização.
+        if (typeof stkRefreshSummary === 'function') stkRefreshSummary();
 
         // Viaturas
         var totalViaturas = (PSCI_CFG.viaturas || []).length || 3;
@@ -3303,23 +3303,31 @@ function stkRefreshSummary() {
     var elAn = document.getElementById('stk-cat-analysis');
     if (elAn) elAn.innerHTML = html;
 
-    // Update dashboard CAT SCI card sub-text with actual category from stock analysis
+    // Update dashboard CAT SCI card with actual category from stock analysis
+    var catDisplay = actual.cat > 0 ? actual.cat : catNominal;
+    var catDenom = catNominal || 7;
     var catEl = document.getElementById('kpi-cat');
     if (catEl) {
+        var cv = catEl.querySelector('.stat-card-gauge__value');
+        if (cv) cv.innerHTML = catDisplay + '<span class="stat-card-gauge__suffix">/' + catDenom + '</span>';
+        var cf = catEl.querySelector('.stat-card-gauge__fill');
+        if (cf) cf.style.setProperty('--fill', (catDisplay / catDenom * 100) + '%');
         var sub = catEl.querySelector('.stat-card-gauge__sub');
         if (sub) {
-            if (actual.cat > 0) {
-                if (actual.cat >= catNominal && catNominal > 0) {
+            if (actual.cat > 0 && catNominal > 0) {
+                if (actual.cat >= catNominal) {
                     sub.textContent = 'CAT actual ' + actual.cat + ' \u2014 conforme';
                     applyStatState(catEl, 'ok');
-                } else if (catNominal > 0) {
+                } else {
                     sub.textContent = 'CAT actual ' + actual.cat + ' \u2014 abaixo nominal';
                     applyStatState(catEl, 'warning');
-                } else {
-                    sub.textContent = 'CAT actual ' + actual.cat + ' (base agentes)';
                 }
+            } else if (actual.cat > 0) {
+                sub.textContent = 'CAT actual ' + actual.cat + ' (base agentes)';
+                applyStatState(catEl, 'normal');
             } else {
                 sub.textContent = 'Nominal ICAO';
+                applyStatState(catEl, 'normal');
             }
         }
     }
