@@ -2,7 +2,7 @@
 
 > **Direcção de Resposta a Emergências Aeroportuárias** — Plataforma operacional para aeroportos SGA
 
-**Versão da plataforma:** `v2.1.0-alpha.1` · **Aeroporto de referência:** FNMO (Namibe) · **Operador:** SGA — Sociedade de Gestão Aeroportuária
+**Versão da plataforma:** `v2.2.0-alpha.1` · **Aeroporto de referência:** FNMO (Namibe) · **Operador:** SGA — Sociedade de Gestão Aeroportuária
 
 ---
 
@@ -136,10 +136,11 @@ Ver [docs/manual-instalacao.md](docs/manual-instalacao.md) (em preparação na E
 - [x] **Etapa 3.2** — Extracção de `AWM_CONTACTS_DEFAULT` para config externa
 - [x] **Etapa 4** — Footer de versão, manual de utilizador, checklist de validação
 - [x] **Etapa 5** — **Design System SGA** (v2.1.0-alpha.1): tokens em 3 camadas, Inter Variable embebida, sprite SVG de 40+ ícones, chrome consolidado (shell bar, sidebar, splash, footer), 13 componentes partilhados, ambos os portais migrados para light theme unificado
+- [x] **Etapa 6** — **Visual Polish** (v2.2.0-alpha.1): DS aplicado aos conteudos operacionais — SSCI dashboard com 6 KPIs em stat-card-gauge + progress bars, COE form com two-col layout + sticky chronometer, sidebar com nav-btn--pill, JetBrains Mono para numericos, 6 novos componentes CSS, 53 novos tokens, logo SGA real integrada
 
 Ver [`docs/design-system-guide.md`](docs/design-system-guide.md) para o guia completo do Design System.
 
-**Próxima fase**: Fase 2 — Empacotamento como instaladores Windows (Tauri).
+**Proxima fase**: Fase 2 — Empacotamento como instaladores Windows (Tauri).
 
 Ver [docs/CHANGELOG.md](docs/CHANGELOG.md) para histórico completo.
 
