@@ -298,6 +298,20 @@ def build(
     ds_inter_b64 = dsh.encode_font_woff2_base64(inter_woff2_path)
     print(f"  [ds] encoded Inter woff2 ({len(ds_inter_b64):,} base64 chars)")
 
+    # (4b) Encode JetBrains Mono Regular + Bold as base64 (Plan 7)
+    jb_regular_path = SHARED_DIR / "assets" / "fonts" / "JetBrainsMono-Regular.woff2"
+    jb_bold_path = SHARED_DIR / "assets" / "fonts" / "JetBrainsMono-Bold.woff2"
+    if not jb_regular_path.exists():
+        print(f"  [error] JetBrainsMono-Regular.woff2 not found at {jb_regular_path}")
+        return 1
+    if not jb_bold_path.exists():
+        print(f"  [error] JetBrainsMono-Bold.woff2 not found at {jb_bold_path}")
+        return 1
+    ds_jb_regular_b64 = dsh.encode_font_woff2_base64(jb_regular_path)
+    ds_jb_bold_b64 = dsh.encode_font_woff2_base64(jb_bold_path)
+    print(f"  [ds] encoded JetBrainsMono-Regular ({len(ds_jb_regular_b64):,} base64 chars)")
+    print(f"  [ds] encoded JetBrainsMono-Bold    ({len(ds_jb_bold_b64):,} base64 chars)")
+
     # (5) Read the icon sprite (inline SVG, already wrapped in <svg style="display:none">)
     sprite_path = SHARED_DIR / "assets" / "icons" / "sprite.svg"
     if not sprite_path.exists():
@@ -369,6 +383,21 @@ def build(
     if inter_marker in source_html:
         print(f"  [error] {inter_marker!r} still present after replacement")
         return 1
+
+    # Plan 7: JetBrains Mono markers — same two-phase pattern as Inter
+    for jb_marker, jb_value in [
+        ("{{DS_JETBRAINS_MONO_REGULAR_WOFF2_BASE64}}", ds_jb_regular_b64),
+        ("{{DS_JETBRAINS_MONO_BOLD_WOFF2_BASE64}}", ds_jb_bold_b64),
+    ]:
+        count = source_html.count(jb_marker)
+        if count != 1:
+            print(f"  [error] Expected exactly 1 occurrence of {jb_marker!r} after DS_CSS replace, found {count}")
+            return 1
+        source_html = source_html.replace(jb_marker, jb_value)
+        if jb_marker in source_html:
+            print(f"  [error] {jb_marker!r} still present after replacement")
+            return 1
+
     # Note: {{BUILD_DATE}} and {{BUILD_DATE_SHORT}} already exist in context and
     # are handled by substitute_placeholders.
     # ======================================================================
