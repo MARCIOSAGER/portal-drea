@@ -1,6 +1,6 @@
 # Design System SGA — Guia do Consumidor
 
-**Versão**: v2.1.0-alpha.1
+**Versão**: v2.2.0-alpha.1
 **Escopo**: Portal DREA (monorepo COE + SSCI, futuros SOA, AVSEC, DIRECÇÃO)
 **Audiência**: programadores que consomem o DS, agentes a portar o DS a novos portais, mantenedores.
 
@@ -18,7 +18,7 @@ O Design System SGA é a fundação visual partilhada dos portais DREA. Unifica:
 - **Cores** alinhadas à identidade institucional SGA (`#004C7B` brand primary + paleta complementar)
 - **Tipografia** baseada em Inter Variable (embebida em base64 no HTML final)
 - **Espaçamento** variável por densidade de portal (compact para COE, comfortable para SSCI)
-- **Componentes** (~13 blocos reutilizáveis: button, badge, card, form-group, table, tabs, ...)
+- **Componentes** (~19 blocos reutilizáveis: button, badge, card, form-group, table, tabs, stat-card-gauge, ...)
 - **Chrome** (shell bar, sidebar, splash, footer, página-grid) idêntico para todos os portais
 - **Ícones** via sprite SVG inline (40+ ícones Heroicons adaptados)
 - **Impressão** (CSS `@media print` + `@page` Paged Media)
@@ -191,9 +191,61 @@ Estes tokens têm **dois valores possíveis** consoante o modo de densidade acti
 
 Ver [`shared/styles/tokens/density-compact.css`](../shared/styles/tokens/density-compact.css) e `density-comfortable.css` para a lista completa.
 
+### 3.9 Status quad (Plan 7)
+
+Tokens para os 4 estados operacionais dos stat-card-gauge KPIs:
+
+| Semantic                    | Uso                                    |
+|-----------------------------|----------------------------------------|
+| `--status-normal-gauge`     | Preenchimento da gauge quando OK       |
+| `--status-warning-gauge`    | Preenchimento da gauge quando warning  |
+| `--status-critical-gauge`   | Preenchimento da gauge quando critical |
+| `--status-unknown-gauge`    | Preenchimento da gauge quando unknown  |
+| `--status-critical-pulse`   | Cor do dot animado (pulse)             |
+| `--status-critical-tint`    | Background tint do card em critical    |
+
+### 3.10 Pill active nav (Plan 7)
+
+| Semantic              | Valor default          | Uso                          |
+|-----------------------|------------------------|------------------------------|
+| `--pill-bg`           | `var(--brand-primary)` | Fundo do nav-btn activo      |
+| `--pill-fg`           | `var(--white)`         | Texto do nav-btn activo      |
+| `--pill-icon`         | `var(--white)`         | Ícone SVG do nav-btn activo  |
+| `--pill-shadow`       | shadow subtil          | Sombra do pill activo        |
+| `--pill-hover-bg`     | cinza-azul claro       | Hover state dos nav-btn      |
+| `--pill-radius`       | `var(--radius-md)`     | Border-radius do pill        |
+
+### 3.11 Gauge tokens (Plan 7)
+
+| Semantic                | Uso                                 |
+|-------------------------|-------------------------------------|
+| `--gauge-height`        | Altura da barra de progresso        |
+| `--gauge-bg`            | Background track da gauge           |
+| `--gauge-radius`        | Border-radius da gauge              |
+| `--gauge-fill-normal`   | Fill quando status=normal           |
+| `--gauge-fill-warning`  | Fill quando status=warning          |
+| `--gauge-fill-critical` | Fill quando status=critical         |
+| `--gauge-fill-unknown`  | Fill quando status=unknown          |
+| `--gauge-transition`    | Transição da barra (width animate)  |
+
+### 3.12 Motion tokens (Plan 7)
+
+| Semantic               | Valor    | Uso                          |
+|------------------------|----------|------------------------------|
+| `--transition-hover`   | `120ms`  | Hover transitions (buttons, cards) |
+| `--transition-active`  | `80ms`   | Active/press transitions     |
+
+### 3.13 Typography tokens (Plan 7)
+
+| Semantic              | Valor                    | Uso                              |
+|-----------------------|--------------------------|----------------------------------|
+| `--font-ui`           | `'Inter', sans-serif`    | Texto UI geral                   |
+| `--font-numeric`      | `'JetBrains Mono', mono` | Números, IDs, timestamps         |
+| `--font-mono-family`  | `'JetBrains Mono'`       | Referência directa à font-face   |
+
 ---
 
-## 4. Tipografia — Inter Variable
+## 4. Tipografia — Inter Variable + JetBrains Mono
 
 ### Como é embebida
 
@@ -229,31 +281,58 @@ font-feature-settings: 'cv11', 'ss01', 'tnum', 'lnum';
 3. Actualizar `shared/assets/fonts/README.md` com a nova versão
 4. `python scripts/build-all.py` — o base64 é regenerado automaticamente
 
+### JetBrains Mono (Plan 7)
+
+Adicionada na v2.2.0-alpha.1 para valores numéricos (KPIs, timestamps, IDs, coordenadas).
+
+- **Ficheiros**: `shared/assets/fonts/JetBrainsMono-Regular.woff2` + `JetBrainsMono-Bold.woff2`
+- **Licença**: SIL Open Font License (OFL), incluída em `shared/assets/fonts/OFL.txt`
+- **Tamanho total**: ~183 KB (Regular ~93 KB + Bold ~90 KB)
+- **Embedding**: base64 via `encode_font_woff2_base64()`, mesma pipeline da Inter
+- **Placeholders**: `{{DS_JETBRAINS_MONO_REGULAR_WOFF2_BASE64}}` e `{{DS_JETBRAINS_MONO_BOLD_WOFF2_BASE64}}`
+- **Token**: `--font-mono-family: 'JetBrains Mono'` / `--font-numeric: 'JetBrains Mono', monospace`
+- **Uso**: `.form-group--numeric input`, `.stat-card-gauge__value`, `.sticky-timer-card__time`, qualquer elemento que precise de tabular numerals monospace
+- **font-feature-settings**: `'tnum' 1` (tabular numerals) para alinhamento perfeito de dígitos em colunas
+
 ### Limitações actuais
 
 - Inter é aplicada apenas a elementos dentro de `.ds-shell-bar`, `.ds-sidebar`, `.ds-page-grid`, `.ds-splash`, `.ds-footer`
 - Resto da página (cards, forms legacy, tabelas) continua em Segoe UI enquanto a migração de body typography não for feita (ver secção 11, FAQ)
+- JetBrains Mono é aplicada selectivamente a campos numéricos e KPI values — não substitui Inter para texto geral
 
 ---
 
 ## 5. Componentes inventário
 
-Os 13 componentes vivem em `shared/styles/components/`. Cada ficheiro é auto-contido: selecciona os tokens semantic que precisa e não depende de outros componentes.
+Os 19 componentes (13 base + 6 novos Plan 7) vivem em `shared/styles/components/`. Cada ficheiro é auto-contido: selecciona os tokens semantic que precisa e não depende de outros componentes.
 
-| Ficheiro           | Exemplo de classe            | Variantes / estados                                         |
-|--------------------|------------------------------|-------------------------------------------------------------|
-| `button.css`       | `.btn`, `.btn-primary`       | primary, secondary, ghost, danger; hover, active, disabled  |
-| `badge.css`        | `.badge`, `.badge--warning`  | 5 variantes de status                                        |
-| `card.css`         | `.card`, `.stat-card`        | card, stat-card, elevated hover                              |
-| `form-group.css`   | `.form-group`                | input, textarea, select; focus, invalid, disabled            |
-| `table.css`        | `.ds-table`                  | striped rows, sticky header                                  |
-| `tabs.css`         | `.ds-tabs`, `.tab-button`    | active, disabled                                             |
-| `dropdown.css`     | `.ds-dropdown`               | open/closed, items                                           |
-| `awm-modal.css`    | `.awm-modal*`                | open/closed, overlay, close button                           |
-| `awm-toast.css`    | `.awm-toast*`                | info, success, warning, alert                                |
-| `uxp-savebadge.css`| `.uxp-savebadge*`            | neutro, saving, saved                                        |
-| `skeleton.css`     | `.ds-skeleton`               | shimmer animation                                            |
-| `empty-state.css`  | `.ds-empty-state`            | icon + title + description layout                            |
+| Ficheiro              | Exemplo de classe              | Variantes / estados                                         |
+|-----------------------|--------------------------------|-------------------------------------------------------------|
+| `button.css`          | `.btn`, `.btn-primary`         | primary, secondary, ghost, danger; hover, active, disabled  |
+| `badge.css`           | `.badge`, `.badge--warning`    | 5 variantes de status                                        |
+| `card.css`            | `.card`, `.stat-card`          | card, stat-card, elevated hover                              |
+| `form-group.css`      | `.form-group`                  | input, textarea, select; focus, invalid, disabled            |
+| `table.css`           | `.ds-table`                    | striped rows, sticky header                                  |
+| `tabs.css`            | `.ds-tabs`, `.tab-button`      | active, disabled                                             |
+| `dropdown.css`        | `.ds-dropdown`                 | open/closed, items                                           |
+| `awm-modal.css`       | `.awm-modal*`                  | open/closed, overlay, close button                           |
+| `awm-toast.css`       | `.awm-toast*`                  | info, success, warning, alert                                |
+| `uxp-savebadge.css`   | `.uxp-savebadge*`              | neutro, saving, saved                                        |
+| `skeleton.css`        | `.ds-skeleton`                 | shimmer animation                                            |
+| `empty-state.css`     | `.ds-empty-state`              | icon + title + description layout                            |
+| `stat-card-gauge.css` | `.stat-card-gauge`             | KPI card + mono value + progress gauge; 4 status states (Plan 7) |
+| `state-pulse.css`     | `.state-pulse`                 | animated dot for critical/warning; prefers-reduced-motion fallback (Plan 7) |
+| `dash-section.css`    | `.dash-section`                | row-based grouping with gradient divider (Plan 7)            |
+| `form-banner.css`     | `.form-banner`                 | warning, info, critical inline contextual banners (Plan 7)   |
+| `form-two-col.css`    | `.form-two-col`                | 2fr:1fr wrapper for forms with sticky sidebar (Plan 7)       |
+| `sticky-timer-card.css`| `.sticky-timer-card`          | chronometer + summary + auto-save indicator (Plan 7)         |
+
+**Modifiers** (Plan 7 — aplicados a componentes existentes):
+
+| Modifier               | Componente base   | Efeito                                         |
+|------------------------|-------------------|-------------------------------------------------|
+| `.form-group--numeric` | `.form-group`     | Aplica JetBrains Mono a inputs numéricos        |
+| `.nav-btn--pill`       | `.nav-btn`        | Pill active SGA (fundo sólido, shadow, radius)  |
 
 ### Exemplo mínimo — `button`
 
@@ -616,7 +695,8 @@ Durante a v2.1.0 migration o namespace `--ds-*` foi removido. Todos os tokens s�
 - Arquitectura global: [`docs/ARCHITECTURE.md`](ARCHITECTURE.md)
 - Contributor guide (CSS): [`shared/styles/README.md`](../shared/styles/README.md)
 - Contributor guide (JS): [`shared/scripts/README.md`](../shared/scripts/README.md)
-- Release notes: [`docs/releases/v2.1.0-alpha.1.md`](releases/v2.1.0-alpha.1.md)
+- Release notes (latest): [`docs/releases/v2.2.0-alpha.1.md`](releases/v2.2.0-alpha.1.md)
+- Release notes (foundation): [`docs/releases/v2.1.0-alpha.1.md`](releases/v2.1.0-alpha.1.md)
 - CHANGELOG: [`docs/CHANGELOG.md`](CHANGELOG.md)
 
 ---
