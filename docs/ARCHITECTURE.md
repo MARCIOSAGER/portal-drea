@@ -113,7 +113,7 @@ Portal_DREA/
 │   │   ├── tokens/                primitive, semantic, density-{compact,comfortable}
 │   │   ├── base/                  reset, fonts, typography, global
 │   │   ├── chrome/                shell-bar, sidebar, page-grid, splash, footer
-│   │   ├── components/            button, card, form-group, table, awm-modal, ... (13 ficheiros)
+│   │   ├── components/            button, card, form-group, table, awm-modal, ... (19 ficheiros)
 │   │   └── print/print.css        @media print + @page institucional
 │   ├── scripts/                   JavaScript partilhado
 │   │   ├── chrome/splash.js       splash lifecycle
@@ -361,6 +361,7 @@ Internet Explorer **não é suportado**.
 - [x] **Etapa 3**: Extracção de config externa (`AWM_CONTACTS_DEFAULT` → `config/airport-fnmo.json`)
 - [x] **Etapa 4**: Branding visível em runtime (footer com versão), manual de utilizador
 - [x] **Etapa 5**: **Design System SGA** (v2.1.0-alpha.1) — tokens em `shared/styles/tokens/`, Inter Variable embebida, sprite SVG de 40+ ícones, chrome consolidado, componentes tokenizados, ambos os portais migrados para light theme com identidade visual unificada
+- [x] **Etapa 6**: **Visual Polish** (v2.2.0-alpha.1) — DS aplicado aos conteúdos operacionais, 6 novos componentes, 53 novos tokens, JetBrains Mono, logo SGA real, sidebar pill active
 
 ### Fase 2 — Instalador desktop
 
@@ -405,6 +406,7 @@ Para aeroportos grandes com 10+ utilizadores COE simultâneos, instalação prem
 - **v2.0.0-alpha.1** (2026-04-10) — Monorepo Portal DREA criado, packages separados, git + GitHub privado, build pipeline Python, documentação profissional.
 - **v2.0.0-beta.1** (2026-04-11) — Fase 1 Etapas 1-4 completas: config externa por aeroporto, branding visível, manuais.
 - **v2.1.0-alpha.1** (2026-04-11) — **Design System SGA completo**: tokens em 3 camadas (primitive → semantic → density), Inter Variable embebida, sprite SVG, chrome consolidado (shell bar + sidebar + splash + footer), ~13 componentes tokenizados, ambos os portais migrados para light theme com identidade SGA unificada. Fase 1 concluída (Etapas 1-5).
-- **v2.2** (futuro) — extracção dos JS utilities restantes + global body typography switch.
+- **v2.2.0-alpha.1** (2026-04-12) — **Visual Polish** (Plan 7): DS aplicado aos conteúdos operacionais — SSCI dashboard com 6 KPIs em stat-card-gauge + progress bars, COE form com two-col layout + sticky chronometer, sidebar com nav-btn--pill active, JetBrains Mono para numéricos, 6 novos componentes CSS, 53 novos tokens, logo SGA real integrada. Etapa 6 concluída.
+- **v2.3** (futuro) — COE dashboard reskinning + contacts cards + responsive.
 - **v3.0** (futuro) — Fase 2: instaladores Tauri.
 - **v4.0** (futuro) — Fase 3: LAN SQLite server opcional.
