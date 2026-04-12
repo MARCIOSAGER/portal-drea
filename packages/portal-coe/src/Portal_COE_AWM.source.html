@@ -5433,7 +5433,7 @@ function getPdfStyles() {
     '.pdf-header .pdf-meta{font-size:9pt;text-align:right;opacity:0.9;}' +
     '.pdf-body{padding:20px 24px;}' +
     '.pdf-footer{position:fixed;bottom:0;left:0;right:0;background:#f5f5f5;border-top:2px solid #004C7B;padding:6px 24px;font-size:8pt;color:#666;display:flex;justify-content:space-between;}' +
-    '.role-card{border:1px solid #ddd;border-radius:6px;padding:16px;margin-bottom:12px;page-break-inside:avoid;}' +
+    '.role-card{border:1px solid #ddd;border-radius:6px;padding:16px;margin-bottom:12px;}' +
     '.role-header{display:flex;align-items:center;gap:12px;margin-bottom:10px;padding-bottom:8px;border-bottom:2px solid #004C7B;}' +
     '.role-code{background:#004C7B;color:white;padding:4px 10px;border-radius:4px;font-weight:bold;font-size:10pt;}' +
     '.role-name{font-size:12pt;font-weight:bold;color:#004C7B;}' +
@@ -5470,7 +5470,7 @@ function openPdfWindow(title, contentHtml) {
     var utcStr = now.toLocaleTimeString('pt-PT', {hour12:false, timeZone:'UTC'});
     w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>' + title + '</title>');
     w.document.write('<style>' + getPdfStyles() + '</style></head><body>');
-    w.document.write('<div class="pdf-header"><div><h1>COE — {{AIRPORT.NAME}} ({{AIRPORT.OACI}})</h1><div style="font-size:9pt;margin-top:2px;">Operado por {{AIRPORT.OPERATOR_LONG}}</div></div>');
+    w.document.write('<div class="pdf-header"><div><img src="data:image/png;base64,{{LOGO_SGA_PNG_BASE64}}" alt="SGA" style="height:30px;margin-right:12px;vertical-align:middle;"><h1 style="display:inline;vertical-align:middle;">COE — {{AIRPORT.NAME}} ({{AIRPORT.OACI}})</h1><div style="font-size:9pt;margin-top:2px;">Operado por {{AIRPORT.OPERATOR_LONG}}</div></div>');
     w.document.write('<div class="pdf-meta">' + dateStr + ' ' + timeStr + '<br>UTC ' + utcStr + (coeOperatorName ? '<br>Operador: ' + coeOperatorName + ' (' + coeOperatorRole + ')' : '') + '</div></div>');
     w.document.write('<div class="pdf-body">');
     w.document.write(contentHtml);

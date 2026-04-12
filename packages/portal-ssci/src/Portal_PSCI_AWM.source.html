@@ -2380,11 +2380,14 @@ function exportForm(sectionId) {
     html += '@page{size:A4;margin:12mm;}';
     html += 'body{font-family:Arial,Helvetica,sans-serif;padding:0;margin:0;font-size:11px;color:#222;}';
     html += '.hdr{text-align:center;border-bottom:3px solid #004C7B;padding-bottom:8px;margin-bottom:12px;}';
+    html += '.hdr img{max-width:200px;height:auto;margin-bottom:6px;}';
     html += '.hdr h1{color:#004C7B;font-size:15px;margin:6px 0 2px;}';
     html += '.hdr .sub{color:#555;font-size:10px;}';
     html += '.page-title{color:#004C7B;font-size:14px;border-bottom:2px solid #0094CF;padding-bottom:4px;margin:10px 0 8px;}';
     html += '.page-desc{color:#666;font-size:10px;margin-bottom:10px;}';
-    html += '.form-card{margin-bottom:10px;border:1px solid #ccc;padding:8px 10px;border-radius:4px;page-break-inside:avoid;}';
+    html += '.form-card{margin-bottom:10px;border:1px solid #ccc;padding:8px 10px;border-radius:4px;}';
+    html += 'table{page-break-inside:auto;}';
+    html += 'tr{page-break-inside:avoid;page-break-after:auto;}';
     html += '.form-card h3{color:#004C7B;font-size:12px;margin:0 0 6px;border-bottom:1px solid #e0e0e0;padding-bottom:3px;}';
     html += '.form-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:4px;}';
     html += '.form-group{flex:1;min-width:160px;}';
@@ -2399,7 +2402,8 @@ function exportForm(sectionId) {
     html += '.no-print{position:fixed;top:8px;right:8px;background:#004C7B;color:#fff;padding:8px 14px;border:none;border-radius:4px;cursor:pointer;font-weight:bold;box-shadow:0 2px 6px rgba(0,0,0,0.2);}';
     html += '</style></head><body>';
     html += '<button class="no-print" onclick="window.print()">🖨️ Imprimir / Guardar PDF</button>';
-    html += '<div class="hdr"><h1>{{AIRPORT.OPERATOR_SHORT}} — {{AIRPORT.NAME}} ({{AIRPORT.OACI}})</h1>';
+    html += '<div class="hdr"><img src="data:image/png;base64,{{LOGO_SGA_PNG_BASE64}}" alt="SGA">';
+    html += '<h1>{{AIRPORT.OPERATOR_SHORT}} — {{AIRPORT.NAME}} ({{AIRPORT.OACI}})</h1>';
     html += '<div class="sub">Serviço de Salvamento e Combate a Incêndio — {{AIRPORT.LOCATION}}</div></div>';
     html += bodyHtml;
     html += '<div class="sign-row"><div class="sign-box">Bombeiro Responsável</div><div class="sign-box">Chefe de Turno</div><div class="sign-box">SGSO</div></div>';
