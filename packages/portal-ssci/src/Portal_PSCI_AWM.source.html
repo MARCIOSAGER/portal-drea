@@ -89,6 +89,8 @@
         }
         .portal-tab-btn:hover { background: #dee2e6; }
         .portal-tab-btn.active { background: var(--brand-primary-fill, #004C7B); color: #fff; }
+        /* Zebra-striping for check-tables (replaces inline background:#fafafa) */
+        .check-table tbody tr:not(.section-header):nth-child(even) { background: #fafafa; }
 
         /* ===== Plan 5 Tasks 8+9 — awm-modal + awm-toast migrated =====
          * The entire awm-toast + awm-modal CSS (including keyframes,
@@ -291,8 +293,6 @@
             <div class="ds-shell-bar__utc" id="headerUTC">UTC 00:00:00</div>
             <div class="ds-shell-bar__local" id="clockDisplay">00:00:00</div>
             <div class="ds-shell-bar__local" id="headerDate" style="display:none;"></div>
-            <!-- Legacy psci-clock ID preserved (hidden) for any old JS paths -->
-            <div class="time-display" id="psci-clock" style="display:none;"></div>
         </div>
 
         <div class="ds-shell-bar__operator" id="operatorBadge" data-logged-in="false" style="display:none;"></div>
@@ -1008,41 +1008,41 @@
                 <table class="check-table">
                     <thead><tr><th style="text-align:left;">Equipamento (Qtd.)</th><th>OP</th><th>NO</th><th class="obs-cell">Obs.</th></tr></thead>
                     <tbody>
-                        <tr style="background:#fafafa;"><td>Cilindros de Ar Respirável (2)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
+                        <tr><td>Cilindros de Ar Respirável (2)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
                         <tr><td>Pé de Cabra «Hooligan» (1)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
-                        <tr style="background:#fafafa;"><td>Alavanca de Aço Forjado (1)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
+                        <tr><td>Alavanca de Aço Forjado (1)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
                         <tr><td>Machado de Corte (Axe Fire) (1)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
-                        <tr style="background:#fafafa;"><td>Machado de Incêndio para VCI (2)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
+                        <tr><td>Machado de Incêndio para VCI (2)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
                         <tr><td>Alicate de Corte (1)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
-                        <tr style="background:#fafafa;"><td>Marreta 2KG (1)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
+                        <tr><td>Marreta 2KG (1)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
                         <tr><td>Cinzel Estriado (1)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
-                        <tr style="background:#fafafa;"><td>Mangueira 70'' (5)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
+                        <tr><td>Mangueira 70'' (5)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
                         <tr><td>Mangueira 50'' (5)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
-                        <tr style="background:#fafafa;"><td>Cable Life (4)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
+                        <tr><td>Cable Life (4)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
                         <tr><td>Desfibrilador (1)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
-                        <tr style="background:#fafafa;"><td>Termocâmera FLIR K2 (1)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
+                        <tr><td>Termocâmera FLIR K2 (1)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
                         <tr><td>Máscara de Oxigénio (1)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
-                        <tr style="background:#fafafa;"><td>DEA - Desfibrilador Externo Automático (1)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
+                        <tr><td>DEA - Desfibrilador Externo Automático (1)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
                         <tr><td>Agulheta (2)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
-                        <tr style="background:#fafafa;"><td>Difusor de Espuma (1)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
+                        <tr><td>Difusor de Espuma (1)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
                         <tr><td>Extintor CO2 5KG (1)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
-                        <tr style="background:#fafafa;"><td>Extintor PQS 6KG (1)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
+                        <tr><td>Extintor PQS 6KG (1)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
                         <tr><td>Escada de Alumínio (1)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
-                        <tr style="background:#fafafa;"><td>Escada Telescópica (1)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
+                        <tr><td>Escada Telescópica (1)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
                         <tr><td>Manta Ignífuga (1)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
-                        <tr style="background:#fafafa;"><td>Corda 50m com Ganchos (1)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
+                        <tr><td>Corda 50m com Ganchos (1)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
                         <tr><td>Corda 25m com Mosquetões (1)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
-                        <tr style="background:#fafafa;"><td>Corda Elástica 30m (2)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
+                        <tr><td>Corda Elástica 30m (2)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
                         <tr><td>Tocha de Sinalização (2)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
-                        <tr style="background:#fafafa;"><td>Cone de Sinalização (4)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
+                        <tr><td>Cone de Sinalização (4)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
                         <tr><td>Kit Primeiros Socorros (1)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
-                        <tr style="background:#fafafa;"><td>Talas / Imobilizadores (1 kit)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
+                        <tr><td>Talas / Imobilizadores (1 kit)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
                         <tr><td>Maca Rígida (1)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
-                        <tr style="background:#fafafa;"><td>Cobertores (2)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
+                        <tr><td>Cobertores (2)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
                         <tr><td>Fitas de Triagem START (1 kit)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
-                        <tr style="background:#fafafa;"><td>Lanterna Recarregável (2)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
+                        <tr><td>Lanterna Recarregável (2)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
                         <tr><td>Megafone (1)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
-                        <tr style="background:#fafafa;"><td>Calços de Roda (2)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
+                        <tr><td>Calços de Roda (2)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
                     </tbody>
                 </table>
             </div>
@@ -1069,41 +1069,41 @@
                 <table class="check-table">
                     <thead><tr><th style="text-align:left;">Equipamento (Qtd.)</th><th>OP</th><th>NO</th><th class="obs-cell">Obs.</th></tr></thead>
                     <tbody>
-                        <tr style="background:#fafafa;"><td>Cilindros de Ar Respirável (2)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
+                        <tr><td>Cilindros de Ar Respirável (2)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
                         <tr><td>Pé de Cabra «Hooligan» (1)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
-                        <tr style="background:#fafafa;"><td>Alavanca de Aço Forjado (1)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
+                        <tr><td>Alavanca de Aço Forjado (1)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
                         <tr><td>Machado de Corte (Axe Fire) (1)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
-                        <tr style="background:#fafafa;"><td>Machado de Incêndio para VCI (2)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
+                        <tr><td>Machado de Incêndio para VCI (2)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
                         <tr><td>Alicate de Corte (1)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
-                        <tr style="background:#fafafa;"><td>Marreta 2KG (1)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
+                        <tr><td>Marreta 2KG (1)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
                         <tr><td>Cinzel Estriado (1)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
-                        <tr style="background:#fafafa;"><td>Mangueira 70'' (5)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
+                        <tr><td>Mangueira 70'' (5)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
                         <tr><td>Mangueira 50'' (5)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
-                        <tr style="background:#fafafa;"><td>Cable Life (4)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
+                        <tr><td>Cable Life (4)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
                         <tr><td>Desfibrilador (1)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
-                        <tr style="background:#fafafa;"><td>Termocâmera FLIR K2 (1)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
+                        <tr><td>Termocâmera FLIR K2 (1)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
                         <tr><td>Máscara de Oxigénio (1)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
-                        <tr style="background:#fafafa;"><td>DEA - Desfibrilador Externo Automático (1)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
+                        <tr><td>DEA - Desfibrilador Externo Automático (1)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
                         <tr><td>Agulheta (2)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
-                        <tr style="background:#fafafa;"><td>Difusor de Espuma (1)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
+                        <tr><td>Difusor de Espuma (1)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
                         <tr><td>Extintor CO2 5KG (1)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
-                        <tr style="background:#fafafa;"><td>Extintor PQS 6KG (1)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
+                        <tr><td>Extintor PQS 6KG (1)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
                         <tr><td>Escada de Alumínio (1)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
-                        <tr style="background:#fafafa;"><td>Escada Telescópica (1)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
+                        <tr><td>Escada Telescópica (1)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
                         <tr><td>Manta Ignífuga (1)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
-                        <tr style="background:#fafafa;"><td>Corda 50m com Ganchos (1)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
+                        <tr><td>Corda 50m com Ganchos (1)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
                         <tr><td>Corda 25m com Mosquetões (1)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
-                        <tr style="background:#fafafa;"><td>Corda Elástica 30m (2)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
+                        <tr><td>Corda Elástica 30m (2)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
                         <tr><td>Tocha de Sinalização (2)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
-                        <tr style="background:#fafafa;"><td>Cone de Sinalização (4)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
+                        <tr><td>Cone de Sinalização (4)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
                         <tr><td>Kit Primeiros Socorros (1)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
-                        <tr style="background:#fafafa;"><td>Talas / Imobilizadores (1 kit)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
+                        <tr><td>Talas / Imobilizadores (1 kit)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
                         <tr><td>Maca Rígida (1)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
-                        <tr style="background:#fafafa;"><td>Cobertores (2)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
+                        <tr><td>Cobertores (2)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
                         <tr><td>Fitas de Triagem START (1 kit)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
-                        <tr style="background:#fafafa;"><td>Lanterna Recarregável (2)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
+                        <tr><td>Lanterna Recarregável (2)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
                         <tr><td>Megafone (1)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
-                        <tr style="background:#fafafa;"><td>Calços de Roda (2)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
+                        <tr><td>Calços de Roda (2)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
                     </tbody>
                 </table>
             </div>
@@ -1143,25 +1143,25 @@
                 <table class="check-table">
                     <thead><tr><th style="text-align:left;">Identificação</th><th>Hora</th><th>Receptor</th><th>Resultado</th><th>Obs.</th></tr></thead>
                     <tbody>
-                        <tr style="background:#fafafa;"><td>COE → TWR</td><td><input type="time" style="width:80px;"></td><td>TWR</td>
+                        <tr><td>COE → TWR</td><td><input type="time" style="width:80px;"></td><td>TWR</td>
                         <td><div class="result-toggle"><button type="button" class="rt-btn" data-result="OK" onclick="setResultToggle(this)">OK</button><button type="button" class="rt-btn" data-result="NOK" onclick="setResultToggle(this)">NOK</button><input type="hidden" class="rt-value"></div></td>
                         <td class="obs-cell"><input type="text"></td></tr>
                         <tr><td>COE → Despacho</td><td><input type="time" style="width:80px;"></td><td>DESPACHO</td>
                         <td><div class="result-toggle"><button type="button" class="rt-btn" data-result="OK" onclick="setResultToggle(this)">OK</button><button type="button" class="rt-btn" data-result="NOK" onclick="setResultToggle(this)">NOK</button><input type="hidden" class="rt-value"></div></td>
                         <td class="obs-cell"><input type="text"></td></tr>
-                        <tr style="background:#fafafa;"><td>Z01 (Central Zebra 1)</td><td><input type="time" style="width:80px;"></td><td>Z01</td>
+                        <tr><td>Z01 (Central Zebra 1)</td><td><input type="time" style="width:80px;"></td><td>Z01</td>
                         <td><div class="result-toggle"><button type="button" class="rt-btn" data-result="OK" onclick="setResultToggle(this)">OK</button><button type="button" class="rt-btn" data-result="NOK" onclick="setResultToggle(this)">NOK</button><input type="hidden" class="rt-value"></div></td>
                         <td class="obs-cell"><input type="text"></td></tr>
                         <tr><td>Z02 (Central Zebra 2)</td><td><input type="time" style="width:80px;"></td><td>Z02</td>
                         <td><div class="result-toggle"><button type="button" class="rt-btn" data-result="OK" onclick="setResultToggle(this)">OK</button><button type="button" class="rt-btn" data-result="NOK" onclick="setResultToggle(this)">NOK</button><input type="hidden" class="rt-value"></div></td>
                         <td class="obs-cell"><input type="text"></td></tr>
-                        <tr style="background:#fafafa;"><td>Z03 (Central Zebra 3)</td><td><input type="time" style="width:80px;"></td><td>Z03</td>
+                        <tr><td>Z03 (Central Zebra 3)</td><td><input type="time" style="width:80px;"></td><td>Z03</td>
                         <td><div class="result-toggle"><button type="button" class="rt-btn" data-result="OK" onclick="setResultToggle(this)">OK</button><button type="button" class="rt-btn" data-result="NOK" onclick="setResultToggle(this)">NOK</button><input type="hidden" class="rt-value"></div></td>
                         <td class="obs-cell"><input type="text"></td></tr>
                         <tr><td>BA-CE</td><td><input type="time" style="width:80px;"></td><td>BA-CE</td>
                         <td><div class="result-toggle"><button type="button" class="rt-btn" data-result="OK" onclick="setResultToggle(this)">OK</button><button type="button" class="rt-btn" data-result="NOK" onclick="setResultToggle(this)">NOK</button><input type="hidden" class="rt-value"></div></td>
                         <td class="obs-cell"><input type="text"></td></tr>
-                        <tr style="background:#fafafa;"><td>CCI 01</td><td><input type="time" style="width:80px;"></td><td>CCI 01</td>
+                        <tr><td>CCI 01</td><td><input type="time" style="width:80px;"></td><td>CCI 01</td>
                         <td><div class="result-toggle"><button type="button" class="rt-btn" data-result="OK" onclick="setResultToggle(this)">OK</button><button type="button" class="rt-btn" data-result="NOK" onclick="setResultToggle(this)">NOK</button><input type="hidden" class="rt-value"></div></td>
                         <td class="obs-cell"><input type="text"></td></tr>
                         <tr><td>CCI 02</td><td><input type="time" style="width:80px;"></td><td>CCI 02</td>
@@ -1179,7 +1179,7 @@
                         <tr><td>COE → TWR</td><td><input type="time" style="width:80px;"></td><td>TWR</td>
                         <td><div class="result-toggle"><button type="button" class="rt-btn" data-result="OK" onclick="setResultToggle(this)">OK</button><button type="button" class="rt-btn" data-result="NOK" onclick="setResultToggle(this)">NOK</button><input type="hidden" class="rt-value"></div></td>
                         <td class="obs-cell"><input type="text"></td></tr>
-                        <tr style="background:#fafafa;"><td>COE → Sala Comunicação</td><td><input type="time" style="width:80px;"></td><td>SALA COM.</td>
+                        <tr><td>COE → Sala Comunicação</td><td><input type="time" style="width:80px;"></td><td>SALA COM.</td>
                         <td><div class="result-toggle"><button type="button" class="rt-btn" data-result="OK" onclick="setResultToggle(this)">OK</button><button type="button" class="rt-btn" data-result="NOK" onclick="setResultToggle(this)">NOK</button><input type="hidden" class="rt-value"></div></td>
                         <td class="obs-cell"><input type="text"></td></tr>
                     </tbody>
@@ -1398,25 +1398,25 @@
                 <table class="check-table">
                     <thead><tr><th style="text-align:left;">Item</th><th>OK</th><th>NOK</th><th class="obs-cell">Obs.</th></tr></thead>
                     <tbody>
-                        <tr style="background:#fafafa;"><td>Condições pneus/rodas</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
+                        <tr><td>Condições pneus/rodas</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
                         <tr><td>Motor (partida, funcionamento)</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
-                        <tr style="background:#fafafa;"><td>Painel iluminação</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
+                        <tr><td>Painel iluminação</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
                         <tr><td>Faróis</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
-                        <tr style="background:#fafafa;"><td>Lanternas traseiras/dianteiras</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
+                        <tr><td>Lanternas traseiras/dianteiras</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
                         <tr><td>Giroflex</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
-                        <tr style="background:#fafafa;"><td>Sirene</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
+                        <tr><td>Sirene</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
                         <tr><td>Hodómetro</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
-                        <tr style="background:#fafafa;"><td>Nível combustível</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
+                        <tr><td>Nível combustível</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
                         <tr><td>Óleo motor</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
-                        <tr style="background:#fafafa;"><td>Pára-brisas</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
+                        <tr><td>Pára-brisas</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
                         <tr><td>Água radiador</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
-                        <tr style="background:#fafafa;"><td>Suspensão</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
+                        <tr><td>Suspensão</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
                         <tr><td>Direcção</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
-                        <tr style="background:#fafafa;"><td>Freio serviço</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
+                        <tr><td>Freio serviço</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
                         <tr><td>Buzina</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
-                        <tr style="background:#fafafa;"><td>Óleo direcção hidráulica</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
+                        <tr><td>Óleo direcção hidráulica</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
                         <tr><td>Fluido transmissão</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
-                        <tr style="background:#fafafa;"><td>Freio estacionamento</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
+                        <tr><td>Freio estacionamento</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
                         <tr><td>Extintor incêndio</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
                     </tbody>
                 </table>
@@ -1428,7 +1428,7 @@
                     <thead><tr><th style="text-align:left;">Equipamento</th><th>OK</th><th>NOK</th><th class="obs-cell">Obs.</th></tr></thead>
                     <tbody>
                         <tr><td>Estação fixa</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
-                        <tr style="background:#fafafa;"><td>Rádio portátil</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
+                        <tr><td>Rádio portátil</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
                         <tr><td>Telefone</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td class="obs-cell"><input type="text"></td></tr>
                     </tbody>
                 </table>
@@ -2011,13 +2011,14 @@
 // === NAVIGATION ===
 function openSection(id, event) {
     document.querySelectorAll('.section').forEach(function(s) { s.classList.remove('active'); });
-    document.querySelectorAll('.nav-btn').forEach(function(n) { n.classList.remove('active'); });
+    document.querySelectorAll('.nav-btn').forEach(function(n) { n.classList.remove('active'); n.removeAttribute('aria-current'); });
     var sec = document.getElementById(id);
     if (sec) sec.classList.add('active');
     // Find and activate nav item
     document.querySelectorAll('.nav-btn').forEach(function(n) {
         if (n.getAttribute('onclick') && n.getAttribute('onclick').indexOf("'" + id + "'") > -1) {
             n.classList.add('active');
+            n.setAttribute('aria-current', 'page');
         }
     });
     if (event) event.preventDefault();
@@ -2030,10 +2031,7 @@ function updateClock() {
     var m = String(now.getMinutes()).padStart(2,'0');
     var s = String(now.getSeconds()).padStart(2,'0');
     var date = now.toLocaleDateString('pt-PT');
-    // Legacy hidden element (kept for any old callers, Plan 6 may remove)
-    var pEl = document.getElementById('psci-clock');
-    if (pEl) pEl.textContent = h + ':' + m + ' — ' + date;
-    // New DS shell bar elements (Plan 4 naming)
+    // DS shell bar clock elements
     var localEl = document.getElementById('clockDisplay');
     if (localEl) localEl.textContent = h + ':' + m + ':' + s;
     var utcEl = document.getElementById('headerUTC');
@@ -2051,20 +2049,35 @@ setInterval(updateClock, 1000);
 
 // === PRESENCA ===
 var presencaCount = 0;
-function addPresencaRow() {
+function addPresencaRow(nome, funcao) {
     presencaCount++;
     var tbody = document.getElementById('presenca-body');
     var tr = document.createElement('tr');
-    if (presencaCount % 2 === 0) tr.style.background = '#fafafa';
     tr.innerHTML = '<td style="text-align:center;">' + presencaCount + '</td>' +
-        '<td><input type="text" style="width:100%;padding:2px 4px;border:1px solid #ddd;border-radius:3px;" placeholder="Nome"></td>' +
-        '<td><input type="text" style="width:100%;padding:2px 4px;border:1px solid #ddd;border-radius:3px;" placeholder="Função"></td>' +
+        '<td><input type="text" style="width:100%;padding:2px 4px;border:1px solid #ddd;border-radius:3px;" placeholder="Nome" value="' + (nome || '') + '"></td>' +
+        '<td><input type="text" style="width:100%;padding:2px 4px;border:1px solid #ddd;border-radius:3px;" placeholder="Função" value="' + (funcao || '') + '"></td>' +
         '<td style="text-align:center;"><input type="checkbox" checked></td>' +
         '<td><input type="text" style="width:100%;padding:2px 4px;border:1px solid #ddd;border-radius:3px;" placeholder=""></td>';
     tbody.appendChild(tr);
 }
-// Add initial 13 rows
-for (var i = 0; i < 13; i++) addPresencaRow();
+function presencaPopulateFromConfig() {
+    var tbody = document.getElementById('presenca-body');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+    presencaCount = 0;
+    // Try to populate from configured efectivo (current turno or all)
+    var populated = false;
+    if (typeof PSCI_CFG !== 'undefined' && PSCI_CFG.efectivo) {
+        var turno = (typeof PSCI_TURNO_ACTUAL !== 'undefined') ? PSCI_TURNO_ACTUAL : 'ALPHA';
+        var lista = PSCI_CFG.efectivo[turno] || [];
+        if (lista.length > 0) {
+            lista.forEach(function(e) { addPresencaRow(e.nome || '', e.funcao || ''); });
+            populated = true;
+        }
+    }
+    if (!populated) { for (var i = 0; i < 13; i++) addPresencaRow(); }
+}
+document.addEventListener('DOMContentLoaded', presencaPopulateFromConfig);
 
 // === TEMPO RESPOSTA AUTO-CALC ===
 ['tr-alarme','tr-saida','tr-chegada'].forEach(function(id) {
@@ -3609,6 +3622,7 @@ if (document.readyState !== 'loading') setTimeout(stkRenderAll, 120);
         installShortcutsModal();
         fixButtonTypes();
         linkLabelsToInputs();
+        hideNavEmojis();
         installKeyboardShortcuts();
         hookSaveObserver();
         installMutationObserver();
@@ -3746,6 +3760,21 @@ if (document.readyState !== 'loading') setTimeout(stkRenderAll, 120);
         var btns = root.querySelectorAll('button:not([type])');
         btns.forEach(function(b) { b.setAttribute('type', 'button'); });
         return btns.length;
+    }
+
+    // Wrap leading emojis in nav buttons with aria-hidden for screen readers
+    function hideNavEmojis() {
+        document.querySelectorAll('.nav-btn').forEach(function(btn) {
+            var text = btn.textContent;
+            var m = text.match(/^([\u{1F300}-\u{1FAD6}\u{2600}-\u{27BF}\u{FE00}-\u{FE0F}\u{200D}\u{20E3}\u{E0020}-\u{E007F}\u2705\u2611\u26BD\u26A0\u2328\u23F0-\u23FA\u2764]+\s*)/u);
+            if (m) {
+                var span = document.createElement('span');
+                span.setAttribute('aria-hidden', 'true');
+                span.textContent = m[1];
+                btn.textContent = text.slice(m[1].length);
+                btn.insertBefore(span, btn.firstChild);
+            }
+        });
     }
 
     function linkLabelsToInputs(root) {
