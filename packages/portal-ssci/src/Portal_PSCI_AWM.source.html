@@ -341,43 +341,58 @@ html { scroll-behavior: smooth; }
 
         <!-- DASHBOARD -->
         <div id="dashboard" class="section active">
-            <h1 class="page-title">Dashboard Operacional SSCI</h1>
-            <p class="page-desc">Visão geral do estado operacional do Serviço de Salvamento e Combate a Incêndio.</p>
-            
-            <div class="dash-grid">
-                <div class="dash-card" style="border-top:4px solid #c0392b;">
-                    <div class="dash-icon">🛡</div>
-                    <div class="dash-title">Categoria SCI</div>
-                    <div class="dash-value" id="dash-catsci">—</div>
-                    <div style="font-size:0.72rem; color:#888; margin-top:0.2rem;">Nominal ICAO</div>
+            <header style="margin-bottom: var(--space-5);">
+                <h1 style="font-size: 20px; font-weight: 600; color: var(--neutral-fg); letter-spacing: -0.02em; margin: 0 0 var(--space-2) 0;">Dashboard Operacional SSCI</h1>
+                <p style="font-size: var(--text-sm); color: var(--neutral-fg-muted); margin: 0;">Visao geral do estado do SSCI <span style="font-size: 10px; color: var(--neutral-fg-subtle); font-family: var(--font-numeric);"> &middot; actualizado ha <span id="updated-ago">&mdash;</span></span></p>
+            </header>
+
+            <section class="dash-section">
+                <div class="dash-section__label">Estado operacional SCI</div>
+                <div class="dash-section__grid">
+                    <div class="stat-card-gauge" data-state="normal" id="kpi-cat">
+                        <div class="stat-card-gauge__label">Categoria SCI</div>
+                        <div class="stat-card-gauge__value">7<span class="stat-card-gauge__suffix">/10</span></div>
+                        <div class="stat-card-gauge__bar"><div class="stat-card-gauge__fill" style="--fill: 70%"></div></div>
+                        <div class="stat-card-gauge__sub">Nominal ICAO</div>
+                    </div>
+                    <div class="stat-card-gauge" data-state="ok" id="kpi-viaturas">
+                        <div class="stat-card-gauge__label">Viaturas Operacionais</div>
+                        <div class="stat-card-gauge__value">3<span class="stat-card-gauge__suffix">/3</span></div>
+                        <div class="stat-card-gauge__bar"><div class="stat-card-gauge__fill" style="--fill: 100%"></div></div>
+                        <div class="stat-card-gauge__sub">Todas operacionais</div>
+                    </div>
+                    <div class="stat-card-gauge" data-state="unknown" id="kpi-efectivo">
+                        <div class="stat-card-gauge__label">Efectivo em Servico</div>
+                        <div class="stat-card-gauge__value">&mdash;<span class="stat-card-gauge__suffix">/9</span></div>
+                        <div class="stat-card-gauge__bar"><div class="stat-card-gauge__fill" style="--fill: 0%"></div></div>
+                        <div class="stat-card-gauge__sub">Seleccione turno</div>
+                    </div>
                 </div>
-                <div class="dash-card" style="border-top:4px solid #e67e22;">
-                    <div class="dash-icon">⚡</div>
-                    <div class="dash-title">CAT Actual</div>
-                    <div class="dash-value" id="dash-catactual" style="color:#e67e22;">—</div>
-                    <div style="font-size:0.72rem; color:#888; margin-top:0.2rem;" id="dash-catactual-note">Categoria declarada no momento</div>
+            </section>
+
+            <section class="dash-section">
+                <div class="dash-section__label">Performance e verificacao</div>
+                <div class="dash-section__grid">
+                    <div class="stat-card-gauge" data-state="unknown" id="kpi-resposta">
+                        <div class="stat-card-gauge__label">Tempo Resposta</div>
+                        <div class="stat-card-gauge__value">&mdash;</div>
+                        <div class="stat-card-gauge__bar"><div class="stat-card-gauge__fill" style="--fill: 0%"></div></div>
+                        <div class="stat-card-gauge__sub">Sem dados</div>
+                    </div>
+                    <div class="stat-card-gauge" data-state="ok" id="kpi-comms">
+                        <div class="stat-card-gauge__label">Comunicacoes</div>
+                        <div class="stat-card-gauge__value">OK</div>
+                        <div class="stat-card-gauge__bar"><div class="stat-card-gauge__fill" style="--fill: 100%"></div></div>
+                        <div class="stat-card-gauge__sub">Todos os canais operacionais</div>
+                    </div>
+                    <div class="stat-card-gauge" data-state="ok" id="kpi-inspec">
+                        <div class="stat-card-gauge__label">Inspeccoes Mensais</div>
+                        <div class="stat-card-gauge__value">4<span class="stat-card-gauge__suffix">/4</span></div>
+                        <div class="stat-card-gauge__bar"><div class="stat-card-gauge__fill" style="--fill: 100%"></div></div>
+                        <div class="stat-card-gauge__sub">Todas completas</div>
+                    </div>
                 </div>
-                <div class="dash-card">
-                    <div class="dash-icon">🚒</div>
-                    <div class="dash-title">Viaturas Operacionais</div>
-                    <div class="dash-value" id="dash-viaturas">—/—</div>
-                </div>
-                <div class="dash-card">
-                    <div class="dash-icon">👨‍🚒</div>
-                    <div class="dash-title">Efectivo em Serviço</div>
-                    <div class="dash-value" id="dash-efectivo">—/—</div>
-                </div>
-                <div class="dash-card">
-                    <div class="dash-icon">📡</div>
-                    <div class="dash-title">Comunicações</div>
-                    <div class="dash-value" id="dash-comms" style="color:var(--success-green);">—</div>
-                </div>
-                <div class="dash-card">
-                    <div class="dash-icon">⏱</div>
-                    <div class="dash-title">Último Tempo Resposta</div>
-                    <div class="dash-value" id="dash-tresp">— min</div>
-                </div>
-            </div>
+            </section>
             
             <div class="form-card">
                 <h3>📅 Seleccionar Turno</h3>
