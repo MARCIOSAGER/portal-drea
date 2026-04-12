@@ -159,7 +159,7 @@ jobs:
         run: |
           cat > _site/sw.js << 'SW'
           const CACHE_NAME = 'portal-drea-v2.2.0';
-          const URLS_TO_CACHE = ['/', '/coe/', '/ssci/'];
+          const URLS_TO_CACHE = ['./', './coe/', './ssci/'];
 
           self.addEventListener('install', e => {
             e.waitUntil(
@@ -195,9 +195,21 @@ jobs:
 
       - name: Add SW registration to portal HTMLs
         run: |
-          for f in _site/coe/index.html _site/ssci/index.html; do
-            sed -i 's|</body>|<script>if("serviceWorker" in navigator){navigator.serviceWorker.register("/sw.js").catch(function(){})}</script></body>|' "$f"
-          done
+          # Insert SW registration BEFORE the final </body> tag only (not the ones inside JS strings).
+          # Use python for precision — sed replaces ALL occurrences which breaks JS strings containing </body>.
+          python3 -c "
+          import pathlib
+          sw_tag = '<script>if(\"serviceWorker\" in navigator){navigator.serviceWorker.register(\"../sw.js\",{scope:\"../\"}).catch(function(){})}</script>'
+          for f in ['_site/coe/index.html', '_site/ssci/index.html']:
+              p = pathlib.Path(f)
+              html = p.read_text(encoding='utf-8')
+              # Replace only the LAST </body> (the real one, not the ones inside JS strings)
+              idx = html.rfind('</body>')
+              if idx >= 0:
+                  html = html[:idx] + sw_tag + html[idx:]
+              p.write_text(html, encoding='utf-8')
+              print(f'{f}: SW injected at position {idx}')
+          "
 
       - uses: actions/upload-pages-artifact@v3
         with:
