@@ -1,0 +1,29 @@
+/* =========================================================================
+ * Design System SGA — Component: Dash Section (Plan 7)
+ * ========================================================================= */
+.dash-section { margin-bottom: var(--space-6); }
+.dash-section__label {
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+  color: var(--neutral-fg-muted);
+  margin-bottom: var(--space-4);
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  font-family: var(--font-ui);
+}
+.dash-section__label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, var(--neutral-strong), transparent);
+}
+.dash-section__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-4);
+}
+@media (max-width: 900px) { .dash-section__grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px) { .dash-section__grid { grid-template-columns: 1fr; } }
