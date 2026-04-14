@@ -7,6 +7,16 @@ Versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
 
 ---
 
+## [2.4.0] — 2026-04-14
+
+### Added
+- SSCI: new "Relatórios de Ocorrência" group with AP.04.033 / FR-FNMO-PSCI-019
+  Relatório de Operações de SCI em Aeronaves — single-draft lifecycle, control
+  number `{OACI}/{YEAR}/{NNN}`, irreversible finalization, and sgaPrintReport
+  integration.
+
+---
+
 ## [2.2.0-alpha.1] — 2026-04-12
 
 ### Plan 7 — Visual Polish
