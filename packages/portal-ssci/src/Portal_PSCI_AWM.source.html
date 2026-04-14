@@ -4560,9 +4560,99 @@ document.addEventListener('DOMContentLoaded', function() {
         atualizarStatusSecoes();
     }
 
+    function getFieldValue(path) {
+        if (!state.draft) return '';
+        var parts = path.split('.');
+        var obj = state.draft.secoes;
+        for (var i = 0; i < parts.length; i++) {
+            if (obj == null) return '';
+            obj = obj[parts[i]];
+        }
+        return obj == null ? '' : obj;
+    }
+
+    function input(path, label, type, attrs) {
+        type = type || 'text';
+        attrs = attrs || '';
+        var val = getFieldValue(path);
+        return '<div class="ds-form__field">' +
+            '<label class="ds-form__label">' + escHtml(label) + '</label>' +
+            '<input class="ds-input" type="' + type + '" data-field="' + path + '" value="' + escHtml(val) + '" ' + attrs + '>' +
+            '</div>';
+    }
+
+    function textarea(path, label, rows) {
+        var val = getFieldValue(path);
+        return '<div class="ds-form__field">' +
+            '<label class="ds-form__label">' + escHtml(label) + '</label>' +
+            '<textarea class="ds-input" rows="' + (rows || 3) + '" data-field="' + path + '">' + escHtml(val) + '</textarea>' +
+            '</div>';
+    }
+
+    function checkbox(path, label) {
+        var val = getFieldValue(path) === true;
+        return '<label style="display:inline-flex;align-items:center;gap:var(--space-2);margin-right:var(--space-3);">' +
+            '<input type="checkbox" data-field="' + path + '"' + (val ? ' checked' : '') + '> ' + escHtml(label) +
+            '</label>';
+    }
+
+    function radio(path, label, value) {
+        var cur = getFieldValue(path);
+        return '<label style="display:inline-flex;align-items:center;gap:var(--space-2);margin-right:var(--space-3);">' +
+            '<input type="radio" name="' + path.replace(/\./g,'_') + '" data-field="' + path + '" value="' + escHtml(value) + '"' + (cur === value ? ' checked' : '') + '> ' + escHtml(label) +
+            '</label>';
+    }
+
+    function row() {
+        var args = Array.prototype.slice.call(arguments);
+        return '<div class="ds-form__row" style="display:flex;gap:var(--space-3);flex-wrap:wrap;">' + args.join('') + '</div>';
+    }
+
     function renderSecao(id) {
-        // Stubs — filled in Tasks 5–9
-        return '<p style="color:var(--neutral-fg-muted);">(campos da secção ' + id + ' — em implementação)</p>';
+        switch (id) {
+            case 's1':  return renderS1();
+            case 's2':  return renderS2();
+            case 's3':  return renderS3();
+            default:    return '<p style="color:var(--neutral-fg-muted);">(em implementação)</p>';
+        }
+    }
+
+    function renderS1() {
+        return row(
+            input('s1.aerodromo', '1.1 Aeródromo', 'text', 'readonly'),
+            input('s1.provincia', '1.2 Província')
+        ) + row(
+            input('s1.dataAcidente', '1.3 Data do Acidente', 'date'),
+            input('s1.horaAcidente', '1.4 Hora Local', 'time')
+        ) + '<div class="ds-form__field"><label class="ds-form__label">1.5 Acidente ocorrido durante</label>' +
+            radio('s1.periodo', 'Dia', 'dia') + radio('s1.periodo', 'Noite', 'noite') +
+        '</div>' + row(
+            input('s1.tipoAeronave', '1.6 Tipo da Aeronave'),
+            input('s1.matricula', '1.7 Matrícula'),
+            input('s1.empresa', '1.8 Empresa')
+        ) + row(
+            input('s1.propositoOperacao', '1.9 Propósito da Operação'),
+            input('s1.combustivelTipo', '1.10 Combustível — Tipo'),
+            input('s1.combustivelQtd', '1.10 Combustível — Qtd (kg)', 'number')
+        ) + row(
+            input('s1.alertaDadoPor', '1.11 Alerta dado por'),
+            input('s1.horaAlerta', '1.12 Hora do Alerta', 'time')
+        );
+    }
+
+    function renderS2() {
+        return '<div class="ds-form__field"><label class="ds-form__label">2. Fase da Operação (marcar as aplicáveis)</label>' +
+            checkbox('s2.pouso', '2.1 Pouso') +
+            checkbox('s2.decolagem', '2.2 Decolagem') +
+            checkbox('s2.taxi', '2.3 Táxi') +
+            checkbox('s2.estacionamento', '2.4 Estacionamento') +
+        '</div>';
+    }
+
+    function renderS3() {
+        return row(
+            input('s3.visibilidade', '3.1 Visibilidade (km)', 'number')
+        ) + textarea('s3.condicoesGerais', '3.2 Condições Gerais do Tempo', 4);
     }
 
     function attachAutoSaveHandlers(root) {
@@ -4622,10 +4712,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function novoRascunho() {
         if (state.draft) return state.draft;
+        var oaci = (window.AIRPORT_OACI || '{{AIRPORT.OACI}}' || '').trim();
         state.draft = {
             id: 'draft-' + Date.now(),
             dataInicio: new Date().toISOString(),
-            secoes: { s1:{}, s2:{}, s3:{}, s4:{}, s5:{}, s6:{}, s7:{}, s8:{}, s9:{}, s10:{} }
+            secoes: {
+                s1: { aerodromo: oaci },
+                s2: {}, s3: {}, s4: {}, s5: {},
+                s6: {}, s7: {}, s8: {}, s9: {}, s10: {}
+            }
         };
         saveDraft();
         return state.draft;
