@@ -4851,8 +4851,114 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function imprimirRelatorio(rel) {
-        // Task 11 implements full PDF rendering; this is a temporary stub
-        console.log('imprimirRelatorio — Task 11:', rel.numeroControlo);
+        var body = buildPrintBody(rel);
+        window.sgaPrintReport({
+            title: 'Relatório de Operações de SCI em Aeronaves',
+            subtitle: 'AP.04.033 / FR-FNMO-PSCI-019 — Nº ' + rel.numeroControlo,
+            bodyHtml: body,
+            signatures: [
+                (rel.secoes.s10.nome || '—') + '<br>' + (rel.secoes.s10.cargo || '')
+            ]
+        });
+    }
+
+    function buildPrintBody(rel) {
+        function val(path) { return escHtml(getFieldValueFrom(rel, path)) || '—'; }
+        function card(title, inner) {
+            return '<div class="form-card"><h3>' + escHtml(title) + '</h3>' + inner + '</div>';
+        }
+        function kv(label, value) {
+            return '<div class="form-group"><label>' + escHtml(label) + '</label><div>' + escHtml(value) + '</div></div>';
+        }
+        function grp() {
+            return '<div class="form-row">' + Array.prototype.join.call(arguments, '') + '</div>';
+        }
+
+        var s1 = rel.secoes.s1 || {}, s2 = rel.secoes.s2 || {}, s3 = rel.secoes.s3 || {},
+            s4 = rel.secoes.s4 || {}, s5 = rel.secoes.s5 || {}, s6 = rel.secoes.s6 || {},
+            s7 = rel.secoes.s7 || {}, s8 = rel.secoes.s8 || {}, s9 = rel.secoes.s9 || {},
+            s10 = rel.secoes.s10 || {};
+
+        var fases = [
+            s2.pouso && 'Pouso',
+            s2.decolagem && 'Decolagem',
+            s2.taxi && 'Táxi',
+            s2.estacionamento && 'Estacionamento'
+        ].filter(Boolean).join(', ') || '—';
+
+        var tempos = [
+            ['5.1 Aviso→Contacto', s5.t1], ['5.2 Acidente→Alerta', s5.t2],
+            ['5.3 Alerta→Chegada VCI', s5.t3], ['5.4 Alerta→Chegada VCI (alt)', s5.t4],
+            ['5.5 Chegada→Fogo controlado', s5.t5], ['5.6 Chegada→Extinção', s5.t6],
+            ['5.7 Chegada→Último sobrevivente', s5.t7], ['5.8 Chegada→Remoção cadáveres', s5.t8]
+        ];
+
+        return card('1. Identificação',
+                grp(kv('Aeródromo', s1.aerodromo || '—'), kv('Província', s1.provincia || '—'), kv('Data', s1.dataAcidente || '—'), kv('Hora', s1.horaAcidente || '—')) +
+                grp(kv('Período', s1.periodo || '—'), kv('Aeronave', (s1.tipoAeronave||'—') + ' ' + (s1.matricula||'')), kv('Empresa', s1.empresa || '—')) +
+                grp(kv('Propósito', s1.propositoOperacao || '—'), kv('Combustível', (s1.combustivelTipo||'—') + ' / ' + (s1.combustivelQtd||'—') + ' kg'), kv('Alerta por', s1.alertaDadoPor || '—'), kv('Hora alerta', s1.horaAlerta || '—'))
+            ) +
+            card('2. Fase da Operação', '<p>' + fases + '</p>') +
+            card('3. Condições Meteorológicas', grp(kv('Visibilidade (km)', s3.visibilidade || '—'), kv('Condições gerais', s3.condicoesGerais || '—'))) +
+            card('4. Ocupantes e Vítimas',
+                grp(kv('4.1 Pax a bordo', s4.totalPax || '—'), kv('4.1 Trip a bordo', s4.totalTrip || '—'),
+                    kv('4.2 Salvos feridos', s4.salvasFeridos || '—'), kv('4.2 Salvos ilesos', s4.salvasIlesos || '—')) +
+                grp(kv('4.3 Resgatados feridos', s4.resgFeridos || '—'), kv('4.3 Resgatados ilesos', s4.resgIlesos || '—'),
+                    kv('4.4 Mortos pax', s4.mortosPax || '—'), kv('4.4 Mortos trip', s4.mortosTrip || '—')) +
+                grp(kv('4.5 Terra mortos', s4.terraMortos || '—'), kv('4.5 Terra feridos', s4.terraFeridos || '—'),
+                    kv('4.6 Óbitos 24h (ocup)', s4.obitos24Ocupantes || '—'), kv('4.6 Óbitos 24h (terra)', s4.obitos24Terra || '—'),
+                    kv('4.7 Mortos por fogo', s4.mortosFogo || '—'))
+            ) +
+            card('5. Tempos de Resposta',
+                '<table><tbody>' + tempos.map(function (t) { return '<tr><td>' + t[0] + '</td><td>' + (t[1] || '—') + '</td></tr>'; }).join('') + '</tbody></table>'
+            ) +
+            card('6. Serviço SCI', buildSecao6Html(s6)) +
+            card('7.1 Descrição Sucinta', '<p>' + escHtml(s7.descricaoSuccinta || '—') + '</p>') +
+            card('7.2 Relato do Combate',  '<p>' + escHtml(s7.relatoCombate || '—') + '</p>') +
+            card('7.3 Evacuação',          '<p>' + escHtml(s7.evacuacao || '—') + '</p>') +
+            card('8. Outros Detalhes',     '<p>' + escHtml(s8.outrosDetalhes || '—') + '</p>') +
+            card('9. Estado da Aeronave',  buildSecao9Html(s9)) +
+            card('10. Responsável',
+                grp(kv('Local', s10.local || '—'), kv('Data', s10.data || '—'), kv('Nome', s10.nome || '—'), kv('Cargo', s10.cargo || '—'))
+            );
+    }
+
+    function buildSecao6Html(s6) {
+        var equipas = [['a','VCI'],['b','Bombeiros'],['c','Médicos'],['d','Ambulâncias'],['e','Cisterna'],['f','Outros']];
+        var agentes = [['p','Pó Químico'],['co2','CO₂'],['lge','LGE'],['agEspuma','Água espuma'],['agOutros','Água outros'],['outros','Outros']];
+        function tabela(pref, titulo, src) {
+            return '<h4>' + titulo + '</h4><table><thead><tr><th>Categoria</th><th>Tipo</th><th>Qtd</th></tr></thead><tbody>' +
+                equipas.map(function (e) {
+                    var v = (src && src[e[0]]) || {};
+                    return '<tr><td>' + e[1] + '</td><td>' + escHtml(v.tipo || '—') + '</td><td>' + escHtml(v.qtd || '—') + '</td></tr>';
+                }).join('') + '</tbody></table>';
+        }
+        var agentesRows = agentes.map(function (a) {
+            var v = (s6.agentes && s6.agentes[a[0]]) || {};
+            return '<tr><td>' + a[1] + '</td><td>' + escHtml(v.qtdL || '—') + '</td><td>' + escHtml(v.razao || '—') + '</td><td>' + escHtml(v.tempo || '—') + '</td><td>' + escHtml(v.ordem || '—') + '</td><td>' + escHtml(v.suficiente || '—') + '</td></tr>';
+        }).join('');
+        return tabela('equipaAerodromo', '6.1 Equipa do Aeródromo', s6.equipaAerodromo) +
+               tabela('equipaExterna',   '6.2 Equipa Externa',       s6.equipaExterna) +
+               '<h4>6.3 Agentes Extintores</h4><table><thead><tr><th>Agente</th><th>Qtd (L)</th><th>Razão (L/min)</th><th>Tempo (min)</th><th>Ordem</th><th>Suficiente</th></tr></thead><tbody>' + agentesRows + '</tbody></table>';
+    }
+
+    function buildSecao9Html(s9) {
+        var estados = [['destruida','Destruída'],['gravDanificada','Grav. danificada'],['poucosDanos','Poucos danos'],['incolume','Incólume']];
+        return '<table><thead><tr><th>Estado</th><th>Pelo Acidente</th><th>Pelo Incêndio</th></tr></thead><tbody>' +
+            estados.map(function (e) {
+                var v = s9[e[0]] || {};
+                return '<tr><td>' + e[1] + '</td><td>' + (v.acidente ? '☑' : '☐') + '</td><td>' + (v.incendio ? '☑' : '☐') + '</td></tr>';
+            }).join('') + '</tbody></table>';
+    }
+
+    function getFieldValueFrom(rel, path) {
+        var parts = path.split('.');
+        var obj = rel.secoes;
+        for (var i = 0; i < parts.length; i++) {
+            if (obj == null) return '';
+            obj = obj[parts[i]];
+        }
+        return obj == null ? '' : obj;
     }
 
     function _finalizar() {
@@ -4881,7 +4987,23 @@ document.addEventListener('DOMContentLoaded', function() {
         setState('visualizacao', { relatorioId: relatorio.id });
     }
 
-    function renderVisualizacao(payload) { /* Task 11 */ }
+    function renderVisualizacao(payload) {
+        var rel = (payload && payload.relatorioId)
+            ? state.relatorios.find(function (r) { return r.id === payload.relatorioId; })
+            : null;
+        var container = document.querySelector('#rel-sci-aeronaves .rel-sci-state--visualizacao');
+        if (!container || !rel) { setState('lista'); return; }
+
+        container.innerHTML =
+            '<div class="rel-sci-editor__toolbar">' +
+            '  <button class="ds-btn ds-btn--ghost" onclick="RelSciAeronaves.setState(\'lista\')">← Voltar à lista</button>' +
+            '  <div>' +
+            '    <span class="awm-badge awm-badge--success">Nº ' + escHtml(rel.numeroControlo) + ' · Finalizado</span>' +
+            '    <button class="ds-btn ds-btn--primary" onclick="RelSciAeronaves.imprimir(\'' + rel.id + '\')">🖨 Imprimir</button>' +
+            '  </div>' +
+            '</div>' +
+            '<div class="ds-card"><div class="ds-card__body">' + buildPrintBody(rel) + '</div></div>';
+    }
 
     function gerarNumeroControlo(ano) {
         var oaci = (window.AIRPORT_OACI || '{{AIRPORT.OACI}}' || 'XXXX').trim();
@@ -5017,7 +5139,10 @@ document.addEventListener('DOMContentLoaded', function() {
         descartarRascunho: descartarRascunho,
         saveField: saveField,
         gerarNumeroControlo: gerarNumeroControlo,
-        imprimir: function (id) { /* Task 11 */ },
+        imprimir: function (id) {
+            var rel = state.relatorios.find(function (r) { return r.id === id; });
+            if (rel) imprimirRelatorio(rel);
+        },
         _criarNovo: _criarNovo,
         _descartarComConfirmacao: _descartarComConfirmacao,
         _ver: _ver,
