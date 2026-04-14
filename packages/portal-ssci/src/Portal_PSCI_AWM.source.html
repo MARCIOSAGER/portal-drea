@@ -4828,7 +4828,58 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    function _finalizar() { /* Task 10 */ alert('Finalização — Task 10'); }
+    function validarObrigatorios() {
+        var d = state.draft;
+        if (!d) return { ok: false, erros: ['Sem rascunho'] };
+        var erros = [];
+        var s1 = d.secoes.s1 || {};
+        ['aerodromo','provincia','dataAcidente','horaAcidente','tipoAeronave','matricula','empresa'].forEach(function (f) {
+            if (!s1[f]) erros.push('Secção 1: campo "' + f + '" obrigatório');
+        });
+        var s2 = d.secoes.s2 || {};
+        if (!s2.pouso && !s2.decolagem && !s2.taxi && !s2.estacionamento) {
+            erros.push('Secção 2: marcar pelo menos uma fase da operação');
+        }
+        var s7 = d.secoes.s7 || {};
+        if (!s7.descricaoSuccinta || !s7.descricaoSuccinta.trim()) {
+            erros.push('Secção 7.1: descrição sucinta é obrigatória');
+        }
+        var s10 = d.secoes.s10 || {};
+        if (!s10.nome)       erros.push('Secção 10: nome do responsável obrigatório');
+        if (!s10.assinatura) erros.push('Secção 10: assinatura obrigatória');
+        return { ok: erros.length === 0, erros: erros };
+    }
+
+    function imprimirRelatorio(rel) {
+        // Task 11 implements full PDF rendering; this is a temporary stub
+        console.log('imprimirRelatorio — Task 11:', rel.numeroControlo);
+    }
+
+    function _finalizar() {
+        var v = validarObrigatorios();
+        if (!v.ok) {
+            alert('Não é possível finalizar:\n\n' + v.erros.join('\n'));
+            return;
+        }
+        if (!confirm('Esta acção é IRREVERSÍVEL. O relatório será arquivado com um número de controlo. Confirma a finalização?')) return;
+
+        var agora = new Date();
+        var numero = gerarNumeroControlo(agora.getFullYear());
+
+        var relatorio = Object.assign({}, state.draft, {
+            numeroControlo: numero,
+            dataFinalizacao: agora.toISOString(),
+            locked: true
+        });
+        delete relatorio.dataUltimaEdicao;
+
+        state.relatorios.unshift(relatorio);
+        localStorage.setItem(STORAGE_KEYS.FINALIZED, JSON.stringify(state.relatorios));
+        descartarRascunho();
+
+        imprimirRelatorio(relatorio);
+        setState('visualizacao', { relatorioId: relatorio.id });
+    }
 
     function renderVisualizacao(payload) { /* Task 11 */ }
 
