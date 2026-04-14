@@ -4438,7 +4438,63 @@ document.addEventListener('DOMContentLoaded', function() {
         else if (state.current === 'visualizacao') renderVisualizacao(payload);
     }
 
-    function renderLista() { /* Task 3 */ }
+    function renderLista() {
+        var container = document.querySelector('#rel-sci-aeronaves .rel-sci-state--lista');
+        if (!container) return;
+
+        var draftCard = '';
+        if (state.draft) {
+            var pct = calcPercentPreenchido(state.draft);
+            draftCard =
+                '<div class="ds-card" style="margin-bottom:var(--space-4);">' +
+                '  <div class="ds-card__header">' +
+                '    <h3 class="ds-card__title">Rascunho em curso</h3>' +
+                '    <span class="awm-badge awm-badge--warning">' + pct + '% preenchido</span>' +
+                '  </div>' +
+                '  <div class="ds-card__body">' +
+                '    <p style="margin:0 0 var(--space-3);color:var(--neutral-fg-muted);">' +
+                '      Iniciado em ' + formatDateTime(state.draft.dataInicio) + '</p>' +
+                '    <div style="display:flex;gap:var(--space-2);">' +
+                '      <button class="ds-btn ds-btn--primary" onclick="RelSciAeronaves.setState(\'editor\')">Continuar</button>' +
+                '      <button class="ds-btn ds-btn--ghost" onclick="RelSciAeronaves._descartarComConfirmacao()">Descartar</button>' +
+                '    </div>' +
+                '  </div>' +
+                '</div>';
+        }
+
+        var novoBtn =
+            '<button class="ds-btn ds-btn--primary" ' + (state.draft ? 'disabled' : '') + ' ' +
+            'onclick="RelSciAeronaves._criarNovo()">+ Novo Relatório</button>' +
+            (state.draft ? '<p style="margin:var(--space-2) 0 0;font-size:var(--text-sm);color:var(--neutral-fg-muted);">Finalize ou descarte o rascunho actual antes de criar um novo.</p>' : '');
+
+        var tabelaRows = state.relatorios.length === 0
+            ? '<tr><td colspan="5" style="text-align:center;color:var(--neutral-fg-muted);padding:var(--space-4);">Nenhum relatório finalizado.</td></tr>'
+            : state.relatorios.map(function (r) {
+                return '<tr>' +
+                    '<td>' + escHtml(r.numeroControlo) + '</td>' +
+                    '<td>' + formatDate(r.secoes.s1.dataAcidente) + '</td>' +
+                    '<td>' + escHtml((r.secoes.s1.tipoAeronave || '') + ' ' + (r.secoes.s1.matricula || '')) + '</td>' +
+                    '<td>' + formatDateTime(r.dataFinalizacao) + '</td>' +
+                    '<td>' +
+                      '<button class="ds-btn ds-btn--sm" onclick="RelSciAeronaves._ver(\'' + r.id + '\')">Ver</button> ' +
+                      '<button class="ds-btn ds-btn--sm" onclick="RelSciAeronaves.imprimir(\'' + r.id + '\')">Imprimir</button>' +
+                    '</td></tr>';
+            }).join('');
+
+        container.innerHTML =
+            draftCard +
+            '<div class="ds-card"><div class="ds-card__header"><h3 class="ds-card__title">Novo relatório</h3></div>' +
+            '<div class="ds-card__body">' + novoBtn + '</div></div>' +
+            '<div class="ds-card" style="margin-top:var(--space-4);">' +
+            '  <div class="ds-card__header"><h3 class="ds-card__title">Relatórios Finalizados (' + state.relatorios.length + ')</h3></div>' +
+            '  <div class="ds-card__body">' +
+            '    <table class="ds-table">' +
+            '      <thead><tr><th>Nº Controlo</th><th>Data Acidente</th><th>Aeronave</th><th>Finalizado em</th><th>Acções</th></tr></thead>' +
+            '      <tbody>' + tabelaRows + '</tbody>' +
+            '    </table>' +
+            '  </div>' +
+            '</div>';
+    }
     function renderEditor(payload) { /* Task 4+ */ }
     function renderVisualizacao(payload) { /* Task 11 */ }
 
@@ -4515,6 +4571,54 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    function calcPercentPreenchido(rel) {
+        var total = 0, preenchidos = 0;
+        Object.keys(rel.secoes).forEach(function (k) {
+            var sec = rel.secoes[k];
+            Object.keys(sec).forEach(function (field) {
+                total++;
+                var v = sec[field];
+                if (v !== undefined && v !== null && v !== '' && !(Array.isArray(v) && v.length === 0)) preenchidos++;
+            });
+        });
+        return total === 0 ? 0 : Math.round((preenchidos / total) * 100);
+    }
+
+    function formatDate(iso) {
+        if (!iso) return '—';
+        var d = new Date(iso);
+        return isNaN(d.getTime()) ? '—' : d.toLocaleDateString('pt-PT');
+    }
+
+    function formatDateTime(iso) {
+        if (!iso) return '—';
+        var d = new Date(iso);
+        return isNaN(d.getTime()) ? '—' : d.toLocaleString('pt-PT');
+    }
+
+    function escHtml(s) {
+        if (s === undefined || s === null) return '';
+        return String(s).replace(/[&<>"']/g, function (c) {
+            return { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c];
+        });
+    }
+
+    function _criarNovo() {
+        novoRascunho();
+        setState('editor');
+    }
+
+    function _descartarComConfirmacao() {
+        if (confirm('Descartar o rascunho actual? Esta acção não pode ser desfeita.')) {
+            descartarRascunho();
+            setState('lista');
+        }
+    }
+
+    function _ver(id) {
+        setState('visualizacao', { relatorioId: id });
+    }
+
     window.RelSciAeronaves = {
         init: init,
         setState: setState,
@@ -4522,6 +4626,10 @@ document.addEventListener('DOMContentLoaded', function() {
         descartarRascunho: descartarRascunho,
         saveField: saveField,
         gerarNumeroControlo: gerarNumeroControlo,
+        imprimir: function (id) { /* Task 11 */ },
+        _criarNovo: _criarNovo,
+        _descartarComConfirmacao: _descartarComConfirmacao,
+        _ver: _ver,
         _state: state,
         _keys: STORAGE_KEYS
     };
