@@ -4613,6 +4613,8 @@ document.addEventListener('DOMContentLoaded', function() {
             case 's1':  return renderS1();
             case 's2':  return renderS2();
             case 's3':  return renderS3();
+            case 's4': return renderS4();
+            case 's5': return renderS5();
             default:    return '<p style="color:var(--neutral-fg-muted);">(em implementação)</p>';
         }
     }
@@ -4653,6 +4655,46 @@ document.addEventListener('DOMContentLoaded', function() {
         return row(
             input('s3.visibilidade', '3.1 Visibilidade (km)', 'number')
         ) + textarea('s3.condicoesGerais', '3.2 Condições Gerais do Tempo', 4);
+    }
+
+    function renderS4() {
+        return '<h4>4.1 Total de Pessoas a Bordo</h4>' + row(
+            input('s4.totalPax', 'Passageiros', 'number'),
+            input('s4.totalTrip', 'Tripulantes', 'number')
+        ) + '<h4>4.2 Salvas sem ajuda</h4>' + row(
+            input('s4.salvasFeridos', 'Feridos', 'number'),
+            input('s4.salvasIlesos', 'Ilesos', 'number')
+        ) + '<h4>4.3 Resgatadas Vivas</h4>' + row(
+            input('s4.resgFeridos', 'Feridos', 'number'),
+            input('s4.resgIlesos', 'Ilesos', 'number')
+        ) + '<h4>4.4 Mortos</h4>' + row(
+            input('s4.mortosPax', 'Passageiros', 'number'),
+            input('s4.mortosTrip', 'Tripulantes', 'number')
+        ) + '<h4>4.5 Vítimas em Terra não Ocupantes</h4>' + row(
+            input('s4.terraMortos', 'Mortos', 'number'),
+            input('s4.terraFeridos', 'Feridos', 'number')
+        ) + '<h4>4.6 Óbitos até 24h</h4>' + row(
+            input('s4.obitos24Ocupantes', 'Ocupantes', 'number'),
+            input('s4.obitos24Terra', 'Vítimas em Terra', 'number')
+        ) + '<h4>4.7 Mortos Vítimas de Fogo (incluídos em 4.4 e 4.6)</h4>' + row(
+            input('s4.mortosFogo', 'Quantidade', 'number')
+        );
+    }
+
+    function renderS5() {
+        var items = [
+            ['s5.t1', '5.1 Do aviso prévio da emergência ao contacto'],
+            ['s5.t2', '5.2 Do acidente ao alerta do SSCI (sem aviso prévio)'],
+            ['s5.t3', '5.3 Do alerta/contacto à chegada das VCI'],
+            ['s5.t4', '5.4 Do alerta/contacto à chegada das VCI (alt.)'],
+            ['s5.t5', '5.5 Da chegada das VCI ao fogo controlado'],
+            ['s5.t6', '5.6 Da chegada das VCI à extinção do fogo'],
+            ['s5.t7', '5.7 Da chegada das VCI à saída do último sobrevivente'],
+            ['s5.t8', '5.8 Da chegada das VCI à remoção dos últimos cadáveres']
+        ];
+        return items.map(function (p) {
+            return input(p[0], p[1], 'text', 'placeholder="HH:MM:SS" pattern="[0-9]{2}:[0-9]{2}:[0-9]{2}"');
+        }).join('');
     }
 
     function attachAutoSaveHandlers(root) {
