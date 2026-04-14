@@ -4615,6 +4615,7 @@ document.addEventListener('DOMContentLoaded', function() {
             case 's3':  return renderS3();
             case 's4': return renderS4();
             case 's5': return renderS5();
+            case 's6': return renderS6();
             default:    return '<p style="color:var(--neutral-fg-muted);">(em implementação)</p>';
         }
     }
@@ -4695,6 +4696,50 @@ document.addEventListener('DOMContentLoaded', function() {
         return items.map(function (p) {
             return input(p[0], p[1], 'text', 'placeholder="HH:MM:SS" pattern="[0-9]{2}:[0-9]{2}:[0-9]{2}"');
         }).join('');
+    }
+
+    function renderS6() {
+        var equipas = [
+            ['a', '(a) VCI'], ['b', '(b) Bombeiros'], ['c', '(c) Serviços Médicos'],
+            ['d', '(d) Ambulâncias'], ['e', '(e) Carro Cisterna'], ['f', '(f) Outros']
+        ];
+        var agentes = [
+            ['p',  '(a) Pó Químico'], ['co2','(b) CO₂'], ['lge','(c) LGE'],
+            ['agEspuma', '(d) Água para produção de espuma'],
+            ['agOutros', '(e) Água para outros usos'],
+            ['outros', '(f) Outros (especificar)']
+        ];
+
+        function tabelaEquipas(prefix, titulo) {
+            var rows = equipas.map(function (e) {
+                return '<tr><td>' + e[1] + '</td>' +
+                    '<td><input class="ds-input" type="text" data-field="s6.' + prefix + '.' + e[0] + '.tipo" value="' + escHtml(getFieldValue('s6.' + prefix + '.' + e[0] + '.tipo')) + '"></td>' +
+                    '<td><input class="ds-input" type="number" data-field="s6.' + prefix + '.' + e[0] + '.qtd" value="' + escHtml(getFieldValue('s6.' + prefix + '.' + e[0] + '.qtd')) + '"></td>' +
+                    '</tr>';
+            }).join('');
+            return '<h4>' + titulo + '</h4><table class="ds-table"><thead><tr><th>Categoria</th><th>Tipo</th><th>Qtd</th></tr></thead><tbody>' + rows + '</tbody></table>';
+        }
+
+        var agentesRows = agentes.map(function (a) {
+            var base = 's6.agentes.' + a[0];
+            return '<tr><td>' + a[1] + '</td>' +
+                '<td><input class="ds-input" type="number" data-field="' + base + '.qtdL" value="' + escHtml(getFieldValue(base + '.qtdL')) + '"></td>' +
+                '<td><input class="ds-input" type="number" data-field="' + base + '.razao" value="' + escHtml(getFieldValue(base + '.razao')) + '"></td>' +
+                '<td><input class="ds-input" type="number" data-field="' + base + '.tempo" value="' + escHtml(getFieldValue(base + '.tempo')) + '"></td>' +
+                '<td><input class="ds-input" type="number" data-field="' + base + '.ordem" value="' + escHtml(getFieldValue(base + '.ordem')) + '"></td>' +
+                '<td>' +
+                  '<select class="ds-input" data-field="' + base + '.suficiente">' +
+                    ['', 'Sim', 'Não'].map(function (o) {
+                        return '<option value="' + o + '"' + (getFieldValue(base + '.suficiente') === o ? ' selected' : '') + '>' + (o || '—') + '</option>';
+                    }).join('') +
+                  '</select>' +
+                '</td></tr>';
+        }).join('');
+
+        return tabelaEquipas('equipaAerodromo', '6.1 Equipamentos e Pessoal do Aeródromo') +
+               tabelaEquipas('equipaExterna',  '6.2 Equipamentos e Pessoal Alheios ao Aeródromo') +
+               '<h4>6.3 Agentes Extintores</h4>' +
+               '<table class="ds-table"><thead><tr><th>Agente</th><th>Qtd (L)</th><th>Razão (L/min)</th><th>Tempo (min)</th><th>Ordem</th><th>Suficiente?</th></tr></thead><tbody>' + agentesRows + '</tbody></table>';
     }
 
     function attachAutoSaveHandlers(root) {
