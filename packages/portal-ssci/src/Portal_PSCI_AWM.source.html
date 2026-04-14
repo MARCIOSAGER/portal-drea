@@ -4442,6 +4442,61 @@ document.addEventListener('DOMContentLoaded', function() {
     function renderEditor(payload) { /* Task 4+ */ }
     function renderVisualizacao(payload) { /* Task 11 */ }
 
+    function gerarNumeroControlo(ano) {
+        var oaci = (window.AIRPORT_OACI || '{{AIRPORT.OACI}}' || 'XXXX').trim();
+        var key = STORAGE_KEYS.COUNTER_PREFIX + ano;
+        var seq = parseInt(localStorage.getItem(key) || '0', 10) + 1;
+        localStorage.setItem(key, String(seq));
+        return oaci + '/' + ano + '/' + String(seq).padStart(3, '0');
+    }
+
+    function novoRascunho() {
+        if (state.draft) return state.draft;
+        state.draft = {
+            id: 'draft-' + Date.now(),
+            dataInicio: new Date().toISOString(),
+            secoes: { s1:{}, s2:{}, s3:{}, s4:{}, s5:{}, s6:{}, s7:{}, s8:{}, s9:{}, s10:{} }
+        };
+        saveDraft();
+        return state.draft;
+    }
+
+    function descartarRascunho() {
+        state.draft = null;
+        localStorage.removeItem(STORAGE_KEYS.DRAFT);
+    }
+
+    function saveDraft() {
+        if (!state.draft) return;
+        state.draft.dataUltimaEdicao = new Date().toISOString();
+        localStorage.setItem(STORAGE_KEYS.DRAFT, JSON.stringify(state.draft));
+    }
+
+    var saveTimeout = null;
+    function saveField(path, value) {
+        if (!state.draft || state.draft.locked) return;
+        var parts = path.split('.');
+        var obj = state.draft.secoes;
+        for (var i = 0; i < parts.length - 1; i++) {
+            if (!obj[parts[i]]) obj[parts[i]] = {};
+            obj = obj[parts[i]];
+        }
+        obj[parts[parts.length - 1]] = value;
+        clearTimeout(saveTimeout);
+        saveTimeout = setTimeout(function () {
+            saveDraft();
+            updateSavedBadge();
+        }, 500);
+    }
+
+    function updateSavedBadge() {
+        var badge = document.getElementById('relSciSavedBadge');
+        if (badge) {
+            var hhmm = new Date().toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' });
+            badge.textContent = 'Guardado às ' + hhmm;
+        }
+    }
+
     function init() {
         loadFromStorage();
         setState('lista');
@@ -4463,6 +4518,10 @@ document.addEventListener('DOMContentLoaded', function() {
     window.RelSciAeronaves = {
         init: init,
         setState: setState,
+        novoRascunho: novoRascunho,
+        descartarRascunho: descartarRascunho,
+        saveField: saveField,
+        gerarNumeroControlo: gerarNumeroControlo,
         _state: state,
         _keys: STORAGE_KEYS
     };
