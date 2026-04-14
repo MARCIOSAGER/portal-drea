@@ -4616,6 +4616,8 @@ document.addEventListener('DOMContentLoaded', function() {
             case 's4': return renderS4();
             case 's5': return renderS5();
             case 's6': return renderS6();
+            case 's7': return renderS7();
+            case 's8': return renderS8();
             default:    return '<p style="color:var(--neutral-fg-muted);">(em implementação)</p>';
         }
     }
@@ -4740,6 +4742,16 @@ document.addEventListener('DOMContentLoaded', function() {
                tabelaEquipas('equipaExterna',  '6.2 Equipamentos e Pessoal Alheios ao Aeródromo') +
                '<h4>6.3 Agentes Extintores</h4>' +
                '<table class="ds-table"><thead><tr><th>Agente</th><th>Qtd (L)</th><th>Razão (L/min)</th><th>Tempo (min)</th><th>Ordem</th><th>Suficiente?</th></tr></thead><tbody>' + agentesRows + '</tbody></table>';
+    }
+
+    function renderS7() {
+        return textarea('s7.descricaoSuccinta', '7.1 Descrição Sucinta da Emergência', 5) +
+               textarea('s7.relatoCombate',     '7.2 Relato de Controlo, Combate e Extinção', 6) +
+               textarea('s7.evacuacao',         '7.3 Descrição da Evacuação', 5);
+    }
+
+    function renderS8() {
+        return textarea('s8.outrosDetalhes', '8.1 Comunicações, terreno, dificuldades de acesso', 5);
     }
 
     function attachAutoSaveHandlers(root) {
