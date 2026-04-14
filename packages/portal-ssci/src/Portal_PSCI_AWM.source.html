@@ -4618,6 +4618,8 @@ document.addEventListener('DOMContentLoaded', function() {
             case 's6': return renderS6();
             case 's7': return renderS7();
             case 's8': return renderS8();
+            case 's9':  return renderS9();
+            case 's10': return renderS10();
             default:    return '<p style="color:var(--neutral-fg-muted);">(em implementação)</p>';
         }
     }
@@ -4754,6 +4756,35 @@ document.addEventListener('DOMContentLoaded', function() {
         return textarea('s8.outrosDetalhes', '8.1 Comunicações, terreno, dificuldades de acesso', 5);
     }
 
+    function renderS9() {
+        var estados = [
+            ['destruida',         '(a) Destruída'],
+            ['gravDanificada',    '(b) Gravemente danificada'],
+            ['poucosDanos',       '(c) Poucos Danos'],
+            ['incolume',          '(d) Incólume']
+        ];
+        var rows = estados.map(function (e) {
+            return '<tr><td>' + e[1] + '</td>' +
+                '<td style="text-align:center;"><input type="checkbox" data-field="s9.' + e[0] + '.acidente"' + (getFieldValue('s9.' + e[0] + '.acidente') ? ' checked' : '') + '></td>' +
+                '<td style="text-align:center;"><input type="checkbox" data-field="s9.' + e[0] + '.incendio"' + (getFieldValue('s9.' + e[0] + '.incendio') ? ' checked' : '') + '></td>' +
+                '</tr>';
+        }).join('');
+        return '<h4>9.1 Estado final da aeronave</h4>' +
+               '<table class="ds-table"><thead><tr><th>Estado</th><th>Pelo Acidente</th><th>Pelo Incêndio</th></tr></thead><tbody>' + rows + '</tbody></table>';
+    }
+
+    function renderS10() {
+        var today = new Date().toISOString().slice(0, 10);
+        if (!getFieldValue('s10.data')) saveField('s10.data', today);
+        return row(
+            input('s10.local', '10.1 Local', 'text'),
+            input('s10.data',  '10.1 Data', 'date')
+        ) + row(
+            input('s10.nome',  'Nome do Responsável'),
+            input('s10.cargo', 'Cargo / Função')
+        ) + input('s10.assinatura', 'Assinatura (nome impresso)');
+    }
+
     function attachAutoSaveHandlers(root) {
         root.querySelectorAll('[data-field]').forEach(function (el) {
             var handler = function () {
@@ -4818,7 +4849,8 @@ document.addEventListener('DOMContentLoaded', function() {
             secoes: {
                 s1: { aerodromo: oaci },
                 s2: {}, s3: {}, s4: {}, s5: {},
-                s6: {}, s7: {}, s8: {}, s9: {}, s10: {}
+                s6: {}, s7: {}, s8: {},
+                s9: {}, s10: { local: oaci, data: new Date().toISOString().slice(0, 10) }
             }
         };
         saveDraft();
