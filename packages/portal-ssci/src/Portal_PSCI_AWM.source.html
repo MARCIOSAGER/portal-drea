@@ -425,6 +425,14 @@
     </div>
 
     <div class="ds-sidebar__section">
+        <h3 class="ds-sidebar__section-title">Documentação</h3>
+        <ul class="ds-sidebar__list">
+            <li><button onclick="openSection('manuais', event)"
+                        class="nav-btn nav-btn--pill">📘 Manuais</button></li>
+        </ul>
+    </div>
+
+    <div class="ds-sidebar__section">
         <h3 class="ds-sidebar__section-title">Recursos</h3>
         <ul class="ds-sidebar__list">
             <li><button onclick="openSection('stock', event)" class="nav-btn nav-btn--pill">📦 Controlo de Estoque</button></li>
@@ -2126,6 +2134,20 @@
                 </div>
             </div>
 
+        </div>
+
+        <!-- MANUAIS (consulta só-leitura) -->
+        <div id="manuais" class="section">
+            <h1 style="color: var(--brand-primary-fill, #004C7B); margin-bottom: 0.5rem;">📘 MANUAIS</h1>
+            <p style="color: #666; margin-bottom: 1.5rem;">Documentação operacional do SREA. Os ficheiros abrem em nova aba do navegador.</p>
+
+            <div id="manuais-lista" class="form-card">
+                <p style="color:#a1a1aa;font-style:italic;">A carregar...</p>
+            </div>
+
+            <div class="form-card" style="margin-top:1rem;background:#fff8e1;border-left:4px solid #ffc107;">
+                <p style="margin:0;font-size:0.88rem;color:#666;"><strong>ℹ Como adicionar manuais:</strong> os ficheiros devem ser carregados por um administrador em <em>Configurações → 📄 Documentos</em>. Os manuais ficam armazenados no dispositivo (IndexedDB) e disponíveis offline.</p>
+            </div>
         </div>
 
         <!-- RELATÓRIO SCI AERONAVES -->
@@ -5453,6 +5475,7 @@ document.addEventListener('DOMContentLoaded', function() {
             putFile(el.dataset.slot, file).then(function () {
                 renderSlot(el);
                 refreshMapBadges();
+                renderManuaisList();
                 if (typeof window.notify === 'function') window.notify('Ficheiro carregado', 'ok');
             }).catch(function (err) {
                 if (typeof window.alertModal === 'function') window.alertModal({ variant:'danger', title:'Erro', message:'Não foi possível guardar: ' + (err && err.message || err) });
@@ -5478,6 +5501,7 @@ document.addEventListener('DOMContentLoaded', function() {
             deleteFile(el.dataset.slot).then(function () {
                 renderSlot(el);
                 refreshMapBadges();
+                renderManuaisList();
                 if (typeof window.notify === 'function') window.notify('Ficheiro removido', 'ok');
             });
         }
@@ -5542,6 +5566,42 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function renderAll() {
         document.querySelectorAll('.doc-slot').forEach(renderSlot);
+        renderManuaisList();
+    }
+
+    // Renders the read-only consultation list in the #manuais section
+    function renderManuaisList() {
+        var target = document.getElementById('manuais-lista');
+        if (!target) return;
+        var items = [
+            { slot: 'manualPEA',  label: 'Plano de Emergência Aeroportuária (PEA)',         icon: '📕', color: '#004C7B' },
+            { slot: 'manualPSCI', label: 'Plano de Salvamento e Combate a Incêndios (PSCI)', icon: '📕', color: '#c62828' },
+            { slot: 'mapExterno', label: 'Mapa de Quadrícula Externo (MQ-FNMO-PEA-001)',     icon: '🗺️', color: '#0094CF' },
+            { slot: 'mapInterno', label: 'Mapa de Quadrícula Interno (MQ-FNMO-PEA-002)',     icon: '🗺️', color: '#e65100' }
+        ];
+        Promise.all(items.map(function (it) { return getFile(it.slot).then(function (r) { it.file = r; return it; }); }))
+            .then(function (results) {
+                var html = '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:0.8rem;">' +
+                    results.map(function (it) {
+                        var available = !!it.file;
+                        return '<div style="border:1px solid #e4e8ed;border-left:4px solid ' + it.color + ';border-radius:8px;padding:0.9rem 1rem;background:' + (available ? '#fff' : '#fafbfc') + ';">' +
+                            '<div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:0.5rem;">' +
+                                '<span style="font-size:1.8rem;">' + it.icon + '</span>' +
+                                '<strong style="color:' + it.color + ';font-size:0.95rem;">' + esc(it.label) + '</strong>' +
+                            '</div>' +
+                            (available
+                                ? '<div style="font-size:0.78rem;color:#71717a;margin-bottom:0.6rem;">' + esc(it.file.name) + ' · ' + formatSize(it.file.size) + ' · actualizado ' + formatDate(it.file.uploadedAt) + '</div>' +
+                                  '<button class="btn btn--primary btn--sm" data-manual-view="' + it.slot + '">👁 Abrir</button>'
+                                : '<div style="font-size:0.85rem;color:#a1a1aa;font-style:italic;">Não disponível. Pedir ao administrador para carregar.</div>'
+                            ) +
+                        '</div>';
+                    }).join('') +
+                    '</div>';
+                target.innerHTML = html;
+                target.querySelectorAll('[data-manual-view]').forEach(function (btn) {
+                    btn.onclick = function () { viewFile(btn.dataset.manualView); };
+                });
+            });
     }
 
     function syncMapIframes() {
