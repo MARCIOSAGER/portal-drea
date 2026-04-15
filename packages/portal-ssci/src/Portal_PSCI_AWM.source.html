@@ -2114,9 +2114,9 @@
             <div id="psci-cfg-docs" class="psci-cfg-content" style="display:none;">
                 <div class="form-card">
                     <h3 class="section-heading">Mapas de Quadrícula</h3>
-                    <p style="font-size:0.85rem;color:#666;margin-bottom:1rem;">Os mapas carregados aqui substituem os mapas embutidos na secção <strong>Mapas Quadrícula</strong>. Formatos aceites: PNG, JPG, JPEG. Máximo recomendado: 5 MB por mapa.</p>
-                    <div id="docs-slot-mapExterno" class="doc-slot" data-slot="mapExterno" data-kind="image" data-label="Mapa Externo (MQ-FNMO-PEA-001)"></div>
-                    <div id="docs-slot-mapInterno" class="doc-slot" data-slot="mapInterno" data-kind="image" data-label="Mapa Interno (MQ-FNMO-PEA-002)"></div>
+                    <p style="font-size:0.85rem;color:#666;margin-bottom:1rem;">PDFs carregados aqui ficam disponíveis como "versão actualizada" na secção <strong>Mapas Quadrícula</strong> via botão <em>Abrir PDF</em>. Máximo recomendado: 30 MB por mapa.</p>
+                    <div id="docs-slot-mapExterno" class="doc-slot" data-slot="mapExterno" data-kind="pdf" data-label="Mapa Externo (MQ-FNMO-PEA-001)"></div>
+                    <div id="docs-slot-mapInterno" class="doc-slot" data-slot="mapInterno" data-kind="pdf" data-label="Mapa Interno (MQ-FNMO-PEA-002)"></div>
                 </div>
                 <div class="form-card" style="margin-top:1rem;">
                     <h3 class="section-heading">Manuais</h3>
@@ -5452,7 +5452,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             putFile(el.dataset.slot, file).then(function () {
                 renderSlot(el);
-                if (kind === 'image') applyMapOverride(el.dataset.slot);
+                refreshMapBadges();
                 if (typeof window.notify === 'function') window.notify('Ficheiro carregado', 'ok');
             }).catch(function (err) {
                 if (typeof window.alertModal === 'function') window.alertModal({ variant:'danger', title:'Erro', message:'Não foi possível guardar: ' + (err && err.message || err) });
@@ -5477,7 +5477,7 @@ document.addEventListener('DOMContentLoaded', function() {
         function doRemove() {
             deleteFile(el.dataset.slot).then(function () {
                 renderSlot(el);
-                if (el.dataset.kind === 'image') applyMapOverride(el.dataset.slot);
+                refreshMapBadges();
                 if (typeof window.notify === 'function') window.notify('Ficheiro removido', 'ok');
             });
         }
@@ -5487,19 +5487,30 @@ document.addEventListener('DOMContentLoaded', function() {
         } else if (confirm('Remover "' + label + '"?')) doRemove();
     }
 
-    function applyMapOverride(slot) {
-        // Replace live <img> src with custom blob URL, or restore original if removed
-        var targetId = slot === 'mapExterno' ? 'mapImgExterno' : (slot === 'mapInterno' ? 'mapImgInterno' : null);
-        if (!targetId) return;
-        var img = document.getElementById(targetId);
-        if (!img) return;
-        if (!img.dataset.originalSrc) img.dataset.originalSrc = img.src;
-        getFile(slot).then(function (rec) {
-            if (rec) {
-                img.src = URL.createObjectURL(rec.blob);
-            } else {
-                img.src = img.dataset.originalSrc;
-            }
+    // Inject/update an "Abrir PDF actualizado" button next to each map's info card
+    function refreshMapBadges() {
+        ['mapExterno', 'mapInterno'].forEach(function (slot) {
+            var cardId = slot === 'mapExterno' ? 'mapInfoExterno' : 'mapInfoInterno';
+            var wrap = document.getElementById(cardId);
+            if (!wrap) return;
+            var badgeId = 'mapPdfBtn-' + slot;
+            var existing = document.getElementById(badgeId);
+            getFile(slot).then(function (rec) {
+                if (rec) {
+                    if (!existing) {
+                        var btn = document.createElement('button');
+                        btn.id = badgeId;
+                        btn.className = 'btn btn--primary';
+                        btn.style.cssText = 'margin-left:8px;';
+                        btn.innerHTML = '📄 Abrir PDF actualizado';
+                        btn.onclick = function () { viewFile(slot); };
+                        var actionRow = wrap.querySelector('button');
+                        if (actionRow && actionRow.parentNode) actionRow.parentNode.appendChild(btn);
+                    }
+                } else if (existing) {
+                    existing.remove();
+                }
+            });
         });
     }
 
@@ -5509,10 +5520,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function init() {
         renderAll();
-        // Apply any map overrides on startup
-        applyMapOverride('mapExterno');
-        applyMapOverride('mapInterno');
-        // Re-render when the Documentos tab becomes visible
+        refreshMapBadges();
         var origTab = window.psciCfgTab;
         if (typeof origTab === 'function') {
             window.psciCfgTab = function (tab, btn) {
@@ -5522,7 +5530,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    window.PsciDocs = { renderAll: renderAll, applyMapOverride: applyMapOverride };
+    window.PsciDocs = { renderAll: renderAll, refreshMapBadges: refreshMapBadges };
 
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
     else init();
