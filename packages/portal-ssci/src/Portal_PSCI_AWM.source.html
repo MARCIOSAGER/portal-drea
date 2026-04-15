@@ -267,9 +267,13 @@
 .rel-sci-toc li { margin: var(--space-1) 0; }
 .rel-sci-toc a { color: var(--neutral-fg-muted); text-decoration: none; display: block; padding: var(--space-1) var(--space-2); border-left: 2px solid transparent; }
 .rel-sci-toc a.active { color: var(--brand-fg); border-left-color: var(--brand-fg); font-weight: 600; }
-.rel-sci-section { margin-bottom: var(--space-4); border: 1px solid var(--neutral-border); border-radius: 6px; padding: var(--space-3); }
-.rel-sci-section > summary { cursor: pointer; font-weight: 600; color: var(--neutral-fg); padding: var(--space-2) 0; }
-.rel-sci-section > summary .sec-status { float: right; font-size: var(--text-sm); }
+.rel-sci-section { margin-bottom: var(--space-5); }
+.rel-sci-section > summary { cursor: pointer; font-weight: 700; color: var(--brand-primary-fill, #004C7B); font-size: 1rem; padding: 10px 14px; background: #f4f7fa; border: 1px solid #e4e8ed; border-radius: 8px; list-style: none; display: flex; justify-content: space-between; align-items: center; letter-spacing: -0.01em; }
+.rel-sci-section > summary::-webkit-details-marker { display: none; }
+.rel-sci-section > summary::before { content: '▸'; display: inline-block; margin-right: 8px; transition: transform 0.18s; color: var(--brand-accent, #38C7F4); }
+.rel-sci-section[open] > summary::before { transform: rotate(90deg); }
+.rel-sci-section[open] > summary { margin-bottom: var(--space-3); border-color: var(--brand-accent, #38C7F4); background: #eaf4fa; }
+.rel-sci-section > summary .sec-status { font-size: 0.78rem; font-weight: 500; }
 .rel-sci-editor__toolbar { position: sticky; top: 0; background: var(--neutral-bg); padding: var(--space-2) 0; border-bottom: 1px solid var(--neutral-border); margin-bottom: var(--space-3); display: flex; justify-content: space-between; align-items: center; z-index: 5; }
 .rel-sci-toggle { display: inline-flex; border: 1px solid var(--neutral-border); border-radius: 6px; overflow: hidden; background: var(--neutral-surface, #fff); }
 .rel-sci-toggle__btn { appearance: none; background: transparent; border: 0; border-right: 1px solid var(--neutral-border); padding: 6px 14px; font: inherit; color: var(--neutral-fg-muted); cursor: pointer; transition: background 0.12s, color 0.12s; }
@@ -284,11 +288,15 @@
 .rel-sci-chip:focus-visible { outline: 2px solid var(--brand-fg, #004C7B); outline-offset: 2px; }
 .rel-sci-section { background: var(--neutral-surface, #fff); }
 .rel-sci-section[open] { padding-bottom: var(--space-4); }
-.rel-sci-section .rel-sci-fields { padding-top: var(--space-3); }
-.rel-sci-section h4 { font-size: var(--text-sm); font-weight: 600; color: var(--neutral-fg); text-transform: uppercase; letter-spacing: 0.04em; margin: var(--space-3) 0 var(--space-2); padding-bottom: var(--space-1); border-bottom: 1px solid var(--neutral-border); }
-.rel-sci-section .rel-sci-fields > h4:first-child { margin-top: 0; }
-.rel-sci-section .ds-form__field { margin-bottom: var(--space-2); }
-.rel-sci-section .ds-form__row { margin-bottom: var(--space-3); }
+.rel-sci-section .rel-sci-fields { padding: 0; }
+.rel-sci-section .form-card { margin-bottom: var(--space-3); background: #fff; border: 1px solid #e4e8ed; border-radius: 8px; padding: 16px 18px; }
+.rel-sci-section .form-card h3 { margin: 0 0 12px; color: var(--brand-primary-fill, #004C7B); font-size: 0.95rem; font-weight: 700; padding-bottom: 8px; border-bottom: 2px solid var(--brand-accent, #38C7F4); }
+.rel-sci-table { width: 100%; border-collapse: collapse; margin-top: 6px; }
+.rel-sci-table th { background: var(--brand-primary-fill, #004C7B); color: #fff; font-size: 0.78rem; font-weight: 600; text-align: left; padding: 8px 10px; text-transform: uppercase; letter-spacing: 0.04em; }
+.rel-sci-table td { border-bottom: 1px solid #e4e8ed; padding: 8px 10px; font-size: 0.88rem; vertical-align: middle; }
+.rel-sci-table td:first-child { font-weight: 600; color: #334; width: 180px; }
+.rel-sci-table input { width: 100%; }
+.rel-sci-table tbody tr:hover { background: #fafbfc; }
 @media (max-width: 900px) { .rel-sci-editor { grid-template-columns: 1fr; } .rel-sci-toc { position: static; border: none; padding: 0; } }
 </style>
 </head>
@@ -4593,17 +4601,17 @@ document.addEventListener('DOMContentLoaded', function() {
         type = type || 'text';
         attrs = attrs || '';
         var val = getFieldValue(path);
-        return '<div class="ds-form__field">' +
-            '<label class="ds-form__label">' + escHtml(label) + '</label>' +
-            '<input class="ds-input" type="' + type + '" data-field="' + path + '" value="' + escHtml(val) + '" ' + attrs + '>' +
+        return '<div class="form-group">' +
+            '<label>' + escHtml(label) + '</label>' +
+            '<input type="' + type + '" data-field="' + path + '" value="' + escHtml(val) + '" ' + attrs + '>' +
             '</div>';
     }
 
     function textarea(path, label, rows) {
         var val = getFieldValue(path);
-        return '<div class="ds-form__field">' +
-            '<label class="ds-form__label">' + escHtml(label) + '</label>' +
-            '<textarea class="ds-input" rows="' + (rows || 3) + '" data-field="' + path + '">' + escHtml(val) + '</textarea>' +
+        return '<div class="form-group" style="flex-basis:100%;">' +
+            '<label>' + escHtml(label) + '</label>' +
+            '<textarea rows="' + (rows || 3) + '" data-field="' + path + '">' + escHtml(val) + '</textarea>' +
             '</div>';
     }
 
@@ -4647,7 +4655,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function row() {
         var args = Array.prototype.slice.call(arguments);
-        return '<div class="ds-form__row" style="display:flex;gap:var(--space-3);flex-wrap:wrap;">' + args.join('') + '</div>';
+        return '<div class="form-row">' + args.join('') + '</div>';
+    }
+
+    // Wraps section content in a styled form-card with an h3 heading
+    function card(titulo, inner) {
+        return '<div class="form-card"><h3>' + escHtml(titulo) + '</h3>' + inner + '</div>';
     }
 
     function renderSecao(id) {
@@ -4667,66 +4680,79 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function renderS1() {
-        return row(
-            input('s1.aerodromo', '1.1 Aeródromo', 'text', 'readonly'),
-            input('s1.provincia', '1.2 Província')
-        ) + row(
-            input('s1.dataAcidente', '1.3 Data do Acidente', 'date'),
-            input('s1.horaAcidente', '1.4 Hora Local', 'time')
-        ) + '<div class="ds-form__field" style="margin-bottom:var(--space-3);"><label class="ds-form__label">1.5 Acidente ocorrido durante</label>' +
-            toggle('s1.periodo', [['dia', 'Dia'], ['noite', 'Noite']]) +
-        '</div>' + row(
-            input('s1.tipoAeronave', '1.6 Tipo da Aeronave'),
-            input('s1.matricula', '1.7 Matrícula'),
-            input('s1.empresa', '1.8 Empresa')
-        ) + row(
-            input('s1.propositoOperacao', '1.9 Propósito da Operação'),
-            input('s1.combustivelTipo', '1.10 Combustível — Tipo'),
-            input('s1.combustivelQtd', '1.10 Combustível — Qtd (kg)', 'number')
-        ) + row(
-            input('s1.alertaDadoPor', '1.11 Alerta dado por'),
-            input('s1.horaAlerta', '1.12 Hora do Alerta', 'time')
+        return card('Dados Gerais',
+            row(
+                input('s1.aerodromo', '1.1 Aeródromo', 'text', 'readonly'),
+                input('s1.provincia', '1.2 Província')
+            ) + row(
+                input('s1.dataAcidente', '1.3 Data do Acidente', 'date'),
+                input('s1.horaAcidente', '1.4 Hora Local', 'time')
+            ) + '<div class="form-group" style="flex-basis:100%;"><label>1.5 Acidente ocorrido durante</label>' +
+                toggle('s1.periodo', [['dia', 'Dia'], ['noite', 'Noite']]) +
+            '</div>'
+        ) + card('Aeronave',
+            row(
+                input('s1.tipoAeronave', '1.6 Tipo da Aeronave'),
+                input('s1.matricula', '1.7 Matrícula'),
+                input('s1.empresa', '1.8 Empresa')
+            ) + row(
+                input('s1.propositoOperacao', '1.9 Propósito da Operação'),
+                input('s1.combustivelTipo', '1.10 Combustível — Tipo'),
+                input('s1.combustivelQtd', '1.10 Combustível — Qtd (kg)', 'number')
+            )
+        ) + card('Alerta',
+            row(
+                input('s1.alertaDadoPor', '1.11 Alerta dado por'),
+                input('s1.horaAlerta', '1.12 Hora do Alerta', 'time')
+            )
         );
     }
 
     function renderS2() {
-        return '<div class="ds-form__field"><label class="ds-form__label">2. Fase da Operação (marcar as aplicáveis)</label>' +
+        return card('Fase da Operação',
+            '<p style="margin:0 0 12px;color:#71717a;font-size:0.85rem;">Marcar todas as fases aplicáveis ao momento do acidente.</p>' +
             chips('s2', [
                 ['pouso', '2.1 Pouso'],
                 ['decolagem', '2.2 Decolagem'],
                 ['taxi', '2.3 Táxi'],
                 ['estacionamento', '2.4 Estacionamento']
-            ]) +
-        '</div>';
+            ])
+        );
     }
 
     function renderS3() {
-        return row(
-            input('s3.visibilidade', '3.1 Visibilidade (km)', 'number')
-        ) + textarea('s3.condicoesGerais', '3.2 Condições Gerais do Tempo', 4);
+        return card('Condições Meteorológicas',
+            row(input('s3.visibilidade', '3.1 Visibilidade (km)', 'number')) +
+            textarea('s3.condicoesGerais', '3.2 Condições Gerais do Tempo', 4)
+        );
     }
 
     function renderS4() {
-        return '<h4>4.1 Total de Pessoas a Bordo</h4>' + row(
-            input('s4.totalPax', 'Passageiros', 'number'),
-            input('s4.totalTrip', 'Tripulantes', 'number')
-        ) + '<h4>4.2 Salvas sem ajuda</h4>' + row(
-            input('s4.salvasFeridos', 'Feridos', 'number'),
-            input('s4.salvasIlesos', 'Ilesos', 'number')
-        ) + '<h4>4.3 Resgatadas Vivas</h4>' + row(
-            input('s4.resgFeridos', 'Feridos', 'number'),
-            input('s4.resgIlesos', 'Ilesos', 'number')
-        ) + '<h4>4.4 Mortos</h4>' + row(
-            input('s4.mortosPax', 'Passageiros', 'number'),
-            input('s4.mortosTrip', 'Tripulantes', 'number')
-        ) + '<h4>4.5 Vítimas em Terra não Ocupantes</h4>' + row(
-            input('s4.terraMortos', 'Mortos', 'number'),
-            input('s4.terraFeridos', 'Feridos', 'number')
-        ) + '<h4>4.6 Óbitos até 24h</h4>' + row(
-            input('s4.obitos24Ocupantes', 'Ocupantes', 'number'),
-            input('s4.obitos24Terra', 'Vítimas em Terra', 'number')
-        ) + '<h4>4.7 Mortos Vítimas de Fogo (incluídos em 4.4 e 4.6)</h4>' + row(
-            input('s4.mortosFogo', 'Quantidade', 'number')
+        return card('Pessoas a Bordo',
+            row(
+                input('s4.totalPax', '4.1 Passageiros', 'number'),
+                input('s4.totalTrip', '4.1 Tripulantes', 'number')
+            )
+        ) + card('Salvos e Resgatados',
+            row(
+                input('s4.salvasFeridos', '4.2 Salvos sem ajuda — Feridos', 'number'),
+                input('s4.salvasIlesos', '4.2 Salvos sem ajuda — Ilesos', 'number')
+            ) + row(
+                input('s4.resgFeridos', '4.3 Resgatados vivos — Feridos', 'number'),
+                input('s4.resgIlesos', '4.3 Resgatados vivos — Ilesos', 'number')
+            )
+        ) + card('Vítimas',
+            row(
+                input('s4.mortosPax', '4.4 Mortos — Passageiros', 'number'),
+                input('s4.mortosTrip', '4.4 Mortos — Tripulantes', 'number')
+            ) + row(
+                input('s4.terraMortos', '4.5 Vítimas em terra — Mortos', 'number'),
+                input('s4.terraFeridos', '4.5 Vítimas em terra — Feridos', 'number')
+            ) + row(
+                input('s4.obitos24Ocupantes', '4.6 Óbitos até 24h — Ocupantes', 'number'),
+                input('s4.obitos24Terra', '4.6 Óbitos até 24h — Vítimas em terra', 'number'),
+                input('s4.mortosFogo', '4.7 Mortos por fogo (incl. em 4.4/4.6)', 'number')
+            )
         );
     }
 
@@ -4741,9 +4767,11 @@ document.addEventListener('DOMContentLoaded', function() {
             ['s5.t7', '5.7 Da chegada das VCI à saída do último sobrevivente'],
             ['s5.t8', '5.8 Da chegada das VCI à remoção dos últimos cadáveres']
         ];
-        return items.map(function (p) {
-            return input(p[0], p[1], 'text', 'placeholder="HH:MM:SS" pattern="[0-9]{2}:[0-9]{2}:[0-9]{2}"');
-        }).join('');
+        return card('Tempos de Resposta (HH:MM:SS)',
+            items.map(function (p) {
+                return input(p[0], p[1], 'text', 'placeholder="HH:MM:SS" pattern="[0-9]{2}:[0-9]{2}:[0-9]{2}"');
+            }).join('')
+        );
     }
 
     function renderS6() {
@@ -4752,29 +4780,31 @@ document.addEventListener('DOMContentLoaded', function() {
             ['d', '(d) Ambulâncias'], ['e', '(e) Carro Cisterna'], ['f', '(f) Outros']
         ];
         var agentes = [
-            ['p',  '(a) Pó Químico'], ['co2','(b) CO₂'], ['lge','(c) LGE'],
-            ['agEspuma', '(d) Água para produção de espuma'],
-            ['agOutros', '(e) Água para outros usos'],
-            ['outros', '(f) Outros (especificar)']
+            ['p',  'Pó Químico'], ['co2','CO₂'], ['lge','LGE'],
+            ['agEspuma', 'Água para produção de espuma'],
+            ['agOutros', 'Água para outros usos'],
+            ['outros', 'Outros (especificar)']
         ];
 
         function tabelaEquipas(prefix, titulo) {
             var rows = equipas.map(function (e) {
                 return '<tr><td>' + e[1] + '</td>' +
-                    '<td><input class="ds-input" type="text" data-field="s6.' + prefix + '.' + e[0] + '.tipo" value="' + escHtml(getFieldValue('s6.' + prefix + '.' + e[0] + '.tipo')) + '"></td>' +
-                    '<td><input class="ds-input" type="number" data-field="s6.' + prefix + '.' + e[0] + '.qtd" value="' + escHtml(getFieldValue('s6.' + prefix + '.' + e[0] + '.qtd')) + '"></td>' +
+                    '<td><input type="text" data-field="s6.' + prefix + '.' + e[0] + '.tipo" value="' + escHtml(getFieldValue('s6.' + prefix + '.' + e[0] + '.tipo')) + '"></td>' +
+                    '<td><input type="number" data-field="s6.' + prefix + '.' + e[0] + '.qtd" value="' + escHtml(getFieldValue('s6.' + prefix + '.' + e[0] + '.qtd')) + '"></td>' +
                     '</tr>';
             }).join('');
-            return '<h4>' + titulo + '</h4><table class="ds-table"><thead><tr><th>Categoria</th><th>Tipo</th><th>Qtd</th></tr></thead><tbody>' + rows + '</tbody></table>';
+            return card(titulo,
+                '<table class="rel-sci-table"><thead><tr><th>Categoria</th><th>Tipo</th><th>Qtd</th></tr></thead><tbody>' + rows + '</tbody></table>'
+            );
         }
 
         var agentesRows = agentes.map(function (a) {
             var base = 's6.agentes.' + a[0];
             return '<tr><td>' + a[1] + '</td>' +
-                '<td><input class="ds-input" type="number" data-field="' + base + '.qtdL" value="' + escHtml(getFieldValue(base + '.qtdL')) + '"></td>' +
-                '<td><input class="ds-input" type="number" data-field="' + base + '.razao" value="' + escHtml(getFieldValue(base + '.razao')) + '"></td>' +
-                '<td><input class="ds-input" type="number" data-field="' + base + '.tempo" value="' + escHtml(getFieldValue(base + '.tempo')) + '"></td>' +
-                '<td><input class="ds-input" type="number" data-field="' + base + '.ordem" value="' + escHtml(getFieldValue(base + '.ordem')) + '"></td>' +
+                '<td><input type="number" data-field="' + base + '.qtdL" value="' + escHtml(getFieldValue(base + '.qtdL')) + '"></td>' +
+                '<td><input type="number" data-field="' + base + '.razao" value="' + escHtml(getFieldValue(base + '.razao')) + '"></td>' +
+                '<td><input type="number" data-field="' + base + '.tempo" value="' + escHtml(getFieldValue(base + '.tempo')) + '"></td>' +
+                '<td><input type="number" data-field="' + base + '.ordem" value="' + escHtml(getFieldValue(base + '.ordem')) + '"></td>' +
                 '<td>' +
                   toggle(base + '.suficiente', [['Sim', 'Sim'], ['Não', 'Não']], true) +
                 '</td></tr>';
@@ -4782,18 +4812,23 @@ document.addEventListener('DOMContentLoaded', function() {
 
         return tabelaEquipas('equipaAerodromo', '6.1 Equipamentos e Pessoal do Aeródromo') +
                tabelaEquipas('equipaExterna',  '6.2 Equipamentos e Pessoal Alheios ao Aeródromo') +
-               '<h4>6.3 Agentes Extintores</h4>' +
-               '<table class="ds-table"><thead><tr><th>Agente</th><th>Qtd (L)</th><th>Razão (L/min)</th><th>Tempo (min)</th><th>Ordem</th><th>Suficiente?</th></tr></thead><tbody>' + agentesRows + '</tbody></table>';
+               card('6.3 Agentes Extintores',
+                   '<table class="rel-sci-table"><thead><tr><th>Agente</th><th>Qtd (L)</th><th>Razão (L/min)</th><th>Tempo (min)</th><th>Ordem</th><th>Suficiente?</th></tr></thead><tbody>' + agentesRows + '</tbody></table>'
+               );
     }
 
     function renderS7() {
-        return textarea('s7.descricaoSuccinta', '7.1 Descrição Sucinta da Emergência', 5) +
-               textarea('s7.relatoCombate',     '7.2 Relato de Controlo, Combate e Extinção', 6) +
-               textarea('s7.evacuacao',         '7.3 Descrição da Evacuação', 5);
+        return card('Descrição da Ocorrência',
+            textarea('s7.descricaoSuccinta', '7.1 Descrição Sucinta da Emergência', 5) +
+            textarea('s7.relatoCombate',     '7.2 Relato de Controlo, Combate e Extinção', 6) +
+            textarea('s7.evacuacao',         '7.3 Descrição da Evacuação', 5)
+        );
     }
 
     function renderS8() {
-        return textarea('s8.outrosDetalhes', '8.1 Comunicações, terreno, dificuldades de acesso', 5);
+        return card('Outros Detalhes',
+            textarea('s8.outrosDetalhes', '8.1 Comunicações, terreno, dificuldades de acesso', 5)
+        );
     }
 
     function renderS9() {
@@ -4812,20 +4847,23 @@ document.addEventListener('DOMContentLoaded', function() {
         var rows = estados.map(function (e) {
             return '<tr><td>' + e[1] + '</td>' + chipCell(e[0], 'acidente') + chipCell(e[0], 'incendio') + '</tr>';
         }).join('');
-        return '<h4>9.1 Estado final da aeronave</h4>' +
-               '<table class="ds-table"><thead><tr><th>Estado</th><th>Pelo Acidente</th><th>Pelo Incêndio</th></tr></thead><tbody>' + rows + '</tbody></table>';
+        return card('9.1 Estado final da aeronave',
+            '<table class="rel-sci-table"><thead><tr><th>Estado</th><th>Pelo Acidente</th><th>Pelo Incêndio</th></tr></thead><tbody>' + rows + '</tbody></table>'
+        );
     }
 
     function renderS10() {
         var today = new Date().toISOString().slice(0, 10);
         if (!getFieldValue('s10.data')) saveField('s10.data', today);
-        return row(
-            input('s10.local', '10.1 Local', 'text'),
-            input('s10.data',  '10.1 Data', 'date')
-        ) + row(
-            input('s10.nome',  'Nome do Responsável'),
-            input('s10.cargo', 'Cargo / Função')
-        ) + input('s10.assinatura', 'Assinatura (nome impresso)');
+        return card('Responsável pelo Relatório',
+            row(
+                input('s10.local', '10.1 Local', 'text'),
+                input('s10.data',  '10.1 Data', 'date')
+            ) + row(
+                input('s10.nome',  'Nome do Responsável'),
+                input('s10.cargo', 'Cargo / Função')
+            ) + row(input('s10.assinatura', 'Assinatura (nome impresso)'))
+        );
     }
 
     function attachAutoSaveHandlers(root) {
