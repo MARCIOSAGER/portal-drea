@@ -5487,28 +5487,54 @@ document.addEventListener('DOMContentLoaded', function() {
         } else if (confirm('Remover "' + label + '"?')) doRemove();
     }
 
-    // Inject/update an "Abrir PDF actualizado" button next to each map's info card
+    // Replace the <img> viewer with an <iframe> of the uploaded PDF — or restore the image if removed.
+    var mapBlobUrls = {};
     function refreshMapBadges() {
         ['mapExterno', 'mapInterno'].forEach(function (slot) {
-            var cardId = slot === 'mapExterno' ? 'mapInfoExterno' : 'mapInfoInterno';
-            var wrap = document.getElementById(cardId);
-            if (!wrap) return;
-            var badgeId = 'mapPdfBtn-' + slot;
-            var existing = document.getElementById(badgeId);
+            var imgId = slot === 'mapExterno' ? 'mapImgExterno' : 'mapImgInterno';
+            var iframeId = 'mapPdfFrame-' + slot;
+            var img = document.getElementById(imgId);
+            if (!img) return;
             getFile(slot).then(function (rec) {
+                var existingFrame = document.getElementById(iframeId);
                 if (rec) {
-                    if (!existing) {
-                        var btn = document.createElement('button');
-                        btn.id = badgeId;
-                        btn.className = 'btn btn--primary';
-                        btn.style.cssText = 'margin-left:8px;';
-                        btn.innerHTML = '📄 Abrir PDF actualizado';
-                        btn.onclick = function () { viewFile(slot); };
-                        var actionRow = wrap.querySelector('button');
-                        if (actionRow && actionRow.parentNode) actionRow.parentNode.appendChild(btn);
+                    // Revoke previous blob URL for this slot to avoid leaks
+                    if (mapBlobUrls[slot]) { try { URL.revokeObjectURL(mapBlobUrls[slot]); } catch(e){} }
+                    mapBlobUrls[slot] = URL.createObjectURL(rec.blob);
+                    img.style.display = 'none';
+                    if (!existingFrame) {
+                        var frame = document.createElement('iframe');
+                        frame.id = iframeId;
+                        frame.style.cssText = 'width:100%;height:70vh;border:none;display:block;';
+                        frame.src = mapBlobUrls[slot];
+                        img.parentNode.insertBefore(frame, img);
+                    } else {
+                        existingFrame.src = mapBlobUrls[slot];
                     }
-                } else if (existing) {
-                    existing.remove();
+                    // Hide zoom controls for PDF (browser PDF viewer has its own)
+                    var viewer = img.closest('#mapViewer');
+                    if (viewer) {
+                        var zoomBar = viewer.querySelector('[style*="bottom:10px"]');
+                        if (zoomBar) zoomBar.style.display = 'none';
+                    }
+                } else {
+                    if (existingFrame) existingFrame.remove();
+                    if (mapBlobUrls[slot]) { try { URL.revokeObjectURL(mapBlobUrls[slot]); } catch(e){} delete mapBlobUrls[slot]; }
+                    // Restore image visibility if this slot is currently selected
+                    if (typeof window.currentMapType === 'string') {
+                        var curMatch = (window.currentMapType === 'externo' && slot === 'mapExterno') ||
+                                       (window.currentMapType === 'interno' && slot === 'mapInterno');
+                        if (curMatch) img.style.display = 'block';
+                    }
+                    // Re-show zoom controls if no PDFs remain
+                    var anyPdf = document.querySelector('[id^="mapPdfFrame-"]');
+                    if (!anyPdf) {
+                        var viewer = img.closest('#mapViewer');
+                        if (viewer) {
+                            var zoomBar = viewer.querySelector('[style*="bottom:10px"]');
+                            if (zoomBar) zoomBar.style.display = '';
+                        }
+                    }
                 }
             });
         });
@@ -5516,6 +5542,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function renderAll() {
         document.querySelectorAll('.doc-slot').forEach(renderSlot);
+    }
+
+    function syncMapIframes() {
+        // Show the iframe that matches the currently selected map; hide the other
+        var cur = window.currentMapType; // 'externo' | 'interno'
+        ['mapExterno', 'mapInterno'].forEach(function (slot) {
+            var frame = document.getElementById('mapPdfFrame-' + slot);
+            if (!frame) return;
+            var match = (cur === 'externo' && slot === 'mapExterno') || (cur === 'interno' && slot === 'mapInterno');
+            frame.style.display = match ? 'block' : 'none';
+        });
     }
 
     function init() {
@@ -5528,6 +5565,27 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (tab === 'docs') renderAll();
             };
         }
+        // Hook switchMap so PDF iframes follow the selected tab
+        var origSwitch = window.switchMap;
+        if (typeof origSwitch === 'function') {
+            window.switchMap = function (type) {
+                origSwitch(type);
+                syncMapIframes();
+            };
+        }
+        // Hook openMapFullscreen — if PDF exists, open PDF in new tab instead of image
+        var origFullscreen = window.openMapFullscreen;
+        if (typeof origFullscreen === 'function') {
+            window.openMapFullscreen = function (type) {
+                var slot = type === 'externo' ? 'mapExterno' : 'mapInterno';
+                getFile(slot).then(function (rec) {
+                    if (rec) viewFile(slot);
+                    else origFullscreen(type);
+                });
+            };
+        }
+        // Initial iframe visibility (in case PDFs already present on load)
+        setTimeout(syncMapIframes, 100);
     }
 
     window.PsciDocs = { renderAll: renderAll, refreshMapBadges: refreshMapBadges };
