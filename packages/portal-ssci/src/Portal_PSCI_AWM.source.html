@@ -1985,6 +1985,7 @@
                 <button class="portal-tab-btn psci-cfg-tab-btn" onclick="psciCfgTab('equip', this)">🧰 Equipamento</button>
                 <button class="portal-tab-btn psci-cfg-tab-btn" onclick="psciCfgTab('contactos', this)">📞 Contactos</button>
                 <button class="portal-tab-btn psci-cfg-tab-btn" onclick="psciCfgTab('param', this)">⚙ Parâmetros</button>
+                <button class="portal-tab-btn psci-cfg-tab-btn" onclick="psciCfgTab('docs', this)">📄 Documentos</button>
             </div>
 
             <!-- EFECTIVO -->
@@ -2108,6 +2109,23 @@
                     <p style="font-size:0.88rem;color:#666;">Portal PSCI {{AIRPORT.NAME_SHORT}} — Versão {{VERSION}} ({{BUILD_DATE_SHORT}})<br>Desenvolvido para o Serviço de Salvamento e Combate a Incêndios do {{AIRPORT.NAME}} ({{AIRPORT.OACI}}).<br>Dados armazenados em <code>localStorage</code> (chave: <code>psci_awm_config</code>).</p>
                 </div>
             </div>
+
+            <!-- DOCUMENTOS (mapas + manuais) -->
+            <div id="psci-cfg-docs" class="psci-cfg-content" style="display:none;">
+                <div class="form-card">
+                    <h3 class="section-heading">Mapas de Quadrícula</h3>
+                    <p style="font-size:0.85rem;color:#666;margin-bottom:1rem;">Os mapas carregados aqui substituem os mapas embutidos na secção <strong>Mapas Quadrícula</strong>. Formatos aceites: PNG, JPG, JPEG. Máximo recomendado: 5 MB por mapa.</p>
+                    <div id="docs-slot-mapExterno" class="doc-slot" data-slot="mapExterno" data-kind="image" data-label="Mapa Externo (MQ-FNMO-PEA-001)"></div>
+                    <div id="docs-slot-mapInterno" class="doc-slot" data-slot="mapInterno" data-kind="image" data-label="Mapa Interno (MQ-FNMO-PEA-002)"></div>
+                </div>
+                <div class="form-card" style="margin-top:1rem;">
+                    <h3 class="section-heading">Manuais</h3>
+                    <p style="font-size:0.85rem;color:#666;margin-bottom:1rem;">Anexar PDFs dos planos em vigor para consulta offline. Botão <em>Ver</em> abre o PDF numa nova janela do navegador. Máximo recomendado: 30 MB por PDF.</p>
+                    <div id="docs-slot-manualPEA" class="doc-slot" data-slot="manualPEA" data-kind="pdf" data-label="Plano de Emergência Aeroportuária (PEA)"></div>
+                    <div id="docs-slot-manualPSCI" class="doc-slot" data-slot="manualPSCI" data-kind="pdf" data-label="Plano de Salvamento e Combate a Incêndios (PSCI)"></div>
+                </div>
+            </div>
+
         </div>
 
         <!-- RELATÓRIO SCI AERONAVES -->
@@ -5290,6 +5308,224 @@ document.addEventListener('DOMContentLoaded', function() {
     } else {
         init();
     }
+})();
+</script>
+
+<!-- Documentos (Mapas + Manuais) — IndexedDB storage + config UI -->
+<style>
+.doc-slot { display:flex; align-items:center; gap:0.8rem; padding:0.7rem 0.9rem; border:1px solid #e4e8ed; border-radius:8px; background:#fafbfc; margin-bottom:0.6rem; flex-wrap:wrap; }
+.doc-slot__icon { font-size:1.6rem; width:40px; text-align:center; }
+.doc-slot__info { flex:1; min-width:220px; }
+.doc-slot__label { font-weight:600; color:var(--brand-primary-fill, #004C7B); font-size:0.92rem; }
+.doc-slot__meta { font-size:0.78rem; color:#71717a; margin-top:2px; }
+.doc-slot__actions { display:flex; gap:0.4rem; flex-wrap:wrap; }
+.doc-slot__empty { color:#a1a1aa; font-style:italic; font-size:0.85rem; }
+</style>
+
+<script>
+(function () {
+    'use strict';
+
+    var DB_NAME = 'psci.docs';
+    var STORE = 'files';
+    var SLOTS = ['mapExterno', 'mapInterno', 'manualPEA', 'manualPSCI'];
+
+    function openDB() {
+        return new Promise(function (resolve, reject) {
+            var req = indexedDB.open(DB_NAME, 1);
+            req.onupgradeneeded = function (e) {
+                var db = e.target.result;
+                if (!db.objectStoreNames.contains(STORE)) db.createObjectStore(STORE, { keyPath: 'id' });
+            };
+            req.onsuccess = function () { resolve(req.result); };
+            req.onerror = function () { reject(req.error); };
+        });
+    }
+
+    function tx(mode) {
+        return openDB().then(function (db) { return db.transaction(STORE, mode).objectStore(STORE); });
+    }
+
+    function getFile(id) {
+        return tx('readonly').then(function (store) {
+            return new Promise(function (resolve, reject) {
+                var r = store.get(id);
+                r.onsuccess = function () { resolve(r.result || null); };
+                r.onerror = function () { reject(r.error); };
+            });
+        });
+    }
+
+    function putFile(id, file) {
+        return tx('readwrite').then(function (store) {
+            return new Promise(function (resolve, reject) {
+                var r = store.put({ id: id, blob: file, name: file.name, size: file.size, type: file.type, uploadedAt: new Date().toISOString() });
+                r.onsuccess = function () { resolve(); };
+                r.onerror = function () { reject(r.error); };
+            });
+        });
+    }
+
+    function deleteFile(id) {
+        return tx('readwrite').then(function (store) {
+            return new Promise(function (resolve, reject) {
+                var r = store.delete(id);
+                r.onsuccess = function () { resolve(); };
+                r.onerror = function () { reject(r.error); };
+            });
+        });
+    }
+
+    function formatSize(b) {
+        if (b < 1024) return b + ' B';
+        if (b < 1024 * 1024) return (b / 1024).toFixed(1) + ' KB';
+        return (b / 1024 / 1024).toFixed(2) + ' MB';
+    }
+
+    function formatDate(iso) {
+        var d = new Date(iso);
+        return isNaN(d.getTime()) ? '—' : d.toLocaleDateString('pt-PT') + ' ' + d.toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' });
+    }
+
+    function esc(s) {
+        return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+            return { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c];
+        });
+    }
+
+    function renderSlot(el) {
+        var slot = el.dataset.slot;
+        var kind = el.dataset.kind;
+        var label = el.dataset.label;
+        getFile(slot).then(function (rec) {
+            var icon = kind === 'pdf' ? '📕' : '🗺️';
+            if (rec) {
+                el.innerHTML =
+                    '<div class="doc-slot__icon">' + icon + '</div>' +
+                    '<div class="doc-slot__info">' +
+                      '<div class="doc-slot__label">' + esc(label) + '</div>' +
+                      '<div class="doc-slot__meta">' + esc(rec.name) + ' · ' + formatSize(rec.size) + ' · ' + formatDate(rec.uploadedAt) + '</div>' +
+                    '</div>' +
+                    '<div class="doc-slot__actions">' +
+                      (kind === 'pdf' ? '<button class="btn btn--primary btn--sm" data-action="view">👁 Ver</button>' : '') +
+                      '<button class="btn btn--secondary btn--sm" data-action="replace">↻ Substituir</button>' +
+                      '<button class="btn btn--danger btn--sm" data-action="remove">🗑 Remover</button>' +
+                    '</div>';
+            } else {
+                el.innerHTML =
+                    '<div class="doc-slot__icon">' + icon + '</div>' +
+                    '<div class="doc-slot__info">' +
+                      '<div class="doc-slot__label">' + esc(label) + '</div>' +
+                      '<div class="doc-slot__meta doc-slot__empty">Nenhum ficheiro carregado.</div>' +
+                    '</div>' +
+                    '<div class="doc-slot__actions">' +
+                      '<button class="btn btn--primary btn--sm" data-action="upload">⬆ Carregar</button>' +
+                    '</div>';
+            }
+            wireSlot(el, kind);
+        });
+    }
+
+    function wireSlot(el, kind) {
+        el.querySelectorAll('[data-action]').forEach(function (btn) {
+            btn.onclick = function () {
+                var action = btn.dataset.action;
+                if (action === 'upload' || action === 'replace') triggerUpload(el, kind);
+                else if (action === 'view')    viewFile(el.dataset.slot);
+                else if (action === 'remove')  confirmRemove(el);
+            };
+        });
+    }
+
+    function triggerUpload(el, kind) {
+        var input = document.createElement('input');
+        input.type = 'file';
+        input.accept = kind === 'pdf' ? 'application/pdf,.pdf' : 'image/png,image/jpeg,.png,.jpg,.jpeg';
+        input.onchange = function () {
+            var file = input.files && input.files[0];
+            if (!file) return;
+            var maxMb = kind === 'pdf' ? 30 : 5;
+            if (file.size > maxMb * 1024 * 1024) {
+                if (typeof window.alertModal === 'function') window.alertModal({ variant:'warning', title:'Ficheiro grande', message:'O ficheiro tem ' + formatSize(file.size) + '. Recomendado: ≤ ' + maxMb + ' MB.' });
+                else alert('Ficheiro grande: ' + formatSize(file.size));
+                return;
+            }
+            putFile(el.dataset.slot, file).then(function () {
+                renderSlot(el);
+                if (kind === 'image') applyMapOverride(el.dataset.slot);
+                if (typeof window.notify === 'function') window.notify('Ficheiro carregado', 'ok');
+            }).catch(function (err) {
+                if (typeof window.alertModal === 'function') window.alertModal({ variant:'danger', title:'Erro', message:'Não foi possível guardar: ' + (err && err.message || err) });
+                else alert('Erro: ' + err);
+            });
+        };
+        input.click();
+    }
+
+    function viewFile(slot) {
+        getFile(slot).then(function (rec) {
+            if (!rec) return;
+            var url = URL.createObjectURL(rec.blob);
+            var w = window.open(url, '_blank');
+            if (w) w.focus();
+            // URL revoked implicitly when tab closes; safe for small/medium PDFs
+        });
+    }
+
+    function confirmRemove(el) {
+        var label = el.dataset.label;
+        function doRemove() {
+            deleteFile(el.dataset.slot).then(function () {
+                renderSlot(el);
+                if (el.dataset.kind === 'image') applyMapOverride(el.dataset.slot);
+                if (typeof window.notify === 'function') window.notify('Ficheiro removido', 'ok');
+            });
+        }
+        if (typeof window.confirmModal === 'function') {
+            window.confirmModal({ variant:'danger', title:'Remover documento', message:'Remover “' + label + '”? O ficheiro embutido original volta a ser usado.', okText:'Remover', cancelText:'Cancelar' })
+                .then(function (ok) { if (ok) doRemove(); });
+        } else if (confirm('Remover "' + label + '"?')) doRemove();
+    }
+
+    function applyMapOverride(slot) {
+        // Replace live <img> src with custom blob URL, or restore original if removed
+        var targetId = slot === 'mapExterno' ? 'mapImgExterno' : (slot === 'mapInterno' ? 'mapImgInterno' : null);
+        if (!targetId) return;
+        var img = document.getElementById(targetId);
+        if (!img) return;
+        if (!img.dataset.originalSrc) img.dataset.originalSrc = img.src;
+        getFile(slot).then(function (rec) {
+            if (rec) {
+                img.src = URL.createObjectURL(rec.blob);
+            } else {
+                img.src = img.dataset.originalSrc;
+            }
+        });
+    }
+
+    function renderAll() {
+        document.querySelectorAll('.doc-slot').forEach(renderSlot);
+    }
+
+    function init() {
+        renderAll();
+        // Apply any map overrides on startup
+        applyMapOverride('mapExterno');
+        applyMapOverride('mapInterno');
+        // Re-render when the Documentos tab becomes visible
+        var origTab = window.psciCfgTab;
+        if (typeof origTab === 'function') {
+            window.psciCfgTab = function (tab, btn) {
+                origTab(tab, btn);
+                if (tab === 'docs') renderAll();
+            };
+        }
+    }
+
+    window.PsciDocs = { renderAll: renderAll, applyMapOverride: applyMapOverride };
+
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+    else init();
 })();
 </script>
 
