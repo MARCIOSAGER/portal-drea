@@ -2146,7 +2146,7 @@
             </div>
 
             <div class="form-card" style="margin-top:1rem;background:#fff8e1;border-left:4px solid #ffc107;">
-                <p style="margin:0;font-size:0.88rem;color:#666;"><strong>ℹ Como adicionar manuais:</strong> os ficheiros devem ser carregados por um administrador em <em>Configurações → 📄 Documentos</em>. Os manuais ficam armazenados no dispositivo (IndexedDB) e disponíveis offline.</p>
+                <p style="margin:0;font-size:0.88rem;color:#666;"><strong>ℹ Armazenamento local:</strong> os ficheiros ficam guardados no dispositivo (IndexedDB) e disponíveis offline. Para carregar/actualizar vai a <em>Configurações → 📄 Documentos</em>.</p>
             </div>
         </div>
 
@@ -5592,7 +5592,8 @@ document.addEventListener('DOMContentLoaded', function() {
                             (available
                                 ? '<div style="font-size:0.78rem;color:#71717a;margin-bottom:0.6rem;">' + esc(it.file.name) + ' · ' + formatSize(it.file.size) + ' · actualizado ' + formatDate(it.file.uploadedAt) + '</div>' +
                                   '<button class="btn btn--primary btn--sm" data-manual-view="' + it.slot + '">👁 Abrir</button>'
-                                : '<div style="font-size:0.85rem;color:#a1a1aa;font-style:italic;">Não disponível. Pedir ao administrador para carregar.</div>'
+                                : '<div style="font-size:0.85rem;color:#a1a1aa;font-style:italic;margin-bottom:0.5rem;">Não carregado.</div>' +
+                                  '<button class="btn btn--secondary btn--sm" data-manual-upload="' + it.slot + '">⬆ Carregar ficheiro</button>'
                             ) +
                         '</div>';
                     }).join('') +
@@ -5600,6 +5601,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 target.innerHTML = html;
                 target.querySelectorAll('[data-manual-view]').forEach(function (btn) {
                     btn.onclick = function () { viewFile(btn.dataset.manualView); };
+                });
+                target.querySelectorAll('[data-manual-upload]').forEach(function (btn) {
+                    btn.onclick = function () {
+                        var slot = btn.dataset.manualUpload;
+                        var el = document.getElementById('docs-slot-' + slot);
+                        if (el) triggerUpload(el, el.dataset.kind);
+                    };
                 });
             });
     }
