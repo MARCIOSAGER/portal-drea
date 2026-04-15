@@ -271,6 +271,12 @@
 .rel-sci-section > summary { cursor: pointer; font-weight: 600; color: var(--neutral-fg); padding: var(--space-2) 0; }
 .rel-sci-section > summary .sec-status { float: right; font-size: var(--text-sm); }
 .rel-sci-editor__toolbar { position: sticky; top: 0; background: var(--neutral-bg); padding: var(--space-2) 0; border-bottom: 1px solid var(--neutral-border); margin-bottom: var(--space-3); display: flex; justify-content: space-between; align-items: center; z-index: 5; }
+.rel-sci-toggle { display: inline-flex; border: 1px solid var(--neutral-border); border-radius: 6px; overflow: hidden; background: var(--neutral-surface, #fff); }
+.rel-sci-toggle__btn { appearance: none; background: transparent; border: 0; border-right: 1px solid var(--neutral-border); padding: 6px 14px; font: inherit; color: var(--neutral-fg-muted); cursor: pointer; transition: background 0.12s, color 0.12s; }
+.rel-sci-toggle__btn:last-child { border-right: 0; }
+.rel-sci-toggle__btn:hover { background: var(--neutral-bg); color: var(--neutral-fg); }
+.rel-sci-toggle__btn.is-active { background: var(--brand-fg, #004C7B); color: #fff; font-weight: 600; }
+.rel-sci-toggle__btn:focus-visible { outline: 2px solid var(--brand-fg, #004C7B); outline-offset: -2px; }
 @media (max-width: 900px) { .rel-sci-editor { grid-template-columns: 1fr; } .rel-sci-toc { position: static; border: none; padding: 0; } }
 </style>
 </head>
@@ -4603,6 +4609,18 @@ document.addEventListener('DOMContentLoaded', function() {
             '</label>';
     }
 
+    // Segmented-control toggle: options = [[value, label], ...]
+    function toggle(path, options, clearable) {
+        var cur = getFieldValue(path);
+        var btns = options.map(function (opt) {
+            var active = cur === opt[0];
+            return '<button type="button" class="rel-sci-toggle__btn' + (active ? ' is-active' : '') +
+                '" data-toggle-field="' + path + '" data-toggle-value="' + escHtml(opt[0]) +
+                '"' + (clearable ? ' data-toggle-clearable="1"' : '') + '>' + escHtml(opt[1]) + '</button>';
+        }).join('');
+        return '<div class="rel-sci-toggle" role="group">' + btns + '</div>';
+    }
+
     function row() {
         var args = Array.prototype.slice.call(arguments);
         return '<div class="ds-form__row" style="display:flex;gap:var(--space-3);flex-wrap:wrap;">' + args.join('') + '</div>';
@@ -4631,8 +4649,8 @@ document.addEventListener('DOMContentLoaded', function() {
         ) + row(
             input('s1.dataAcidente', '1.3 Data do Acidente', 'date'),
             input('s1.horaAcidente', '1.4 Hora Local', 'time')
-        ) + '<div class="ds-form__field"><label class="ds-form__label">1.5 Acidente ocorrido durante</label>' +
-            radio('s1.periodo', 'Dia', 'dia') + radio('s1.periodo', 'Noite', 'noite') +
+        ) + '<div class="ds-form__field" style="margin-bottom:var(--space-3);"><label class="ds-form__label">1.5 Acidente ocorrido durante</label>' +
+            toggle('s1.periodo', [['dia', 'Dia'], ['noite', 'Noite']]) +
         '</div>' + row(
             input('s1.tipoAeronave', '1.6 Tipo da Aeronave'),
             input('s1.matricula', '1.7 Matrícula'),
@@ -4732,11 +4750,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 '<td><input class="ds-input" type="number" data-field="' + base + '.tempo" value="' + escHtml(getFieldValue(base + '.tempo')) + '"></td>' +
                 '<td><input class="ds-input" type="number" data-field="' + base + '.ordem" value="' + escHtml(getFieldValue(base + '.ordem')) + '"></td>' +
                 '<td>' +
-                  '<select class="ds-input" data-field="' + base + '.suficiente">' +
-                    ['', 'Sim', 'Não'].map(function (o) {
-                        return '<option value="' + o + '"' + (getFieldValue(base + '.suficiente') === o ? ' selected' : '') + '>' + (o || '—') + '</option>';
-                    }).join('') +
-                  '</select>' +
+                  toggle(base + '.suficiente', [['Sim', 'Sim'], ['Não', 'Não']], true) +
                 '</td></tr>';
         }).join('');
 
@@ -4798,6 +4812,25 @@ document.addEventListener('DOMContentLoaded', function() {
             };
             el.addEventListener('change', handler);
             el.addEventListener('blur', handler);
+        });
+        root.querySelectorAll('[data-toggle-field]').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                var path = btn.dataset.toggleField;
+                var value = btn.dataset.toggleValue;
+                var clearable = btn.dataset.toggleClearable === '1';
+                var group = btn.parentElement;
+                var wasActive = btn.classList.contains('is-active');
+                group.querySelectorAll('.rel-sci-toggle__btn').forEach(function (b) {
+                    b.classList.remove('is-active');
+                });
+                if (clearable && wasActive) {
+                    saveField(path, '');
+                } else {
+                    btn.classList.add('is-active');
+                    saveField(path, value);
+                }
+                atualizarStatusSecoes();
+            });
         });
     }
 
@@ -4964,27 +4997,38 @@ document.addEventListener('DOMContentLoaded', function() {
     function _finalizar() {
         var v = validarObrigatorios();
         if (!v.ok) {
-            alert('Não é possível finalizar:\n\n' + v.erros.join('\n'));
+            window.alertModal({
+                variant: 'warning',
+                title: 'Não é possível finalizar',
+                message: '• ' + v.erros.join('\n• ')
+            });
             return;
         }
-        if (!confirm('Esta acção é IRREVERSÍVEL. O relatório será arquivado com um número de controlo. Confirma a finalização?')) return;
+        window.confirmModal({
+            variant: 'danger',
+            title: 'Finalizar relatório',
+            message: 'Esta acção é IRREVERSÍVEL. O relatório será arquivado com um número de controlo. Confirma a finalização?',
+            okText: 'Finalizar',
+            cancelText: 'Cancelar'
+        }).then(function (ok) {
+            if (!ok) return;
+            var agora = new Date();
+            var numero = gerarNumeroControlo(agora.getFullYear());
 
-        var agora = new Date();
-        var numero = gerarNumeroControlo(agora.getFullYear());
+            var relatorio = Object.assign({}, state.draft, {
+                numeroControlo: numero,
+                dataFinalizacao: agora.toISOString(),
+                locked: true
+            });
+            delete relatorio.dataUltimaEdicao;
 
-        var relatorio = Object.assign({}, state.draft, {
-            numeroControlo: numero,
-            dataFinalizacao: agora.toISOString(),
-            locked: true
+            state.relatorios.unshift(relatorio);
+            localStorage.setItem(STORAGE_KEYS.FINALIZED, JSON.stringify(state.relatorios));
+            descartarRascunho();
+
+            imprimirRelatorio(relatorio);
+            setState('visualizacao', { relatorioId: relatorio.id });
         });
-        delete relatorio.dataUltimaEdicao;
-
-        state.relatorios.unshift(relatorio);
-        localStorage.setItem(STORAGE_KEYS.FINALIZED, JSON.stringify(state.relatorios));
-        descartarRascunho();
-
-        imprimirRelatorio(relatorio);
-        setState('visualizacao', { relatorioId: relatorio.id });
     }
 
     function renderVisualizacao(payload) {
@@ -5122,10 +5166,17 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function _descartarComConfirmacao() {
-        if (confirm('Descartar o rascunho actual? Esta acção não pode ser desfeita.')) {
+        window.confirmModal({
+            variant: 'danger',
+            title: 'Descartar rascunho',
+            message: 'Descartar o rascunho actual? Esta acção não pode ser desfeita.',
+            okText: 'Descartar',
+            cancelText: 'Cancelar'
+        }).then(function (ok) {
+            if (!ok) return;
             descartarRascunho();
             setState('lista');
-        }
+        });
     }
 
     function _ver(id) {
