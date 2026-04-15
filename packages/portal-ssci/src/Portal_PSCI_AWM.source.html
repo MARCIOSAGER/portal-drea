@@ -4509,15 +4509,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 '    <p style="margin:0 0 var(--space-3);color:var(--neutral-fg-muted);">' +
                 '      Iniciado em ' + formatDateTime(state.draft.dataInicio) + '</p>' +
                 '    <div style="display:flex;gap:var(--space-2);">' +
-                '      <button class="ds-btn ds-btn--primary" onclick="RelSciAeronaves.setState(\'editor\')">Continuar</button>' +
-                '      <button class="ds-btn ds-btn--ghost" onclick="RelSciAeronaves._descartarComConfirmacao()">Descartar</button>' +
+                '      <button class="btn btn--primary" onclick="RelSciAeronaves.setState(\'editor\')">Continuar</button>' +
+                '      <button class="btn btn--danger" onclick="RelSciAeronaves._descartarComConfirmacao()">Descartar</button>' +
                 '    </div>' +
                 '  </div>' +
                 '</div>';
         }
 
         var novoBtn =
-            '<button class="ds-btn ds-btn--primary" ' + (state.draft ? 'disabled' : '') + ' ' +
+            '<button class="btn btn--primary" ' + (state.draft ? 'disabled' : '') + ' ' +
             'onclick="RelSciAeronaves._criarNovo()">+ Novo Relatório</button>' +
             (state.draft ? '<p style="margin:var(--space-2) 0 0;font-size:var(--text-sm);color:var(--neutral-fg-muted);">Finalize ou descarte o rascunho actual antes de criar um novo.</p>' : '');
 
@@ -4530,8 +4530,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     '<td>' + escHtml((r.secoes.s1.tipoAeronave || '') + ' ' + (r.secoes.s1.matricula || '')) + '</td>' +
                     '<td>' + formatDateTime(r.dataFinalizacao) + '</td>' +
                     '<td>' +
-                      '<button class="ds-btn ds-btn--sm" onclick="RelSciAeronaves._ver(\'' + r.id + '\')">Ver</button> ' +
-                      '<button class="ds-btn ds-btn--sm" onclick="RelSciAeronaves.imprimir(\'' + r.id + '\')">Imprimir</button>' +
+                      '<button class="btn btn--primary btn--sm" onclick="RelSciAeronaves._ver(\'' + r.id + '\')">Ver</button> ' +
+                      '<button class="btn btn--primary btn--sm" onclick="RelSciAeronaves.imprimir(\'' + r.id + '\')">Imprimir</button>' +
                     '</td></tr>';
             }).join('');
 
@@ -4562,10 +4562,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
         var toolbar =
             '<div class="rel-sci-editor__toolbar">' +
-            '  <button class="ds-btn ds-btn--ghost" onclick="RelSciAeronaves.setState(\'lista\')">← Voltar à lista</button>' +
+            '  <button class="btn btn--secondary" onclick="RelSciAeronaves.setState(\'lista\')">← Voltar à lista</button>' +
             '  <div>' +
             '    <span class="awm-badge" id="relSciSavedBadge">Guardado</span>' +
-            '    <button class="ds-btn ds-btn--primary" onclick="RelSciAeronaves._finalizar()">Finalizar Relatório</button>' +
+            '    <button class="btn btn--primary" onclick="RelSciAeronaves._finalizar()">Finalizar Relatório</button>' +
             '  </div>' +
             '</div>';
 
@@ -5118,10 +5118,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
         container.innerHTML =
             '<div class="rel-sci-editor__toolbar">' +
-            '  <button class="ds-btn ds-btn--ghost" onclick="RelSciAeronaves.setState(\'lista\')">← Voltar à lista</button>' +
+            '  <button class="btn btn--secondary" onclick="RelSciAeronaves.setState(\'lista\')">← Voltar à lista</button>' +
             '  <div>' +
             '    <span class="awm-badge awm-badge--success">Nº ' + escHtml(rel.numeroControlo) + ' · Finalizado</span>' +
-            '    <button class="ds-btn ds-btn--primary" onclick="RelSciAeronaves.imprimir(\'' + rel.id + '\')">🖨 Imprimir</button>' +
+            '    <button class="btn btn--primary" onclick="RelSciAeronaves.imprimir(\'' + rel.id + '\')">🖨 Imprimir</button>' +
             '  </div>' +
             '</div>' +
             '<div class="ds-card"><div class="ds-card__body">' + buildPrintBody(rel) + '</div></div>';
