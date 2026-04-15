@@ -5021,7 +5021,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     kv('4.7 Mortos por fogo', s4.mortosFogo || '—'))
             ) +
             card('5. Tempos de Resposta',
-                '<table><tbody>' + tempos.map(function (t) { return '<tr><td>' + t[0] + '</td><td>' + (t[1] || '—') + '</td></tr>'; }).join('') + '</tbody></table>'
+                '<table><thead><tr><th>Intervalo</th><th style="width:30%;">HH:MM:SS</th></tr></thead><tbody>' +
+                tempos.map(function (t) { return '<tr><td>' + t[0] + '</td><td style="font-family:monospace;">' + (t[1] || '—') + '</td></tr>'; }).join('') +
+                '</tbody></table>'
             ) +
             card('6. Serviço SCI', buildSecao6Html(s6)) +
             card('7.1 Descrição Sucinta', '<p>' + escHtml(s7.descricaoSuccinta || '—') + '</p>') +
@@ -5055,10 +5057,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function buildSecao9Html(s9) {
         var estados = [['destruida','Destruída'],['gravDanificada','Grav. danificada'],['poucosDanos','Poucos danos'],['incolume','Incólume']];
-        return '<table><thead><tr><th>Estado</th><th>Pelo Acidente</th><th>Pelo Incêndio</th></tr></thead><tbody>' +
+        return '<table><thead><tr><th>Estado</th><th style="text-align:center;width:25%;">Pelo Acidente</th><th style="text-align:center;width:25%;">Pelo Incêndio</th></tr></thead><tbody>' +
             estados.map(function (e) {
                 var v = s9[e[0]] || {};
-                return '<tr><td>' + e[1] + '</td><td>' + (v.acidente ? '☑' : '☐') + '</td><td>' + (v.incendio ? '☑' : '☐') + '</td></tr>';
+                return '<tr><td>' + e[1] + '</td><td style="text-align:center;font-size:14px;">' + (v.acidente ? '☑' : '☐') + '</td><td style="text-align:center;font-size:14px;">' + (v.incendio ? '☑' : '☐') + '</td></tr>';
             }).join('') + '</tbody></table>';
     }
 
