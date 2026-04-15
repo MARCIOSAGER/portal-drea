@@ -261,12 +261,14 @@
 }
 
 /* ===== Relatório SCI Aeronaves — editor shell (Task 4) ===== */
-.rel-sci-editor { display: grid; grid-template-columns: 200px 1fr; gap: var(--space-5); }
-.rel-sci-toc { position: sticky; top: 80px; align-self: start; border-right: 1px solid var(--neutral-border); padding-right: var(--space-3); }
-.rel-sci-toc ol { list-style: none; padding: 0; margin: 0; font-size: var(--text-sm); }
-.rel-sci-toc li { margin: var(--space-1) 0; }
-.rel-sci-toc a { color: var(--neutral-fg-muted); text-decoration: none; display: block; padding: var(--space-1) var(--space-2); border-left: 2px solid transparent; }
-.rel-sci-toc a.active { color: var(--brand-fg); border-left-color: var(--brand-fg); font-weight: 600; }
+.rel-sci-editor { display: block; max-width: none; }
+.rel-sci-toc { position: sticky; top: 48px; z-index: 6; background: #fff; border: 1px solid #e4e8ed; border-radius: 8px; padding: 10px 14px; margin-bottom: var(--space-4); box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+.rel-sci-toc__label { font-size: 0.72rem; font-weight: 700; color: #71717a; text-transform: uppercase; letter-spacing: 0.06em; margin-right: 12px; }
+.rel-sci-toc ol { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.rel-sci-toc li { margin: 0; }
+.rel-sci-toc a { color: #52525b; text-decoration: none; display: inline-block; padding: 5px 11px; border-radius: 999px; font-size: 0.82rem; font-weight: 500; border: 1px solid #e4e8ed; background: #fafbfc; transition: all 0.12s; }
+.rel-sci-toc a:hover { border-color: var(--brand-accent, #38C7F4); color: var(--brand-primary-fill, #004C7B); }
+.rel-sci-toc a.active { color: #fff; background: var(--brand-primary-fill, #004C7B); border-color: var(--brand-primary-fill, #004C7B); font-weight: 600; }
 .rel-sci-section { margin-bottom: var(--space-5); }
 .rel-sci-section > summary { cursor: pointer; font-weight: 700; color: var(--brand-primary-fill, #004C7B); font-size: 1rem; padding: 10px 14px; background: #f4f7fa; border: 1px solid #e4e8ed; border-radius: 8px; list-style: none; display: flex; justify-content: space-between; align-items: center; letter-spacing: -0.01em; }
 .rel-sci-section > summary::-webkit-details-marker { display: none; }
@@ -4552,7 +4554,8 @@ document.addEventListener('DOMContentLoaded', function() {
         var container = document.querySelector('#rel-sci-aeronaves .rel-sci-state--editor');
         if (!container) return;
 
-        var toc = '<nav class="rel-sci-toc"><div style="font-weight:600;margin-bottom:var(--space-2);">Secções</div><ol>' +
+        var toc = '<nav class="rel-sci-toc" aria-label="Navegação de secções"><ol>' +
+            '<li><span class="rel-sci-toc__label">Secções</span></li>' +
             SECOES_META.map(function (s, i) {
                 return '<li><a href="#rel-sci-' + s.id + '">' + (i + 1) + '. ' + escHtml(s.titulo) + '</a></li>';
             }).join('') + '</ol></nav>';
@@ -4566,9 +4569,10 @@ document.addEventListener('DOMContentLoaded', function() {
             '  </div>' +
             '</div>';
 
-        var secoesHtml = SECOES_META.map(function (s) {
+        var secoesHtml = SECOES_META.map(function (s, i) {
             return '<details class="rel-sci-section" id="rel-sci-' + s.id + '" open>' +
-                   '<summary>' + escHtml(s.titulo) + ' <span class="sec-status" data-secao="' + s.id + '"></span></summary>' +
+                   '<summary><span>' + (i + 1) + '. ' + escHtml(s.titulo) + '</span>' +
+                   '<span class="sec-status" data-secao="' + s.id + '"></span></summary>' +
                    '<div class="rel-sci-fields" data-secao="' + s.id + '">' +
                        renderSecao(s.id) +
                    '</div></details>';
@@ -4576,10 +4580,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
         container.innerHTML =
             toolbar +
-            '<div class="rel-sci-editor">' +
             toc +
-            '<div>' + secoesHtml + '</div>' +
-            '</div>';
+            '<div class="rel-sci-editor">' + secoesHtml + '</div>';
 
         attachAutoSaveHandlers(container);
         setupTocObserver(container);
