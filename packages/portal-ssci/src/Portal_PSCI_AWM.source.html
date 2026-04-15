@@ -277,6 +277,18 @@
 .rel-sci-toggle__btn:hover { background: var(--neutral-bg); color: var(--neutral-fg); }
 .rel-sci-toggle__btn.is-active { background: var(--brand-fg, #004C7B); color: #fff; font-weight: 600; }
 .rel-sci-toggle__btn:focus-visible { outline: 2px solid var(--brand-fg, #004C7B); outline-offset: -2px; }
+.rel-sci-chips { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-2); }
+.rel-sci-chip { appearance: none; background: var(--neutral-surface, #fff); border: 1px solid var(--neutral-border); border-radius: 999px; padding: 6px 14px; font: inherit; font-size: var(--text-sm); color: var(--neutral-fg-muted); cursor: pointer; transition: all 0.12s; }
+.rel-sci-chip:hover { border-color: var(--brand-fg, #004C7B); color: var(--neutral-fg); }
+.rel-sci-chip.is-active { background: var(--brand-fg, #004C7B); border-color: var(--brand-fg, #004C7B); color: #fff; font-weight: 600; }
+.rel-sci-chip:focus-visible { outline: 2px solid var(--brand-fg, #004C7B); outline-offset: 2px; }
+.rel-sci-section { background: var(--neutral-surface, #fff); }
+.rel-sci-section[open] { padding-bottom: var(--space-4); }
+.rel-sci-section .rel-sci-fields { padding-top: var(--space-3); }
+.rel-sci-section h4 { font-size: var(--text-sm); font-weight: 600; color: var(--neutral-fg); text-transform: uppercase; letter-spacing: 0.04em; margin: var(--space-3) 0 var(--space-2); padding-bottom: var(--space-1); border-bottom: 1px solid var(--neutral-border); }
+.rel-sci-section .rel-sci-fields > h4:first-child { margin-top: 0; }
+.rel-sci-section .ds-form__field { margin-bottom: var(--space-2); }
+.rel-sci-section .ds-form__row { margin-bottom: var(--space-3); }
 @media (max-width: 900px) { .rel-sci-editor { grid-template-columns: 1fr; } .rel-sci-toc { position: static; border: none; padding: 0; } }
 </style>
 </head>
@@ -4621,6 +4633,18 @@ document.addEventListener('DOMContentLoaded', function() {
         return '<div class="rel-sci-toggle" role="group">' + btns + '</div>';
     }
 
+    // Multi-select chips: each option is an independent boolean field under basePath
+    // options = [[fieldSuffix, label], ...]
+    function chips(basePath, options) {
+        var btns = options.map(function (opt) {
+            var full = basePath + '.' + opt[0];
+            var active = getFieldValue(full) === true;
+            return '<button type="button" class="rel-sci-chip' + (active ? ' is-active' : '') +
+                '" data-chip-field="' + full + '">' + escHtml(opt[1]) + '</button>';
+        }).join('');
+        return '<div class="rel-sci-chips" role="group">' + btns + '</div>';
+    }
+
     function row() {
         var args = Array.prototype.slice.call(arguments);
         return '<div class="ds-form__row" style="display:flex;gap:var(--space-3);flex-wrap:wrap;">' + args.join('') + '</div>';
@@ -4667,10 +4691,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function renderS2() {
         return '<div class="ds-form__field"><label class="ds-form__label">2. Fase da Operação (marcar as aplicáveis)</label>' +
-            checkbox('s2.pouso', '2.1 Pouso') +
-            checkbox('s2.decolagem', '2.2 Decolagem') +
-            checkbox('s2.taxi', '2.3 Táxi') +
-            checkbox('s2.estacionamento', '2.4 Estacionamento') +
+            chips('s2', [
+                ['pouso', '2.1 Pouso'],
+                ['decolagem', '2.2 Decolagem'],
+                ['taxi', '2.3 Táxi'],
+                ['estacionamento', '2.4 Estacionamento']
+            ]) +
         '</div>';
     }
 
@@ -4777,11 +4803,14 @@ document.addEventListener('DOMContentLoaded', function() {
             ['poucosDanos',       '(c) Poucos Danos'],
             ['incolume',          '(d) Incólume']
         ];
+        function chipCell(estado, causa) {
+            var path = 's9.' + estado + '.' + causa;
+            var active = getFieldValue(path) === true;
+            return '<td style="text-align:center;"><button type="button" class="rel-sci-chip' + (active ? ' is-active' : '') +
+                '" data-chip-field="' + path + '" style="min-width:56px;">' + (active ? '✓' : '—') + '</button></td>';
+        }
         var rows = estados.map(function (e) {
-            return '<tr><td>' + e[1] + '</td>' +
-                '<td style="text-align:center;"><input type="checkbox" data-field="s9.' + e[0] + '.acidente"' + (getFieldValue('s9.' + e[0] + '.acidente') ? ' checked' : '') + '></td>' +
-                '<td style="text-align:center;"><input type="checkbox" data-field="s9.' + e[0] + '.incendio"' + (getFieldValue('s9.' + e[0] + '.incendio') ? ' checked' : '') + '></td>' +
-                '</tr>';
+            return '<tr><td>' + e[1] + '</td>' + chipCell(e[0], 'acidente') + chipCell(e[0], 'incendio') + '</tr>';
         }).join('');
         return '<h4>9.1 Estado final da aeronave</h4>' +
                '<table class="ds-table"><thead><tr><th>Estado</th><th>Pelo Acidente</th><th>Pelo Incêndio</th></tr></thead><tbody>' + rows + '</tbody></table>';
@@ -4829,6 +4858,15 @@ document.addEventListener('DOMContentLoaded', function() {
                     btn.classList.add('is-active');
                     saveField(path, value);
                 }
+                atualizarStatusSecoes();
+            });
+        });
+        root.querySelectorAll('[data-chip-field]').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                var path = btn.dataset.chipField;
+                var nowActive = !btn.classList.contains('is-active');
+                btn.classList.toggle('is-active', nowActive);
+                saveField(path, nowActive);
                 atualizarStatusSecoes();
             });
         });
