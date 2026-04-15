@@ -2114,7 +2114,7 @@
         <div id="rel-sci-aeronaves" class="section">
             <header style="margin-bottom: var(--space-5);">
                 <h1 style="font-size: 20px; font-weight: 600; color: var(--neutral-fg); letter-spacing: -0.02em; margin: 0 0 var(--space-2) 0;">Relatório de Operações de SCI em Aeronaves</h1>
-                <p style="font-size: var(--text-sm); color: var(--neutral-fg-muted); margin: 0;">AP.04.033 / FR-FNMO-PSCI-019 — relatório pós-ocorrência</p>
+                <p style="font-size: var(--text-sm); color: var(--neutral-fg-muted); margin: 0;">FR-FNMO-PSCI-019 — relatório pós-ocorrência</p>
             </header>
 
             <div class="rel-sci-state rel-sci-state--lista active" data-state="lista">
@@ -4450,7 +4450,7 @@ document.addEventListener('DOMContentLoaded', function() {
 (function(){'use strict';function dismiss(s){s.setAttribute('data-state','done');}function init(){var s=document.getElementById('dsSplash');if(!s)return;try{var p=new URLSearchParams(window.location.search);if(p.get('nosplash')==='1'){dismiss(s);return;}}catch(e){}setTimeout(function(){s.setAttribute('data-state','out');},1500);setTimeout(function(){dismiss(s);},1900);}if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',init);}else{init();}})();
 </script>
 
-<!-- Relatório de Operações de SCI em Aeronaves (AP.04.033 / FR-FNMO-PSCI-019) — module scaffold -->
+<!-- Relatório de Operações de SCI em Aeronaves (FR-FNMO-PSCI-019) — module scaffold -->
 <script>
 (function () {
     'use strict';
@@ -4965,7 +4965,7 @@ document.addEventListener('DOMContentLoaded', function() {
         var body = buildPrintBody(rel);
         window.sgaPrintReport({
             title: 'Relatório de Operações de SCI em Aeronaves',
-            subtitle: 'AP.04.033 / FR-FNMO-PSCI-019 — Nº ' + rel.numeroControlo,
+            subtitle: 'FR-FNMO-PSCI-019 — Nº ' + rel.numeroControlo,
             bodyHtml: body,
             signatures: [
                 (rel.secoes.s10.nome || '—') + '<br>' + (rel.secoes.s10.cargo || '')
